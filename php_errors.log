@@ -1,0 +1,3420 @@
+[26-Aug-2025 01:56:42 Europe/Berlin] ==========================================
+[26-Aug-2025 01:56:42 Europe/Berlin] API Login called: 2025-08-26 01:56:42
+[26-Aug-2025 01:56:42 Europe/Berlin] Request method: GET
+[26-Aug-2025 01:56:42 Europe/Berlin] Content type: none
+[26-Aug-2025 01:56:42 Europe/Berlin] Remote addr: ::1
+[26-Aug-2025 01:56:42 Europe/Berlin] Invalid method: GET
+[26-Aug-2025 03:12:27 Europe/Berlin] ==========================================
+[26-Aug-2025 03:12:27 Europe/Berlin] API Login called: 2025-08-26 03:12:27
+[26-Aug-2025 03:12:27 Europe/Berlin] Request method: GET
+[26-Aug-2025 03:12:27 Europe/Berlin] Content type: none
+[26-Aug-2025 03:12:27 Europe/Berlin] Remote addr: ::1
+[26-Aug-2025 03:12:27 Europe/Berlin] Invalid method: GET
+[26-Aug-2025 03:18:54 Europe/Berlin] ==========================================
+[26-Aug-2025 03:18:54 Europe/Berlin] API Login called: 2025-08-26 03:18:54
+[26-Aug-2025 03:18:54 Europe/Berlin] Request method: OPTIONS
+[26-Aug-2025 03:18:54 Europe/Berlin] Content type: none
+[26-Aug-2025 03:18:54 Europe/Berlin] Remote addr: ::1
+[26-Aug-2025 03:18:54 Europe/Berlin] OPTIONS request handled - CORS preflight
+[26-Aug-2025 03:18:54 Europe/Berlin] ==========================================
+[26-Aug-2025 03:18:54 Europe/Berlin] API Login called: 2025-08-26 03:18:54
+[26-Aug-2025 03:18:54 Europe/Berlin] Request method: POST
+[26-Aug-2025 03:18:54 Europe/Berlin] Content type: application/json
+[26-Aug-2025 03:18:54 Europe/Berlin] Remote addr: ::1
+[26-Aug-2025 03:18:54 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[26-Aug-2025 03:18:54 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[26-Aug-2025 03:18:54 Europe/Berlin] Password received: artesplasticas
+[26-Aug-2025 03:18:54 Europe/Berlin] DB host: localhost
+[26-Aug-2025 03:18:54 Europe/Berlin] DB user: root
+[26-Aug-2025 03:18:54 Europe/Berlin] DB name: contratacion_temporales_b
+[26-Aug-2025 03:18:54 Europe/Berlin] DB connection successful
+[26-Aug-2025 03:18:54 Europe/Berlin] User found: artesplasticas
+[26-Aug-2025 03:18:54 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[26-Aug-2025 03:18:54 Europe/Berlin] Tipo usuario: 3
+[26-Aug-2025 03:18:54 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[26-Aug-2025 03:18:54 Europe/Berlin] Login successful, returning user data
+[26-Aug-2025 03:18:54 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[26-Aug-2025 03:18:54 Europe/Berlin] ==========================================
+[26-Aug-2025 03:26:56 Europe/Berlin] ==========================================
+[26-Aug-2025 03:26:56 Europe/Berlin] API Login called: 2025-08-26 03:26:56
+[26-Aug-2025 03:26:56 Europe/Berlin] Request method: GET
+[26-Aug-2025 03:26:56 Europe/Berlin] Content type: none
+[26-Aug-2025 03:26:56 Europe/Berlin] Remote addr: ::1
+[26-Aug-2025 03:26:56 Europe/Berlin] Invalid method: GET
+[26-Aug-2025 23:59:15 Europe/Berlin] ==========================================
+[26-Aug-2025 23:59:15 Europe/Berlin] API Login called: 2025-08-26 23:59:15
+[26-Aug-2025 23:59:15 Europe/Berlin] Request method: GET
+[26-Aug-2025 23:59:15 Europe/Berlin] Content type: none
+[26-Aug-2025 23:59:15 Europe/Berlin] Remote addr: ::1
+[26-Aug-2025 23:59:15 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 00:03:33 Europe/Berlin] ==========================================
+[27-Aug-2025 00:03:33 Europe/Berlin] API Login called: 2025-08-27 00:03:33
+[27-Aug-2025 00:03:33 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 00:03:33 Europe/Berlin] Content type: none
+[27-Aug-2025 00:03:33 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 00:03:33 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 00:03:33 Europe/Berlin] ==========================================
+[27-Aug-2025 00:03:33 Europe/Berlin] API Login called: 2025-08-27 00:03:33
+[27-Aug-2025 00:03:33 Europe/Berlin] Request method: POST
+[27-Aug-2025 00:03:33 Europe/Berlin] Content type: application/json
+[27-Aug-2025 00:03:33 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 00:03:33 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 00:03:33 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 00:03:33 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 00:03:33 Europe/Berlin] DB host: localhost
+[27-Aug-2025 00:03:33 Europe/Berlin] DB user: root
+[27-Aug-2025 00:03:33 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 00:03:33 Europe/Berlin] DB connection successful
+[27-Aug-2025 00:03:33 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 00:03:33 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 00:03:33 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 00:03:33 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 00:03:33 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 00:03:33 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 00:03:33 Europe/Berlin] ==========================================
+[27-Aug-2025 14:56:48 Europe/Berlin] ==========================================
+[27-Aug-2025 14:56:48 Europe/Berlin] API Login called: 2025-08-27 14:56:48
+[27-Aug-2025 14:56:48 Europe/Berlin] Request method: GET
+[27-Aug-2025 14:56:48 Europe/Berlin] Content type: none
+[27-Aug-2025 14:56:48 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 14:56:48 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 15:00:23 Europe/Berlin] ==========================================
+[27-Aug-2025 15:00:23 Europe/Berlin] API Login called: 2025-08-27 15:00:23
+[27-Aug-2025 15:00:23 Europe/Berlin] Request method: GET
+[27-Aug-2025 15:00:23 Europe/Berlin] Content type: none
+[27-Aug-2025 15:00:23 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 15:00:23 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 15:00:31 Europe/Berlin] ==========================================
+[27-Aug-2025 15:00:31 Europe/Berlin] API Login called: 2025-08-27 15:00:31
+[27-Aug-2025 15:00:31 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 15:00:31 Europe/Berlin] Content type: none
+[27-Aug-2025 15:00:31 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 15:00:31 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 15:00:31 Europe/Berlin] ==========================================
+[27-Aug-2025 15:00:31 Europe/Berlin] API Login called: 2025-08-27 15:00:31
+[27-Aug-2025 15:00:31 Europe/Berlin] Request method: POST
+[27-Aug-2025 15:00:31 Europe/Berlin] Content type: application/json
+[27-Aug-2025 15:00:31 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 15:00:31 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 15:00:31 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 15:00:31 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 15:00:31 Europe/Berlin] DB host: localhost
+[27-Aug-2025 15:00:31 Europe/Berlin] DB user: root
+[27-Aug-2025 15:00:31 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 15:00:31 Europe/Berlin] DB connection successful
+[27-Aug-2025 15:00:31 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 15:00:31 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 15:00:31 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 15:00:31 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 15:00:31 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 15:00:31 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 15:00:31 Europe/Berlin] ==========================================
+[27-Aug-2025 15:01:33 Europe/Berlin] ==========================================
+[27-Aug-2025 15:01:33 Europe/Berlin] API Login called: 2025-08-27 15:01:33
+[27-Aug-2025 15:01:33 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 15:01:33 Europe/Berlin] Content type: none
+[27-Aug-2025 15:01:33 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 15:01:33 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 15:01:33 Europe/Berlin] ==========================================
+[27-Aug-2025 15:01:33 Europe/Berlin] API Login called: 2025-08-27 15:01:33
+[27-Aug-2025 15:01:33 Europe/Berlin] Request method: POST
+[27-Aug-2025 15:01:33 Europe/Berlin] Content type: application/json
+[27-Aug-2025 15:01:33 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 15:01:33 Europe/Berlin] Raw input: {"email":"elmerjs@gmail.com","password":"740811"}
+[27-Aug-2025 15:01:33 Europe/Berlin] Email: elmerjs@gmail.com
+[27-Aug-2025 15:01:33 Europe/Berlin] Password received: 740811
+[27-Aug-2025 15:01:33 Europe/Berlin] DB host: localhost
+[27-Aug-2025 15:01:33 Europe/Berlin] DB user: root
+[27-Aug-2025 15:01:33 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 15:01:33 Europe/Berlin] DB connection successful
+[27-Aug-2025 15:01:33 Europe/Berlin] User found: elmer jurado
+[27-Aug-2025 15:01:33 Europe/Berlin] Hash from DB: $2y$10$3EHqNZfaCakzGQ2t.fprEutZEK4MADlXYn0OdlO7YP/JIyEeFd.rq
+[27-Aug-2025 15:01:33 Europe/Berlin] Tipo usuario: 1
+[27-Aug-2025 15:01:34 Europe/Berlin] Password verification SUCCESSFUL for: elmerjs@gmail.com
+[27-Aug-2025 15:01:34 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 15:01:34 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 4
+            [Name] => elmer jurado
+            [Email] => elmerjs@gmail.com
+            [tipo_usuario] => 1
+            [fk_depto_user] => 
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => 
+            [email_padre] => elmerjs@gmail.com
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 15:01:34 Europe/Berlin] ==========================================
+[27-Aug-2025 15:01:53 Europe/Berlin] ==========================================
+[27-Aug-2025 15:01:53 Europe/Berlin] API Login called: 2025-08-27 15:01:53
+[27-Aug-2025 15:01:53 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 15:01:53 Europe/Berlin] Content type: none
+[27-Aug-2025 15:01:53 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 15:01:53 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 15:01:53 Europe/Berlin] ==========================================
+[27-Aug-2025 15:01:53 Europe/Berlin] API Login called: 2025-08-27 15:01:53
+[27-Aug-2025 15:01:53 Europe/Berlin] Request method: POST
+[27-Aug-2025 15:01:53 Europe/Berlin] Content type: application/json
+[27-Aug-2025 15:01:53 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 15:01:53 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 15:01:53 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 15:01:53 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 15:01:53 Europe/Berlin] DB host: localhost
+[27-Aug-2025 15:01:53 Europe/Berlin] DB user: root
+[27-Aug-2025 15:01:53 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 15:01:53 Europe/Berlin] DB connection successful
+[27-Aug-2025 15:01:53 Europe/Berlin] User found: diseno
+[27-Aug-2025 15:01:53 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 15:01:53 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 15:01:53 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 15:01:53 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 15:01:53 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 15:01:53 Europe/Berlin] ==========================================
+[27-Aug-2025 16:42:25 Europe/Berlin] ==========================================
+[27-Aug-2025 16:42:25 Europe/Berlin] API Login called: 2025-08-27 16:42:25
+[27-Aug-2025 16:42:25 Europe/Berlin] Request method: GET
+[27-Aug-2025 16:42:25 Europe/Berlin] Content type: none
+[27-Aug-2025 16:42:25 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 16:42:25 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 16:46:00 Europe/Berlin] ==========================================
+[27-Aug-2025 16:46:00 Europe/Berlin] API Login called: 2025-08-27 16:46:00
+[27-Aug-2025 16:46:00 Europe/Berlin] Request method: GET
+[27-Aug-2025 16:46:00 Europe/Berlin] Content type: none
+[27-Aug-2025 16:46:00 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 16:46:00 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 16:48:59 Europe/Berlin] ==========================================
+[27-Aug-2025 16:48:59 Europe/Berlin] API Login called: 2025-08-27 16:48:59
+[27-Aug-2025 16:48:59 Europe/Berlin] Request method: GET
+[27-Aug-2025 16:48:59 Europe/Berlin] Content type: none
+[27-Aug-2025 16:48:59 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 16:48:59 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 17:10:43 Europe/Berlin] ==========================================
+[27-Aug-2025 17:10:43 Europe/Berlin] API Login called: 2025-08-27 17:10:43
+[27-Aug-2025 17:10:43 Europe/Berlin] Request method: GET
+[27-Aug-2025 17:10:43 Europe/Berlin] Content type: none
+[27-Aug-2025 17:10:43 Europe/Berlin] Remote addr: 10.200.7.4
+[27-Aug-2025 17:10:43 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 17:15:44 Europe/Berlin] ==========================================
+[27-Aug-2025 17:15:44 Europe/Berlin] API Login called: 2025-08-27 17:15:44
+[27-Aug-2025 17:15:44 Europe/Berlin] Request method: GET
+[27-Aug-2025 17:15:44 Europe/Berlin] Content type: none
+[27-Aug-2025 17:15:44 Europe/Berlin] Remote addr: 10.200.7.4
+[27-Aug-2025 17:15:44 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 17:22:14 Europe/Berlin] ==========================================
+[27-Aug-2025 17:22:14 Europe/Berlin] API Login called: 2025-08-27 17:22:14
+[27-Aug-2025 17:22:14 Europe/Berlin] Request method: GET
+[27-Aug-2025 17:22:14 Europe/Berlin] Content type: none
+[27-Aug-2025 17:22:14 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:22:14 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 17:22:20 Europe/Berlin] ==========================================
+[27-Aug-2025 17:22:20 Europe/Berlin] API Login called: 2025-08-27 17:22:20
+[27-Aug-2025 17:22:20 Europe/Berlin] Request method: GET
+[27-Aug-2025 17:22:20 Europe/Berlin] Content type: none
+[27-Aug-2025 17:22:20 Europe/Berlin] Remote addr: 10.200.7.4
+[27-Aug-2025 17:22:20 Europe/Berlin] Invalid method: GET
+[27-Aug-2025 17:29:56 Europe/Berlin] ==========================================
+[27-Aug-2025 17:29:56 Europe/Berlin] API Login called: 2025-08-27 17:29:56
+[27-Aug-2025 17:29:56 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 17:29:56 Europe/Berlin] Content type: none
+[27-Aug-2025 17:29:56 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:29:56 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 17:32:46 Europe/Berlin] ==========================================
+[27-Aug-2025 17:32:46 Europe/Berlin] API Login called: 2025-08-27 17:32:46
+[27-Aug-2025 17:32:46 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 17:32:46 Europe/Berlin] Content type: none
+[27-Aug-2025 17:32:46 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:32:46 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 17:32:46 Europe/Berlin] ==========================================
+[27-Aug-2025 17:32:46 Europe/Berlin] API Login called: 2025-08-27 17:32:46
+[27-Aug-2025 17:32:46 Europe/Berlin] Request method: POST
+[27-Aug-2025 17:32:46 Europe/Berlin] Content type: application/json
+[27-Aug-2025 17:32:46 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:32:46 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 17:32:46 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 17:32:46 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 17:32:46 Europe/Berlin] DB host: localhost
+[27-Aug-2025 17:32:46 Europe/Berlin] DB user: root
+[27-Aug-2025 17:32:46 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 17:32:46 Europe/Berlin] DB connection successful
+[27-Aug-2025 17:32:46 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 17:32:46 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 17:32:46 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 17:32:46 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 17:32:46 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 17:32:46 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 17:32:46 Europe/Berlin] ==========================================
+[27-Aug-2025 17:43:43 Europe/Berlin] ==========================================
+[27-Aug-2025 17:43:43 Europe/Berlin] API Login called: 2025-08-27 17:43:43
+[27-Aug-2025 17:43:43 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 17:43:43 Europe/Berlin] Content type: none
+[27-Aug-2025 17:43:43 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:43:43 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 17:43:43 Europe/Berlin] ==========================================
+[27-Aug-2025 17:43:43 Europe/Berlin] API Login called: 2025-08-27 17:43:43
+[27-Aug-2025 17:43:43 Europe/Berlin] Request method: POST
+[27-Aug-2025 17:43:43 Europe/Berlin] Content type: application/json
+[27-Aug-2025 17:43:43 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:43:43 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 17:43:43 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 17:43:43 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 17:43:43 Europe/Berlin] DB host: localhost
+[27-Aug-2025 17:43:43 Europe/Berlin] DB user: root
+[27-Aug-2025 17:43:43 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 17:43:43 Europe/Berlin] DB connection successful
+[27-Aug-2025 17:43:43 Europe/Berlin] User found: diseno
+[27-Aug-2025 17:43:43 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 17:43:43 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 17:43:43 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 17:43:43 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 17:43:43 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 17:43:43 Europe/Berlin] ==========================================
+[27-Aug-2025 17:53:56 Europe/Berlin] ==========================================
+[27-Aug-2025 17:53:56 Europe/Berlin] API Login called: 2025-08-27 17:53:56
+[27-Aug-2025 17:53:56 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 17:53:56 Europe/Berlin] Content type: none
+[27-Aug-2025 17:53:56 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:53:56 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 17:53:56 Europe/Berlin] ==========================================
+[27-Aug-2025 17:53:56 Europe/Berlin] API Login called: 2025-08-27 17:53:56
+[27-Aug-2025 17:53:56 Europe/Berlin] Request method: POST
+[27-Aug-2025 17:53:56 Europe/Berlin] Content type: application/json
+[27-Aug-2025 17:53:56 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:53:56 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 17:53:56 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 17:53:56 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 17:53:56 Europe/Berlin] DB host: localhost
+[27-Aug-2025 17:53:56 Europe/Berlin] DB user: root
+[27-Aug-2025 17:53:56 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 17:53:56 Europe/Berlin] DB connection successful
+[27-Aug-2025 17:53:56 Europe/Berlin] User found: diseno
+[27-Aug-2025 17:53:56 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 17:53:56 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 17:53:56 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 17:53:56 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 17:53:56 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 17:53:56 Europe/Berlin] ==========================================
+[27-Aug-2025 17:54:25 Europe/Berlin] ==========================================
+[27-Aug-2025 17:54:25 Europe/Berlin] API Login called: 2025-08-27 17:54:25
+[27-Aug-2025 17:54:25 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 17:54:25 Europe/Berlin] Content type: none
+[27-Aug-2025 17:54:25 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:54:25 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 17:54:25 Europe/Berlin] ==========================================
+[27-Aug-2025 17:54:25 Europe/Berlin] API Login called: 2025-08-27 17:54:25
+[27-Aug-2025 17:54:25 Europe/Berlin] Request method: POST
+[27-Aug-2025 17:54:25 Europe/Berlin] Content type: application/json
+[27-Aug-2025 17:54:25 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 17:54:25 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 17:54:25 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 17:54:25 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 17:54:25 Europe/Berlin] DB host: localhost
+[27-Aug-2025 17:54:25 Europe/Berlin] DB user: root
+[27-Aug-2025 17:54:25 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 17:54:25 Europe/Berlin] DB connection successful
+[27-Aug-2025 17:54:25 Europe/Berlin] User found: diseno
+[27-Aug-2025 17:54:25 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 17:54:25 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 17:54:25 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 17:54:25 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 17:54:25 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 17:54:25 Europe/Berlin] ==========================================
+[27-Aug-2025 18:02:42 Europe/Berlin] ==========================================
+[27-Aug-2025 18:02:42 Europe/Berlin] API Login called: 2025-08-27 18:02:42
+[27-Aug-2025 18:02:42 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:02:42 Europe/Berlin] Content type: none
+[27-Aug-2025 18:02:42 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:02:42 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:02:42 Europe/Berlin] ==========================================
+[27-Aug-2025 18:02:42 Europe/Berlin] API Login called: 2025-08-27 18:02:42
+[27-Aug-2025 18:02:42 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:02:42 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:02:42 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:02:42 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:02:42 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:02:42 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:02:42 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:02:42 Europe/Berlin] DB user: root
+[27-Aug-2025 18:02:42 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:02:42 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:02:42 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:02:42 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:02:42 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:02:42 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:02:42 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:02:42 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:02:42 Europe/Berlin] ==========================================
+[27-Aug-2025 18:06:28 Europe/Berlin] ==========================================
+[27-Aug-2025 18:06:28 Europe/Berlin] API Login called: 2025-08-27 18:06:28
+[27-Aug-2025 18:06:28 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:06:28 Europe/Berlin] Content type: none
+[27-Aug-2025 18:06:28 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:06:28 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:06:28 Europe/Berlin] ==========================================
+[27-Aug-2025 18:06:28 Europe/Berlin] API Login called: 2025-08-27 18:06:28
+[27-Aug-2025 18:06:28 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:06:28 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:06:28 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:06:28 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:06:28 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:06:28 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:06:28 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:06:28 Europe/Berlin] DB user: root
+[27-Aug-2025 18:06:28 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:06:28 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:06:28 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:06:28 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:06:28 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:06:28 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:06:28 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:06:28 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:06:28 Europe/Berlin] ==========================================
+[27-Aug-2025 18:08:07 Europe/Berlin] ==========================================
+[27-Aug-2025 18:08:07 Europe/Berlin] API Login called: 2025-08-27 18:08:07
+[27-Aug-2025 18:08:07 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:08:07 Europe/Berlin] Content type: none
+[27-Aug-2025 18:08:07 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:08:07 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:08:07 Europe/Berlin] ==========================================
+[27-Aug-2025 18:08:07 Europe/Berlin] API Login called: 2025-08-27 18:08:07
+[27-Aug-2025 18:08:07 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:08:07 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:08:07 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:08:07 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:08:07 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:08:07 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:08:07 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:08:07 Europe/Berlin] DB user: root
+[27-Aug-2025 18:08:07 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:08:07 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:08:07 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:08:07 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:08:07 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:08:07 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:08:07 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:08:07 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:08:07 Europe/Berlin] ==========================================
+[27-Aug-2025 18:08:59 Europe/Berlin] ==========================================
+[27-Aug-2025 18:08:59 Europe/Berlin] API Login called: 2025-08-27 18:08:59
+[27-Aug-2025 18:08:59 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:08:59 Europe/Berlin] Content type: none
+[27-Aug-2025 18:08:59 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:08:59 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:08:59 Europe/Berlin] ==========================================
+[27-Aug-2025 18:08:59 Europe/Berlin] API Login called: 2025-08-27 18:08:59
+[27-Aug-2025 18:08:59 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:08:59 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:08:59 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:08:59 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:08:59 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:08:59 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:08:59 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:08:59 Europe/Berlin] DB user: root
+[27-Aug-2025 18:08:59 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:08:59 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:08:59 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:08:59 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:08:59 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:08:59 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:08:59 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:08:59 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:08:59 Europe/Berlin] ==========================================
+[27-Aug-2025 18:11:25 Europe/Berlin] ==========================================
+[27-Aug-2025 18:11:25 Europe/Berlin] API Login called: 2025-08-27 18:11:25
+[27-Aug-2025 18:11:25 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:11:25 Europe/Berlin] Content type: none
+[27-Aug-2025 18:11:25 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:11:25 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:11:25 Europe/Berlin] ==========================================
+[27-Aug-2025 18:11:25 Europe/Berlin] API Login called: 2025-08-27 18:11:25
+[27-Aug-2025 18:11:25 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:11:25 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:11:25 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:11:25 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:11:25 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:11:25 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:11:25 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:11:25 Europe/Berlin] DB user: root
+[27-Aug-2025 18:11:25 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:11:25 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:11:25 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:11:25 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:11:25 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:11:25 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:11:25 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:11:25 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:11:25 Europe/Berlin] ==========================================
+[27-Aug-2025 18:12:55 Europe/Berlin] ==========================================
+[27-Aug-2025 18:12:55 Europe/Berlin] API Login called: 2025-08-27 18:12:55
+[27-Aug-2025 18:12:55 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:12:55 Europe/Berlin] Content type: none
+[27-Aug-2025 18:12:55 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:12:55 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:12:55 Europe/Berlin] ==========================================
+[27-Aug-2025 18:12:55 Europe/Berlin] API Login called: 2025-08-27 18:12:55
+[27-Aug-2025 18:12:55 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:12:55 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:12:55 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:12:55 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:12:55 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:12:55 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:12:55 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:12:55 Europe/Berlin] DB user: root
+[27-Aug-2025 18:12:55 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:12:55 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:12:55 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:12:55 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:12:55 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:12:55 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:12:55 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:12:55 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:12:55 Europe/Berlin] ==========================================
+[27-Aug-2025 18:14:15 Europe/Berlin] ==========================================
+[27-Aug-2025 18:14:15 Europe/Berlin] API Login called: 2025-08-27 18:14:15
+[27-Aug-2025 18:14:15 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:14:15 Europe/Berlin] Content type: none
+[27-Aug-2025 18:14:15 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:14:15 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:14:15 Europe/Berlin] ==========================================
+[27-Aug-2025 18:14:15 Europe/Berlin] API Login called: 2025-08-27 18:14:15
+[27-Aug-2025 18:14:15 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:14:15 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:14:15 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:14:15 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:14:15 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:14:15 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:14:15 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:14:15 Europe/Berlin] DB user: root
+[27-Aug-2025 18:14:15 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:14:15 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:14:15 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:14:15 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:14:15 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:14:15 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:14:15 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:14:15 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:14:15 Europe/Berlin] ==========================================
+[27-Aug-2025 18:17:12 Europe/Berlin] ==========================================
+[27-Aug-2025 18:17:12 Europe/Berlin] API Login called: 2025-08-27 18:17:12
+[27-Aug-2025 18:17:12 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:17:12 Europe/Berlin] Content type: none
+[27-Aug-2025 18:17:12 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:17:12 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:17:12 Europe/Berlin] ==========================================
+[27-Aug-2025 18:17:12 Europe/Berlin] API Login called: 2025-08-27 18:17:12
+[27-Aug-2025 18:17:12 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:17:12 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:17:12 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:17:12 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:17:12 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:17:12 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:17:12 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:17:12 Europe/Berlin] DB user: root
+[27-Aug-2025 18:17:12 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:17:12 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:17:12 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:17:12 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:17:12 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:17:12 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:17:12 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:17:12 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:17:12 Europe/Berlin] ==========================================
+[27-Aug-2025 18:19:11 Europe/Berlin] ==========================================
+[27-Aug-2025 18:19:11 Europe/Berlin] API Login called: 2025-08-27 18:19:11
+[27-Aug-2025 18:19:11 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:19:11 Europe/Berlin] Content type: none
+[27-Aug-2025 18:19:11 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:19:11 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:19:11 Europe/Berlin] ==========================================
+[27-Aug-2025 18:19:11 Europe/Berlin] API Login called: 2025-08-27 18:19:11
+[27-Aug-2025 18:19:11 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:19:11 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:19:11 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:19:11 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:19:11 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:19:11 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:19:11 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:19:11 Europe/Berlin] DB user: root
+[27-Aug-2025 18:19:11 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:19:11 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:19:11 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:19:11 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:19:11 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:19:11 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:19:11 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:19:11 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:19:11 Europe/Berlin] ==========================================
+[27-Aug-2025 18:24:01 Europe/Berlin] ==========================================
+[27-Aug-2025 18:24:01 Europe/Berlin] API Login called: 2025-08-27 18:24:01
+[27-Aug-2025 18:24:01 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:24:01 Europe/Berlin] Content type: none
+[27-Aug-2025 18:24:01 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:24:01 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:24:01 Europe/Berlin] ==========================================
+[27-Aug-2025 18:24:01 Europe/Berlin] API Login called: 2025-08-27 18:24:01
+[27-Aug-2025 18:24:01 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:24:01 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:24:01 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:24:01 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:24:01 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:24:01 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:24:01 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:24:01 Europe/Berlin] DB user: root
+[27-Aug-2025 18:24:01 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:24:01 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:24:01 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:24:01 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:24:01 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:24:01 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:24:01 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:24:01 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:24:01 Europe/Berlin] ==========================================
+[27-Aug-2025 18:30:10 Europe/Berlin] ==========================================
+[27-Aug-2025 18:30:10 Europe/Berlin] API Login called: 2025-08-27 18:30:10
+[27-Aug-2025 18:30:10 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:30:10 Europe/Berlin] Content type: none
+[27-Aug-2025 18:30:10 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:30:10 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:30:10 Europe/Berlin] ==========================================
+[27-Aug-2025 18:30:10 Europe/Berlin] API Login called: 2025-08-27 18:30:10
+[27-Aug-2025 18:30:10 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:30:10 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:30:10 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:30:10 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:30:10 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:30:10 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:30:10 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:30:10 Europe/Berlin] DB user: root
+[27-Aug-2025 18:30:10 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:30:10 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:30:10 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:30:10 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:30:10 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:30:10 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:30:10 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:30:10 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:30:10 Europe/Berlin] ==========================================
+[27-Aug-2025 18:34:17 Europe/Berlin] ==========================================
+[27-Aug-2025 18:34:17 Europe/Berlin] API Login called: 2025-08-27 18:34:17
+[27-Aug-2025 18:34:17 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:34:17 Europe/Berlin] Content type: none
+[27-Aug-2025 18:34:17 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:34:17 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:34:17 Europe/Berlin] ==========================================
+[27-Aug-2025 18:34:17 Europe/Berlin] API Login called: 2025-08-27 18:34:17
+[27-Aug-2025 18:34:17 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:34:17 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:34:17 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:34:17 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:34:17 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:34:17 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:34:17 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:34:17 Europe/Berlin] DB user: root
+[27-Aug-2025 18:34:17 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:34:17 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:34:17 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:34:17 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:34:17 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:34:18 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:34:18 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:34:18 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:34:18 Europe/Berlin] ==========================================
+[27-Aug-2025 18:37:37 Europe/Berlin] ==========================================
+[27-Aug-2025 18:37:37 Europe/Berlin] API Login called: 2025-08-27 18:37:37
+[27-Aug-2025 18:37:37 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:37:37 Europe/Berlin] Content type: none
+[27-Aug-2025 18:37:37 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:37:37 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:37:37 Europe/Berlin] ==========================================
+[27-Aug-2025 18:37:37 Europe/Berlin] API Login called: 2025-08-27 18:37:37
+[27-Aug-2025 18:37:37 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:37:37 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:37:37 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:37:37 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:37:37 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:37:37 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:37:37 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:37:37 Europe/Berlin] DB user: root
+[27-Aug-2025 18:37:37 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:37:37 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:37:37 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:37:37 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:37:37 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:37:37 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:37:37 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:37:37 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:37:37 Europe/Berlin] ==========================================
+[27-Aug-2025 18:40:38 Europe/Berlin] ==========================================
+[27-Aug-2025 18:40:38 Europe/Berlin] API Login called: 2025-08-27 18:40:38
+[27-Aug-2025 18:40:38 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:40:38 Europe/Berlin] Content type: none
+[27-Aug-2025 18:40:38 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:40:38 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:40:38 Europe/Berlin] ==========================================
+[27-Aug-2025 18:40:38 Europe/Berlin] API Login called: 2025-08-27 18:40:38
+[27-Aug-2025 18:40:38 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:40:38 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:40:38 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:40:38 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:40:38 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:40:38 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:40:38 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:40:38 Europe/Berlin] DB user: root
+[27-Aug-2025 18:40:38 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:40:38 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:40:38 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:40:38 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:40:38 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:40:38 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:40:38 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:40:38 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:40:38 Europe/Berlin] ==========================================
+[27-Aug-2025 18:55:15 Europe/Berlin] ==========================================
+[27-Aug-2025 18:55:15 Europe/Berlin] API Login called: 2025-08-27 18:55:15
+[27-Aug-2025 18:55:15 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:55:15 Europe/Berlin] Content type: none
+[27-Aug-2025 18:55:15 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:55:15 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:55:15 Europe/Berlin] ==========================================
+[27-Aug-2025 18:55:15 Europe/Berlin] API Login called: 2025-08-27 18:55:15
+[27-Aug-2025 18:55:15 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:55:15 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:55:15 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:55:15 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:55:15 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:55:15 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:55:15 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:55:15 Europe/Berlin] DB user: root
+[27-Aug-2025 18:55:15 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:55:15 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:55:15 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:55:15 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:55:15 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:55:15 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:55:15 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:55:15 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:55:15 Europe/Berlin] ==========================================
+[27-Aug-2025 18:56:55 Europe/Berlin] ==========================================
+[27-Aug-2025 18:56:55 Europe/Berlin] API Login called: 2025-08-27 18:56:55
+[27-Aug-2025 18:56:55 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 18:56:55 Europe/Berlin] Content type: none
+[27-Aug-2025 18:56:55 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:56:55 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 18:56:55 Europe/Berlin] ==========================================
+[27-Aug-2025 18:56:55 Europe/Berlin] API Login called: 2025-08-27 18:56:55
+[27-Aug-2025 18:56:55 Europe/Berlin] Request method: POST
+[27-Aug-2025 18:56:55 Europe/Berlin] Content type: application/json
+[27-Aug-2025 18:56:55 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 18:56:55 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 18:56:55 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:56:55 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 18:56:55 Europe/Berlin] DB host: localhost
+[27-Aug-2025 18:56:55 Europe/Berlin] DB user: root
+[27-Aug-2025 18:56:55 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 18:56:55 Europe/Berlin] DB connection successful
+[27-Aug-2025 18:56:55 Europe/Berlin] User found: diseno
+[27-Aug-2025 18:56:55 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 18:56:55 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 18:56:55 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 18:56:55 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 18:56:55 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 18:56:55 Europe/Berlin] ==========================================
+[27-Aug-2025 19:02:25 Europe/Berlin] ==========================================
+[27-Aug-2025 19:02:25 Europe/Berlin] API Login called: 2025-08-27 19:02:25
+[27-Aug-2025 19:02:25 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 19:02:25 Europe/Berlin] Content type: none
+[27-Aug-2025 19:02:25 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:02:25 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 19:02:25 Europe/Berlin] ==========================================
+[27-Aug-2025 19:02:25 Europe/Berlin] API Login called: 2025-08-27 19:02:25
+[27-Aug-2025 19:02:25 Europe/Berlin] Request method: POST
+[27-Aug-2025 19:02:25 Europe/Berlin] Content type: application/json
+[27-Aug-2025 19:02:25 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:02:25 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 19:02:25 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:02:25 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 19:02:25 Europe/Berlin] DB host: localhost
+[27-Aug-2025 19:02:25 Europe/Berlin] DB user: root
+[27-Aug-2025 19:02:25 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 19:02:25 Europe/Berlin] DB connection successful
+[27-Aug-2025 19:02:25 Europe/Berlin] User found: diseno
+[27-Aug-2025 19:02:25 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 19:02:25 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 19:02:25 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:02:25 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 19:02:25 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 19:02:25 Europe/Berlin] ==========================================
+[27-Aug-2025 19:03:31 Europe/Berlin] ==========================================
+[27-Aug-2025 19:03:31 Europe/Berlin] API Login called: 2025-08-27 19:03:31
+[27-Aug-2025 19:03:31 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 19:03:31 Europe/Berlin] Content type: none
+[27-Aug-2025 19:03:31 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:03:31 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 19:03:31 Europe/Berlin] ==========================================
+[27-Aug-2025 19:03:31 Europe/Berlin] API Login called: 2025-08-27 19:03:31
+[27-Aug-2025 19:03:31 Europe/Berlin] Request method: POST
+[27-Aug-2025 19:03:31 Europe/Berlin] Content type: application/json
+[27-Aug-2025 19:03:31 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:03:31 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 19:03:31 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:03:31 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 19:03:31 Europe/Berlin] DB host: localhost
+[27-Aug-2025 19:03:31 Europe/Berlin] DB user: root
+[27-Aug-2025 19:03:31 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 19:03:31 Europe/Berlin] DB connection successful
+[27-Aug-2025 19:03:31 Europe/Berlin] User found: diseno
+[27-Aug-2025 19:03:31 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 19:03:31 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 19:03:31 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:03:31 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 19:03:31 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 19:03:31 Europe/Berlin] ==========================================
+[27-Aug-2025 19:04:42 Europe/Berlin] ==========================================
+[27-Aug-2025 19:04:42 Europe/Berlin] API Login called: 2025-08-27 19:04:42
+[27-Aug-2025 19:04:42 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 19:04:42 Europe/Berlin] Content type: none
+[27-Aug-2025 19:04:42 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:04:42 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 19:04:42 Europe/Berlin] ==========================================
+[27-Aug-2025 19:04:42 Europe/Berlin] API Login called: 2025-08-27 19:04:42
+[27-Aug-2025 19:04:42 Europe/Berlin] Request method: POST
+[27-Aug-2025 19:04:42 Europe/Berlin] Content type: application/json
+[27-Aug-2025 19:04:42 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:04:42 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 19:04:42 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:04:42 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 19:04:42 Europe/Berlin] DB host: localhost
+[27-Aug-2025 19:04:42 Europe/Berlin] DB user: root
+[27-Aug-2025 19:04:42 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 19:04:42 Europe/Berlin] DB connection successful
+[27-Aug-2025 19:04:42 Europe/Berlin] User found: diseno
+[27-Aug-2025 19:04:42 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 19:04:42 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 19:04:42 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:04:42 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 19:04:42 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 19:04:42 Europe/Berlin] ==========================================
+[27-Aug-2025 19:12:51 Europe/Berlin] ==========================================
+[27-Aug-2025 19:12:51 Europe/Berlin] API Login called: 2025-08-27 19:12:51
+[27-Aug-2025 19:12:51 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 19:12:51 Europe/Berlin] Content type: none
+[27-Aug-2025 19:12:51 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:12:51 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 19:12:51 Europe/Berlin] ==========================================
+[27-Aug-2025 19:12:51 Europe/Berlin] API Login called: 2025-08-27 19:12:51
+[27-Aug-2025 19:12:51 Europe/Berlin] Request method: POST
+[27-Aug-2025 19:12:51 Europe/Berlin] Content type: application/json
+[27-Aug-2025 19:12:51 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:12:51 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 19:12:51 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:12:51 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 19:12:51 Europe/Berlin] DB host: localhost
+[27-Aug-2025 19:12:51 Europe/Berlin] DB user: root
+[27-Aug-2025 19:12:51 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 19:12:51 Europe/Berlin] DB connection successful
+[27-Aug-2025 19:12:51 Europe/Berlin] User found: diseno
+[27-Aug-2025 19:12:51 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 19:12:51 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 19:12:51 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:12:51 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 19:12:51 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 19:12:51 Europe/Berlin] ==========================================
+[27-Aug-2025 19:27:18 Europe/Berlin] ==========================================
+[27-Aug-2025 19:27:18 Europe/Berlin] API Login called: 2025-08-27 19:27:18
+[27-Aug-2025 19:27:18 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 19:27:18 Europe/Berlin] Content type: none
+[27-Aug-2025 19:27:18 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:27:18 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 19:27:18 Europe/Berlin] ==========================================
+[27-Aug-2025 19:27:18 Europe/Berlin] API Login called: 2025-08-27 19:27:18
+[27-Aug-2025 19:27:18 Europe/Berlin] Request method: POST
+[27-Aug-2025 19:27:18 Europe/Berlin] Content type: application/json
+[27-Aug-2025 19:27:18 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:27:18 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 19:27:18 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:27:18 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 19:27:18 Europe/Berlin] DB host: localhost
+[27-Aug-2025 19:27:18 Europe/Berlin] DB user: root
+[27-Aug-2025 19:27:18 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 19:27:18 Europe/Berlin] DB connection successful
+[27-Aug-2025 19:27:18 Europe/Berlin] User found: diseno
+[27-Aug-2025 19:27:18 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 19:27:18 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 19:27:18 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:27:18 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 19:27:18 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 19:27:18 Europe/Berlin] ==========================================
+[27-Aug-2025 19:30:50 Europe/Berlin] ==========================================
+[27-Aug-2025 19:30:50 Europe/Berlin] API Login called: 2025-08-27 19:30:50
+[27-Aug-2025 19:30:50 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 19:30:50 Europe/Berlin] Content type: none
+[27-Aug-2025 19:30:50 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:30:50 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 19:30:50 Europe/Berlin] ==========================================
+[27-Aug-2025 19:30:50 Europe/Berlin] API Login called: 2025-08-27 19:30:50
+[27-Aug-2025 19:30:50 Europe/Berlin] Request method: POST
+[27-Aug-2025 19:30:50 Europe/Berlin] Content type: application/json
+[27-Aug-2025 19:30:50 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:30:50 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 19:30:50 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:30:50 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 19:30:50 Europe/Berlin] DB host: localhost
+[27-Aug-2025 19:30:50 Europe/Berlin] DB user: root
+[27-Aug-2025 19:30:50 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 19:30:50 Europe/Berlin] DB connection successful
+[27-Aug-2025 19:30:50 Europe/Berlin] User found: diseno
+[27-Aug-2025 19:30:50 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 19:30:50 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 19:30:51 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:30:51 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 19:30:51 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 19:30:51 Europe/Berlin] ==========================================
+[27-Aug-2025 19:32:02 Europe/Berlin] ==========================================
+[27-Aug-2025 19:32:02 Europe/Berlin] API Login called: 2025-08-27 19:32:02
+[27-Aug-2025 19:32:02 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 19:32:02 Europe/Berlin] Content type: none
+[27-Aug-2025 19:32:02 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:32:02 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 19:32:02 Europe/Berlin] ==========================================
+[27-Aug-2025 19:32:02 Europe/Berlin] API Login called: 2025-08-27 19:32:02
+[27-Aug-2025 19:32:02 Europe/Berlin] Request method: POST
+[27-Aug-2025 19:32:02 Europe/Berlin] Content type: application/json
+[27-Aug-2025 19:32:02 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 19:32:02 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 19:32:02 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:32:02 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 19:32:02 Europe/Berlin] DB host: localhost
+[27-Aug-2025 19:32:02 Europe/Berlin] DB user: root
+[27-Aug-2025 19:32:02 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 19:32:02 Europe/Berlin] DB connection successful
+[27-Aug-2025 19:32:02 Europe/Berlin] User found: diseno
+[27-Aug-2025 19:32:02 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 19:32:02 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 19:32:02 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 19:32:02 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 19:32:02 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 19:32:02 Europe/Berlin] ==========================================
+[27-Aug-2025 21:15:18 Europe/Berlin] ==========================================
+[27-Aug-2025 21:15:18 Europe/Berlin] API Login called: 2025-08-27 21:15:18
+[27-Aug-2025 21:15:18 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 21:15:18 Europe/Berlin] Content type: none
+[27-Aug-2025 21:15:18 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 21:15:18 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 21:15:18 Europe/Berlin] ==========================================
+[27-Aug-2025 21:15:18 Europe/Berlin] API Login called: 2025-08-27 21:15:18
+[27-Aug-2025 21:15:18 Europe/Berlin] Request method: POST
+[27-Aug-2025 21:15:18 Europe/Berlin] Content type: application/json
+[27-Aug-2025 21:15:18 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 21:15:18 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[27-Aug-2025 21:15:18 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[27-Aug-2025 21:15:18 Europe/Berlin] Password received: jefadiseno
+[27-Aug-2025 21:15:18 Europe/Berlin] DB host: localhost
+[27-Aug-2025 21:15:18 Europe/Berlin] DB user: root
+[27-Aug-2025 21:15:18 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 21:15:18 Europe/Berlin] DB connection successful
+[27-Aug-2025 21:15:18 Europe/Berlin] User found: diseno
+[27-Aug-2025 21:15:18 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[27-Aug-2025 21:15:18 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 21:15:18 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[27-Aug-2025 21:15:18 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 21:15:18 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 21:15:18 Europe/Berlin] ==========================================
+[27-Aug-2025 21:16:08 Europe/Berlin] ==========================================
+[27-Aug-2025 21:16:08 Europe/Berlin] API Login called: 2025-08-27 21:16:08
+[27-Aug-2025 21:16:08 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 21:16:08 Europe/Berlin] Content type: none
+[27-Aug-2025 21:16:08 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 21:16:08 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 21:16:08 Europe/Berlin] ==========================================
+[27-Aug-2025 21:16:08 Europe/Berlin] API Login called: 2025-08-27 21:16:08
+[27-Aug-2025 21:16:08 Europe/Berlin] Request method: POST
+[27-Aug-2025 21:16:08 Europe/Berlin] Content type: application/json
+[27-Aug-2025 21:16:08 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 21:16:08 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 21:16:08 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 21:16:08 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 21:16:08 Europe/Berlin] DB host: localhost
+[27-Aug-2025 21:16:08 Europe/Berlin] DB user: root
+[27-Aug-2025 21:16:08 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 21:16:08 Europe/Berlin] DB connection successful
+[27-Aug-2025 21:16:08 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 21:16:08 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 21:16:08 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 21:16:08 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 21:16:08 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 21:16:08 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 21:16:08 Europe/Berlin] ==========================================
+[27-Aug-2025 21:32:02 Europe/Berlin] ==========================================
+[27-Aug-2025 21:32:02 Europe/Berlin] API Login called: 2025-08-27 21:32:02
+[27-Aug-2025 21:32:02 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 21:32:02 Europe/Berlin] Content type: none
+[27-Aug-2025 21:32:02 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 21:32:02 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 21:32:02 Europe/Berlin] ==========================================
+[27-Aug-2025 21:32:02 Europe/Berlin] API Login called: 2025-08-27 21:32:02
+[27-Aug-2025 21:32:02 Europe/Berlin] Request method: POST
+[27-Aug-2025 21:32:02 Europe/Berlin] Content type: application/json
+[27-Aug-2025 21:32:02 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 21:32:02 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 21:32:02 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 21:32:02 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 21:32:02 Europe/Berlin] DB host: localhost
+[27-Aug-2025 21:32:02 Europe/Berlin] DB user: root
+[27-Aug-2025 21:32:02 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 21:32:02 Europe/Berlin] DB connection successful
+[27-Aug-2025 21:32:02 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 21:32:02 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 21:32:02 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 21:32:02 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 21:32:02 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 21:32:02 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 21:32:02 Europe/Berlin] ==========================================
+[27-Aug-2025 21:54:34 Europe/Berlin] ==========================================
+[27-Aug-2025 21:54:34 Europe/Berlin] API Login called: 2025-08-27 21:54:34
+[27-Aug-2025 21:54:34 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 21:54:34 Europe/Berlin] Content type: none
+[27-Aug-2025 21:54:34 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 21:54:34 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 21:54:34 Europe/Berlin] ==========================================
+[27-Aug-2025 21:54:34 Europe/Berlin] API Login called: 2025-08-27 21:54:34
+[27-Aug-2025 21:54:34 Europe/Berlin] Request method: POST
+[27-Aug-2025 21:54:34 Europe/Berlin] Content type: application/json
+[27-Aug-2025 21:54:34 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 21:54:34 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 21:54:34 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 21:54:34 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 21:54:34 Europe/Berlin] DB host: localhost
+[27-Aug-2025 21:54:34 Europe/Berlin] DB user: root
+[27-Aug-2025 21:54:34 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 21:54:34 Europe/Berlin] DB connection successful
+[27-Aug-2025 21:54:34 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 21:54:34 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 21:54:34 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 21:54:34 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 21:54:34 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 21:54:34 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 21:54:34 Europe/Berlin] ==========================================
+[27-Aug-2025 22:09:00 Europe/Berlin] ==========================================
+[27-Aug-2025 22:09:00 Europe/Berlin] API Login called: 2025-08-27 22:09:00
+[27-Aug-2025 22:09:00 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 22:09:00 Europe/Berlin] Content type: none
+[27-Aug-2025 22:09:00 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:09:00 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 22:09:00 Europe/Berlin] ==========================================
+[27-Aug-2025 22:09:00 Europe/Berlin] API Login called: 2025-08-27 22:09:00
+[27-Aug-2025 22:09:00 Europe/Berlin] Request method: POST
+[27-Aug-2025 22:09:00 Europe/Berlin] Content type: application/json
+[27-Aug-2025 22:09:00 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:09:00 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 22:09:00 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:09:00 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 22:09:00 Europe/Berlin] DB host: localhost
+[27-Aug-2025 22:09:00 Europe/Berlin] DB user: root
+[27-Aug-2025 22:09:00 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 22:09:00 Europe/Berlin] DB connection successful
+[27-Aug-2025 22:09:00 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 22:09:00 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 22:09:00 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 22:09:00 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:09:00 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 22:09:00 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 22:09:00 Europe/Berlin] ==========================================
+[27-Aug-2025 22:20:16 Europe/Berlin] ==========================================
+[27-Aug-2025 22:20:16 Europe/Berlin] API Login called: 2025-08-27 22:20:16
+[27-Aug-2025 22:20:16 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 22:20:16 Europe/Berlin] Content type: none
+[27-Aug-2025 22:20:16 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:20:16 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 22:20:16 Europe/Berlin] ==========================================
+[27-Aug-2025 22:20:16 Europe/Berlin] API Login called: 2025-08-27 22:20:16
+[27-Aug-2025 22:20:16 Europe/Berlin] Request method: POST
+[27-Aug-2025 22:20:16 Europe/Berlin] Content type: application/json
+[27-Aug-2025 22:20:16 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:20:16 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 22:20:16 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:20:16 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 22:20:16 Europe/Berlin] DB host: localhost
+[27-Aug-2025 22:20:16 Europe/Berlin] DB user: root
+[27-Aug-2025 22:20:16 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 22:20:16 Europe/Berlin] DB connection successful
+[27-Aug-2025 22:20:16 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 22:20:16 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 22:20:16 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 22:20:16 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:20:16 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 22:20:16 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 22:20:16 Europe/Berlin] ==========================================
+[27-Aug-2025 22:30:43 Europe/Berlin] ==========================================
+[27-Aug-2025 22:30:43 Europe/Berlin] API Login called: 2025-08-27 22:30:43
+[27-Aug-2025 22:30:43 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 22:30:43 Europe/Berlin] Content type: none
+[27-Aug-2025 22:30:43 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:30:43 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 22:30:43 Europe/Berlin] ==========================================
+[27-Aug-2025 22:30:43 Europe/Berlin] API Login called: 2025-08-27 22:30:43
+[27-Aug-2025 22:30:43 Europe/Berlin] Request method: POST
+[27-Aug-2025 22:30:43 Europe/Berlin] Content type: application/json
+[27-Aug-2025 22:30:43 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:30:43 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 22:30:43 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:30:43 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 22:30:43 Europe/Berlin] DB host: localhost
+[27-Aug-2025 22:30:43 Europe/Berlin] DB user: root
+[27-Aug-2025 22:30:43 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 22:30:43 Europe/Berlin] DB connection successful
+[27-Aug-2025 22:30:43 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 22:30:43 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 22:30:43 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 22:30:43 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:30:43 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 22:30:43 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 22:30:43 Europe/Berlin] ==========================================
+[27-Aug-2025 22:31:59 Europe/Berlin] ==========================================
+[27-Aug-2025 22:31:59 Europe/Berlin] API Login called: 2025-08-27 22:31:59
+[27-Aug-2025 22:31:59 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 22:31:59 Europe/Berlin] Content type: none
+[27-Aug-2025 22:31:59 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:31:59 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 22:31:59 Europe/Berlin] ==========================================
+[27-Aug-2025 22:31:59 Europe/Berlin] API Login called: 2025-08-27 22:31:59
+[27-Aug-2025 22:31:59 Europe/Berlin] Request method: POST
+[27-Aug-2025 22:31:59 Europe/Berlin] Content type: application/json
+[27-Aug-2025 22:31:59 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:31:59 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 22:31:59 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:31:59 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 22:31:59 Europe/Berlin] DB host: localhost
+[27-Aug-2025 22:31:59 Europe/Berlin] DB user: root
+[27-Aug-2025 22:31:59 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 22:31:59 Europe/Berlin] DB connection successful
+[27-Aug-2025 22:31:59 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 22:31:59 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 22:31:59 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 22:31:59 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:31:59 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 22:31:59 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 22:31:59 Europe/Berlin] ==========================================
+[27-Aug-2025 22:32:53 Europe/Berlin] ==========================================
+[27-Aug-2025 22:32:53 Europe/Berlin] API Login called: 2025-08-27 22:32:53
+[27-Aug-2025 22:32:53 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 22:32:53 Europe/Berlin] Content type: none
+[27-Aug-2025 22:32:53 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:32:53 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 22:32:53 Europe/Berlin] ==========================================
+[27-Aug-2025 22:32:53 Europe/Berlin] API Login called: 2025-08-27 22:32:53
+[27-Aug-2025 22:32:53 Europe/Berlin] Request method: POST
+[27-Aug-2025 22:32:53 Europe/Berlin] Content type: application/json
+[27-Aug-2025 22:32:53 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:32:53 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 22:32:53 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:32:53 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 22:32:53 Europe/Berlin] DB host: localhost
+[27-Aug-2025 22:32:53 Europe/Berlin] DB user: root
+[27-Aug-2025 22:32:53 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 22:32:54 Europe/Berlin] DB connection successful
+[27-Aug-2025 22:32:54 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 22:32:54 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 22:32:54 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 22:32:54 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:32:54 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 22:32:54 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 22:32:54 Europe/Berlin] ==========================================
+[27-Aug-2025 22:36:11 Europe/Berlin] ==========================================
+[27-Aug-2025 22:36:11 Europe/Berlin] API Login called: 2025-08-27 22:36:11
+[27-Aug-2025 22:36:11 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 22:36:11 Europe/Berlin] Content type: none
+[27-Aug-2025 22:36:11 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:36:11 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 22:36:11 Europe/Berlin] ==========================================
+[27-Aug-2025 22:36:11 Europe/Berlin] API Login called: 2025-08-27 22:36:11
+[27-Aug-2025 22:36:11 Europe/Berlin] Request method: POST
+[27-Aug-2025 22:36:11 Europe/Berlin] Content type: application/json
+[27-Aug-2025 22:36:11 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:36:11 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 22:36:11 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:36:11 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 22:36:11 Europe/Berlin] DB host: localhost
+[27-Aug-2025 22:36:11 Europe/Berlin] DB user: root
+[27-Aug-2025 22:36:11 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 22:36:11 Europe/Berlin] DB connection successful
+[27-Aug-2025 22:36:11 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 22:36:11 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 22:36:11 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 22:36:11 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:36:11 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 22:36:11 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 22:36:11 Europe/Berlin] ==========================================
+[27-Aug-2025 22:37:15 Europe/Berlin] ==========================================
+[27-Aug-2025 22:37:15 Europe/Berlin] API Login called: 2025-08-27 22:37:15
+[27-Aug-2025 22:37:15 Europe/Berlin] Request method: OPTIONS
+[27-Aug-2025 22:37:15 Europe/Berlin] Content type: none
+[27-Aug-2025 22:37:15 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:37:15 Europe/Berlin] OPTIONS request handled - CORS preflight
+[27-Aug-2025 22:37:15 Europe/Berlin] ==========================================
+[27-Aug-2025 22:37:15 Europe/Berlin] API Login called: 2025-08-27 22:37:15
+[27-Aug-2025 22:37:15 Europe/Berlin] Request method: POST
+[27-Aug-2025 22:37:15 Europe/Berlin] Content type: application/json
+[27-Aug-2025 22:37:15 Europe/Berlin] Remote addr: ::1
+[27-Aug-2025 22:37:15 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[27-Aug-2025 22:37:15 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:37:15 Europe/Berlin] Password received: artesplasticas
+[27-Aug-2025 22:37:15 Europe/Berlin] DB host: localhost
+[27-Aug-2025 22:37:15 Europe/Berlin] DB user: root
+[27-Aug-2025 22:37:15 Europe/Berlin] DB name: contratacion_temporales_b
+[27-Aug-2025 22:37:15 Europe/Berlin] DB connection successful
+[27-Aug-2025 22:37:15 Europe/Berlin] User found: artesplasticas
+[27-Aug-2025 22:37:15 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[27-Aug-2025 22:37:15 Europe/Berlin] Tipo usuario: 3
+[27-Aug-2025 22:37:15 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[27-Aug-2025 22:37:15 Europe/Berlin] Login successful, returning user data
+[27-Aug-2025 22:37:15 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[27-Aug-2025 22:37:15 Europe/Berlin] ==========================================
+[28-Aug-2025 15:21:41 Europe/Berlin] ==========================================
+[28-Aug-2025 15:21:41 Europe/Berlin] API Login called: 2025-08-28 15:21:41
+[28-Aug-2025 15:21:41 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:21:41 Europe/Berlin] Content type: none
+[28-Aug-2025 15:21:41 Europe/Berlin] Remote addr: ::1
+[28-Aug-2025 15:21:41 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:21:41 Europe/Berlin] ==========================================
+[28-Aug-2025 15:21:41 Europe/Berlin] API Login called: 2025-08-28 15:21:41
+[28-Aug-2025 15:21:41 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:21:41 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:21:41 Europe/Berlin] Remote addr: ::1
+[28-Aug-2025 15:21:41 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:21:41 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:21:41 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:21:41 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:21:41 Europe/Berlin] DB user: root
+[28-Aug-2025 15:21:41 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:21:41 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:21:41 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:21:41 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:21:41 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:21:41 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:21:41 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:21:41 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:21:41 Europe/Berlin] ==========================================
+[28-Aug-2025 15:27:12 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:27:12 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:27:12 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:27:12 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:27:12 Europe/Berlin] DB user: root
+[28-Aug-2025 15:27:12 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:27:12 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:27:12 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:27:12 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:27:12 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:27:12 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:27:12 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:27:12 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:27:12 Europe/Berlin] ==========================================
+[28-Aug-2025 15:28:53 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:28:53 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:28:53 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:28:53 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:28:53 Europe/Berlin] DB user: root
+[28-Aug-2025 15:28:53 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:28:53 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:28:53 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:28:53 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:28:53 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:28:53 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:28:53 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:28:53 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:28:53 Europe/Berlin] ==========================================
+[28-Aug-2025 15:29:46 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:29:46 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:29:46 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:29:46 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:29:46 Europe/Berlin] DB user: root
+[28-Aug-2025 15:29:46 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:29:46 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:29:46 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:29:46 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:29:46 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:29:46 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:29:46 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:29:46 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:29:46 Europe/Berlin] ==========================================
+[28-Aug-2025 15:33:12 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:33:12 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:33:12 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:33:12 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:33:12 Europe/Berlin] DB user: root
+[28-Aug-2025 15:33:12 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:33:13 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:33:13 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:33:13 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:33:13 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:33:13 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:33:13 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:33:13 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:33:13 Europe/Berlin] ==========================================
+[28-Aug-2025 15:36:04 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:36:04 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:36:04 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:36:04 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:36:04 Europe/Berlin] DB user: root
+[28-Aug-2025 15:36:04 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:36:04 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:36:04 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:36:04 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:36:04 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:36:04 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:36:04 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:36:04 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:36:04 Europe/Berlin] ==========================================
+[28-Aug-2025 15:36:53 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:36:53 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:36:53 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:36:53 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:36:53 Europe/Berlin] DB user: root
+[28-Aug-2025 15:36:53 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:36:53 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:36:53 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:36:53 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:36:53 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:36:53 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:36:53 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:36:53 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:36:53 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:11 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:11 Europe/Berlin] API Login called: 2025-08-28 15:39:11
+[28-Aug-2025 15:39:11 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:39:11 Europe/Berlin] Content type: none
+[28-Aug-2025 15:39:11 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:39:11 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:39:11 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:11 Europe/Berlin] API Login called: 2025-08-28 15:39:11
+[28-Aug-2025 15:39:11 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:39:11 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:39:11 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:39:11 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:39:11 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:39:11 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:39:11 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:39:11 Europe/Berlin] DB user: root
+[28-Aug-2025 15:39:11 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:39:11 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:39:11 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:39:11 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:39:11 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:39:11 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:39:11 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:39:11 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:39:11 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:30 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:30 Europe/Berlin] API Login called: 2025-08-28 15:39:30
+[28-Aug-2025 15:39:30 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:39:30 Europe/Berlin] Content type: none
+[28-Aug-2025 15:39:30 Europe/Berlin] Remote addr: 10.200.7.5
+[28-Aug-2025 15:39:30 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:39:30 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:30 Europe/Berlin] API Login called: 2025-08-28 15:39:30
+[28-Aug-2025 15:39:30 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:39:30 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:39:30 Europe/Berlin] Remote addr: 10.200.7.5
+[28-Aug-2025 15:39:30 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:39:30 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:39:30 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:39:30 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:39:30 Europe/Berlin] DB user: root
+[28-Aug-2025 15:39:30 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:39:30 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:39:30 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:39:30 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:39:30 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:39:30 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:39:30 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:39:30 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:39:30 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:51 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:51 Europe/Berlin] API Login called: 2025-08-28 15:39:51
+[28-Aug-2025 15:39:51 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:39:51 Europe/Berlin] Content type: none
+[28-Aug-2025 15:39:51 Europe/Berlin] Remote addr: 10.200.7.5
+[28-Aug-2025 15:39:51 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:39:51 Europe/Berlin] ==========================================
+[28-Aug-2025 15:39:51 Europe/Berlin] API Login called: 2025-08-28 15:39:51
+[28-Aug-2025 15:39:51 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:39:51 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:39:51 Europe/Berlin] Remote addr: 10.200.7.5
+[28-Aug-2025 15:39:51 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 15:39:51 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 15:39:51 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 15:39:51 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:39:51 Europe/Berlin] DB user: root
+[28-Aug-2025 15:39:51 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:39:51 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:39:51 Europe/Berlin] User found: diseno
+[28-Aug-2025 15:39:51 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 15:39:51 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:39:51 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 15:39:51 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:39:51 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:39:51 Europe/Berlin] ==========================================
+[28-Aug-2025 15:41:39 Europe/Berlin] ==========================================
+[28-Aug-2025 15:41:39 Europe/Berlin] API Login called: 2025-08-28 15:41:39
+[28-Aug-2025 15:41:39 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:41:39 Europe/Berlin] Content type: none
+[28-Aug-2025 15:41:39 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:41:39 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:41:39 Europe/Berlin] ==========================================
+[28-Aug-2025 15:41:39 Europe/Berlin] API Login called: 2025-08-28 15:41:39
+[28-Aug-2025 15:41:39 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:41:39 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:41:39 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:41:39 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:41:39 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:41:39 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:41:39 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:41:39 Europe/Berlin] DB user: root
+[28-Aug-2025 15:41:39 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:41:39 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:41:39 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:41:39 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:41:39 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:41:39 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:41:39 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:41:39 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:41:39 Europe/Berlin] ==========================================
+[28-Aug-2025 15:43:15 Europe/Berlin] ==========================================
+[28-Aug-2025 15:43:15 Europe/Berlin] API Login called: 2025-08-28 15:43:15
+[28-Aug-2025 15:43:15 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:43:15 Europe/Berlin] Content type: none
+[28-Aug-2025 15:43:15 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:43:15 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:43:15 Europe/Berlin] ==========================================
+[28-Aug-2025 15:43:15 Europe/Berlin] API Login called: 2025-08-28 15:43:15
+[28-Aug-2025 15:43:15 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:43:15 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:43:15 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:43:15 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:43:15 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:43:15 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:43:15 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:43:15 Europe/Berlin] DB user: root
+[28-Aug-2025 15:43:15 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:43:15 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:43:15 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:43:15 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:43:15 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:43:15 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:43:15 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:43:15 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:43:15 Europe/Berlin] ==========================================
+[28-Aug-2025 15:45:58 Europe/Berlin] ==========================================
+[28-Aug-2025 15:45:58 Europe/Berlin] API Login called: 2025-08-28 15:45:58
+[28-Aug-2025 15:45:58 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:45:58 Europe/Berlin] Content type: none
+[28-Aug-2025 15:45:58 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:45:58 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:45:58 Europe/Berlin] ==========================================
+[28-Aug-2025 15:45:58 Europe/Berlin] API Login called: 2025-08-28 15:45:58
+[28-Aug-2025 15:45:58 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:45:58 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:45:58 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:45:58 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:45:58 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:45:58 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:45:58 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:45:58 Europe/Berlin] DB user: root
+[28-Aug-2025 15:45:58 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:45:58 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:45:58 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:45:58 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:45:58 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:45:58 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:45:58 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:45:58 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:45:58 Europe/Berlin] ==========================================
+[28-Aug-2025 15:47:20 Europe/Berlin] ==========================================
+[28-Aug-2025 15:47:20 Europe/Berlin] API Login called: 2025-08-28 15:47:20
+[28-Aug-2025 15:47:20 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:47:20 Europe/Berlin] Content type: none
+[28-Aug-2025 15:47:20 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:47:20 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:47:20 Europe/Berlin] ==========================================
+[28-Aug-2025 15:47:20 Europe/Berlin] API Login called: 2025-08-28 15:47:20
+[28-Aug-2025 15:47:20 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:47:20 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:47:20 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:47:20 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 15:47:20 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 15:47:20 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 15:47:20 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:47:20 Europe/Berlin] DB user: root
+[28-Aug-2025 15:47:20 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:47:20 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:47:20 Europe/Berlin] User found: diseno
+[28-Aug-2025 15:47:20 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 15:47:20 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:47:20 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 15:47:20 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:47:20 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:47:20 Europe/Berlin] ==========================================
+[28-Aug-2025 15:47:47 Europe/Berlin] ==========================================
+[28-Aug-2025 15:47:47 Europe/Berlin] API Login called: 2025-08-28 15:47:47
+[28-Aug-2025 15:47:47 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 15:47:47 Europe/Berlin] Content type: none
+[28-Aug-2025 15:47:47 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:47:47 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 15:47:47 Europe/Berlin] ==========================================
+[28-Aug-2025 15:47:47 Europe/Berlin] API Login called: 2025-08-28 15:47:47
+[28-Aug-2025 15:47:47 Europe/Berlin] Request method: POST
+[28-Aug-2025 15:47:47 Europe/Berlin] Content type: application/json
+[28-Aug-2025 15:47:47 Europe/Berlin] Remote addr: 10.200.7.6
+[28-Aug-2025 15:47:47 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 15:47:47 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:47:47 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 15:47:47 Europe/Berlin] DB host: localhost
+[28-Aug-2025 15:47:47 Europe/Berlin] DB user: root
+[28-Aug-2025 15:47:47 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 15:47:47 Europe/Berlin] DB connection successful
+[28-Aug-2025 15:47:47 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 15:47:47 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 15:47:47 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 15:47:47 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 15:47:47 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 15:47:47 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 15:47:47 Europe/Berlin] ==========================================
+[28-Aug-2025 15:55:30 Europe/Berlin] ==========================================
+[28-Aug-2025 15:55:30 Europe/Berlin] API Login called: 2025-08-28 15:55:30
+[28-Aug-2025 15:55:30 Europe/Berlin] Request method: GET
+[28-Aug-2025 15:55:30 Europe/Berlin] Content type: none
+[28-Aug-2025 15:55:30 Europe/Berlin] Remote addr: ::1
+[28-Aug-2025 15:55:30 Europe/Berlin] Invalid method: GET
+[28-Aug-2025 16:19:56 Europe/Berlin] ==========================================
+[28-Aug-2025 16:19:56 Europe/Berlin] API Login called: 2025-08-28 16:19:56
+[28-Aug-2025 16:19:56 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 16:19:56 Europe/Berlin] Content type: none
+[28-Aug-2025 16:19:56 Europe/Berlin] Remote addr: 10.200.7.7
+[28-Aug-2025 16:19:56 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 16:19:56 Europe/Berlin] ==========================================
+[28-Aug-2025 16:19:56 Europe/Berlin] API Login called: 2025-08-28 16:19:56
+[28-Aug-2025 16:19:56 Europe/Berlin] Request method: POST
+[28-Aug-2025 16:19:56 Europe/Berlin] Content type: application/json
+[28-Aug-2025 16:19:56 Europe/Berlin] Remote addr: 10.200.7.7
+[28-Aug-2025 16:19:56 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 16:19:56 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 16:19:56 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 16:19:56 Europe/Berlin] DB host: localhost
+[28-Aug-2025 16:19:56 Europe/Berlin] DB user: root
+[28-Aug-2025 16:19:56 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 16:19:56 Europe/Berlin] DB connection successful
+[28-Aug-2025 16:19:56 Europe/Berlin] User found: diseno
+[28-Aug-2025 16:19:56 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 16:19:56 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 16:19:56 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 16:19:56 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 16:19:56 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 16:19:56 Europe/Berlin] ==========================================
+[28-Aug-2025 16:48:21 Europe/Berlin] ==========================================
+[28-Aug-2025 16:48:21 Europe/Berlin] API Login called: 2025-08-28 16:48:21
+[28-Aug-2025 16:48:21 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 16:48:21 Europe/Berlin] Content type: none
+[28-Aug-2025 16:48:21 Europe/Berlin] Remote addr: 10.200.7.8
+[28-Aug-2025 16:48:21 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 16:48:21 Europe/Berlin] ==========================================
+[28-Aug-2025 16:48:21 Europe/Berlin] API Login called: 2025-08-28 16:48:21
+[28-Aug-2025 16:48:21 Europe/Berlin] Request method: POST
+[28-Aug-2025 16:48:21 Europe/Berlin] Content type: application/json
+[28-Aug-2025 16:48:21 Europe/Berlin] Remote addr: 10.200.7.8
+[28-Aug-2025 16:48:21 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 16:48:21 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 16:48:21 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 16:48:21 Europe/Berlin] DB host: localhost
+[28-Aug-2025 16:48:21 Europe/Berlin] DB user: root
+[28-Aug-2025 16:48:21 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 16:48:21 Europe/Berlin] DB connection successful
+[28-Aug-2025 16:48:21 Europe/Berlin] User found: diseno
+[28-Aug-2025 16:48:21 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 16:48:21 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 16:48:21 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 16:48:21 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 16:48:21 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 16:48:21 Europe/Berlin] ==========================================
+[28-Aug-2025 17:35:37 Europe/Berlin] ==========================================
+[28-Aug-2025 17:35:37 Europe/Berlin] API Login called: 2025-08-28 17:35:37
+[28-Aug-2025 17:35:37 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 17:35:37 Europe/Berlin] Content type: none
+[28-Aug-2025 17:35:37 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:35:37 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 17:35:37 Europe/Berlin] ==========================================
+[28-Aug-2025 17:35:37 Europe/Berlin] API Login called: 2025-08-28 17:35:37
+[28-Aug-2025 17:35:37 Europe/Berlin] Request method: POST
+[28-Aug-2025 17:35:37 Europe/Berlin] Content type: application/json
+[28-Aug-2025 17:35:37 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:35:37 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 17:35:37 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:35:37 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 17:35:37 Europe/Berlin] DB host: localhost
+[28-Aug-2025 17:35:37 Europe/Berlin] DB user: root
+[28-Aug-2025 17:35:37 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 17:35:37 Europe/Berlin] DB connection successful
+[28-Aug-2025 17:35:37 Europe/Berlin] User found: diseno
+[28-Aug-2025 17:35:37 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 17:35:37 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 17:35:37 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:35:37 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 17:35:37 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 17:35:37 Europe/Berlin] ==========================================
+[28-Aug-2025 17:35:46 Europe/Berlin] ==========================================
+[28-Aug-2025 17:35:46 Europe/Berlin] API Login called: 2025-08-28 17:35:46
+[28-Aug-2025 17:35:46 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 17:35:46 Europe/Berlin] Content type: none
+[28-Aug-2025 17:35:46 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:35:46 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 17:35:46 Europe/Berlin] ==========================================
+[28-Aug-2025 17:35:46 Europe/Berlin] API Login called: 2025-08-28 17:35:46
+[28-Aug-2025 17:35:46 Europe/Berlin] Request method: POST
+[28-Aug-2025 17:35:46 Europe/Berlin] Content type: application/json
+[28-Aug-2025 17:35:46 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:35:46 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 17:35:46 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:35:46 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 17:35:46 Europe/Berlin] DB host: localhost
+[28-Aug-2025 17:35:46 Europe/Berlin] DB user: root
+[28-Aug-2025 17:35:46 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 17:35:46 Europe/Berlin] DB connection successful
+[28-Aug-2025 17:35:46 Europe/Berlin] User found: diseno
+[28-Aug-2025 17:35:46 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 17:35:46 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 17:35:46 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:35:46 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 17:35:46 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 17:35:46 Europe/Berlin] ==========================================
+[28-Aug-2025 17:36:21 Europe/Berlin] ==========================================
+[28-Aug-2025 17:36:21 Europe/Berlin] API Login called: 2025-08-28 17:36:21
+[28-Aug-2025 17:36:21 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 17:36:21 Europe/Berlin] Content type: none
+[28-Aug-2025 17:36:21 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:36:21 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 17:36:21 Europe/Berlin] ==========================================
+[28-Aug-2025 17:36:21 Europe/Berlin] API Login called: 2025-08-28 17:36:21
+[28-Aug-2025 17:36:21 Europe/Berlin] Request method: POST
+[28-Aug-2025 17:36:21 Europe/Berlin] Content type: application/json
+[28-Aug-2025 17:36:21 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:36:21 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 17:36:21 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:36:21 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 17:36:21 Europe/Berlin] DB host: localhost
+[28-Aug-2025 17:36:21 Europe/Berlin] DB user: root
+[28-Aug-2025 17:36:21 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 17:36:21 Europe/Berlin] DB connection successful
+[28-Aug-2025 17:36:21 Europe/Berlin] User found: diseno
+[28-Aug-2025 17:36:21 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 17:36:21 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 17:36:21 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:36:21 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 17:36:21 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 17:36:21 Europe/Berlin] ==========================================
+[28-Aug-2025 17:36:24 Europe/Berlin] ==========================================
+[28-Aug-2025 17:36:24 Europe/Berlin] API Login called: 2025-08-28 17:36:24
+[28-Aug-2025 17:36:24 Europe/Berlin] Request method: POST
+[28-Aug-2025 17:36:24 Europe/Berlin] Content type: application/json
+[28-Aug-2025 17:36:24 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:36:24 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 17:36:24 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:36:24 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 17:36:24 Europe/Berlin] DB host: localhost
+[28-Aug-2025 17:36:24 Europe/Berlin] DB user: root
+[28-Aug-2025 17:36:24 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 17:36:24 Europe/Berlin] DB connection successful
+[28-Aug-2025 17:36:24 Europe/Berlin] User found: diseno
+[28-Aug-2025 17:36:24 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 17:36:24 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 17:36:24 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:36:24 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 17:36:24 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 17:36:24 Europe/Berlin] ==========================================
+[28-Aug-2025 17:36:52 Europe/Berlin] ==========================================
+[28-Aug-2025 17:36:52 Europe/Berlin] API Login called: 2025-08-28 17:36:52
+[28-Aug-2025 17:36:52 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 17:36:52 Europe/Berlin] Content type: none
+[28-Aug-2025 17:36:52 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:36:52 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 17:36:52 Europe/Berlin] ==========================================
+[28-Aug-2025 17:36:52 Europe/Berlin] API Login called: 2025-08-28 17:36:52
+[28-Aug-2025 17:36:52 Europe/Berlin] Request method: POST
+[28-Aug-2025 17:36:52 Europe/Berlin] Content type: application/json
+[28-Aug-2025 17:36:52 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 17:36:52 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 17:36:52 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:36:52 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 17:36:52 Europe/Berlin] DB host: localhost
+[28-Aug-2025 17:36:52 Europe/Berlin] DB user: root
+[28-Aug-2025 17:36:52 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 17:36:52 Europe/Berlin] DB connection successful
+[28-Aug-2025 17:36:52 Europe/Berlin] User found: diseno
+[28-Aug-2025 17:36:52 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 17:36:52 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 17:36:52 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 17:36:52 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 17:36:52 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 17:36:52 Europe/Berlin] ==========================================
+[28-Aug-2025 18:52:30 Europe/Berlin] ==========================================
+[28-Aug-2025 18:52:30 Europe/Berlin] API Login called: 2025-08-28 18:52:30
+[28-Aug-2025 18:52:30 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 18:52:30 Europe/Berlin] Content type: none
+[28-Aug-2025 18:52:30 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 18:52:30 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 18:52:30 Europe/Berlin] ==========================================
+[28-Aug-2025 18:52:30 Europe/Berlin] API Login called: 2025-08-28 18:52:30
+[28-Aug-2025 18:52:30 Europe/Berlin] Request method: POST
+[28-Aug-2025 18:52:30 Europe/Berlin] Content type: application/json
+[28-Aug-2025 18:52:30 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 18:52:30 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 18:52:30 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 18:52:30 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 18:52:30 Europe/Berlin] DB host: localhost
+[28-Aug-2025 18:52:30 Europe/Berlin] DB user: root
+[28-Aug-2025 18:52:30 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 18:52:30 Europe/Berlin] DB connection successful
+[28-Aug-2025 18:52:30 Europe/Berlin] User found: diseno
+[28-Aug-2025 18:52:30 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 18:52:30 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 18:52:30 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 18:52:30 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 18:52:30 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 18:52:30 Europe/Berlin] ==========================================
+[28-Aug-2025 21:20:33 Europe/Berlin] ==========================================
+[28-Aug-2025 21:20:33 Europe/Berlin] API Login called: 2025-08-28 21:20:33
+[28-Aug-2025 21:20:33 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 21:20:33 Europe/Berlin] Content type: none
+[28-Aug-2025 21:20:33 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:20:33 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 21:20:33 Europe/Berlin] ==========================================
+[28-Aug-2025 21:20:33 Europe/Berlin] API Login called: 2025-08-28 21:20:33
+[28-Aug-2025 21:20:33 Europe/Berlin] Request method: POST
+[28-Aug-2025 21:20:33 Europe/Berlin] Content type: application/json
+[28-Aug-2025 21:20:33 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:20:33 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 21:20:33 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:20:33 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 21:20:33 Europe/Berlin] DB host: localhost
+[28-Aug-2025 21:20:33 Europe/Berlin] DB user: root
+[28-Aug-2025 21:20:33 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 21:20:33 Europe/Berlin] DB connection successful
+[28-Aug-2025 21:20:33 Europe/Berlin] User found: diseno
+[28-Aug-2025 21:20:33 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 21:20:33 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 21:20:33 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:20:33 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 21:20:33 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 21:20:33 Europe/Berlin] ==========================================
+[28-Aug-2025 21:20:59 Europe/Berlin] ==========================================
+[28-Aug-2025 21:20:59 Europe/Berlin] API Login called: 2025-08-28 21:20:59
+[28-Aug-2025 21:20:59 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 21:20:59 Europe/Berlin] Content type: none
+[28-Aug-2025 21:20:59 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:20:59 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 21:20:59 Europe/Berlin] ==========================================
+[28-Aug-2025 21:20:59 Europe/Berlin] API Login called: 2025-08-28 21:20:59
+[28-Aug-2025 21:20:59 Europe/Berlin] Request method: POST
+[28-Aug-2025 21:20:59 Europe/Berlin] Content type: application/json
+[28-Aug-2025 21:20:59 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:20:59 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 21:20:59 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:20:59 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 21:20:59 Europe/Berlin] DB host: localhost
+[28-Aug-2025 21:20:59 Europe/Berlin] DB user: root
+[28-Aug-2025 21:20:59 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 21:20:59 Europe/Berlin] DB connection successful
+[28-Aug-2025 21:20:59 Europe/Berlin] User found: diseno
+[28-Aug-2025 21:20:59 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 21:20:59 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 21:20:59 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:20:59 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 21:20:59 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 21:20:59 Europe/Berlin] ==========================================
+[28-Aug-2025 21:24:35 Europe/Berlin] ==========================================
+[28-Aug-2025 21:24:35 Europe/Berlin] API Login called: 2025-08-28 21:24:35
+[28-Aug-2025 21:24:35 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 21:24:35 Europe/Berlin] Content type: none
+[28-Aug-2025 21:24:35 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:24:35 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 21:24:35 Europe/Berlin] ==========================================
+[28-Aug-2025 21:24:35 Europe/Berlin] API Login called: 2025-08-28 21:24:35
+[28-Aug-2025 21:24:35 Europe/Berlin] Request method: POST
+[28-Aug-2025 21:24:35 Europe/Berlin] Content type: application/json
+[28-Aug-2025 21:24:35 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:24:35 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 21:24:35 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:24:35 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 21:24:35 Europe/Berlin] DB host: localhost
+[28-Aug-2025 21:24:35 Europe/Berlin] DB user: root
+[28-Aug-2025 21:24:35 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 21:24:35 Europe/Berlin] DB connection successful
+[28-Aug-2025 21:24:35 Europe/Berlin] User found: diseno
+[28-Aug-2025 21:24:35 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 21:24:35 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 21:24:35 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:24:36 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 21:24:36 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 21:24:36 Europe/Berlin] ==========================================
+[28-Aug-2025 21:26:45 Europe/Berlin] ==========================================
+[28-Aug-2025 21:26:45 Europe/Berlin] API Login called: 2025-08-28 21:26:45
+[28-Aug-2025 21:26:45 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 21:26:45 Europe/Berlin] Content type: none
+[28-Aug-2025 21:26:45 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:26:45 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 21:26:45 Europe/Berlin] ==========================================
+[28-Aug-2025 21:26:45 Europe/Berlin] API Login called: 2025-08-28 21:26:45
+[28-Aug-2025 21:26:45 Europe/Berlin] Request method: POST
+[28-Aug-2025 21:26:45 Europe/Berlin] Content type: application/json
+[28-Aug-2025 21:26:45 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:26:45 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 21:26:45 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:26:45 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 21:26:45 Europe/Berlin] DB host: localhost
+[28-Aug-2025 21:26:45 Europe/Berlin] DB user: root
+[28-Aug-2025 21:26:45 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 21:26:45 Europe/Berlin] DB connection successful
+[28-Aug-2025 21:26:45 Europe/Berlin] User found: diseno
+[28-Aug-2025 21:26:45 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 21:26:45 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 21:26:45 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:26:45 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 21:26:45 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 21:26:45 Europe/Berlin] ==========================================
+[28-Aug-2025 21:29:56 Europe/Berlin] ==========================================
+[28-Aug-2025 21:29:56 Europe/Berlin] API Login called: 2025-08-28 21:29:56
+[28-Aug-2025 21:29:56 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 21:29:56 Europe/Berlin] Content type: none
+[28-Aug-2025 21:29:56 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:29:56 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 21:29:56 Europe/Berlin] ==========================================
+[28-Aug-2025 21:29:56 Europe/Berlin] API Login called: 2025-08-28 21:29:56
+[28-Aug-2025 21:29:56 Europe/Berlin] Request method: POST
+[28-Aug-2025 21:29:56 Europe/Berlin] Content type: application/json
+[28-Aug-2025 21:29:56 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:29:56 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 21:29:56 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:29:56 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 21:29:56 Europe/Berlin] DB host: localhost
+[28-Aug-2025 21:29:56 Europe/Berlin] DB user: root
+[28-Aug-2025 21:29:56 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 21:29:56 Europe/Berlin] DB connection successful
+[28-Aug-2025 21:29:56 Europe/Berlin] User found: diseno
+[28-Aug-2025 21:29:56 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 21:29:56 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 21:29:56 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:29:56 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 21:29:56 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 21:29:56 Europe/Berlin] ==========================================
+[28-Aug-2025 21:57:56 Europe/Berlin] ==========================================
+[28-Aug-2025 21:57:56 Europe/Berlin] API Login called: 2025-08-28 21:57:56
+[28-Aug-2025 21:57:56 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 21:57:56 Europe/Berlin] Content type: none
+[28-Aug-2025 21:57:56 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:57:56 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 21:57:56 Europe/Berlin] ==========================================
+[28-Aug-2025 21:57:56 Europe/Berlin] API Login called: 2025-08-28 21:57:56
+[28-Aug-2025 21:57:56 Europe/Berlin] Request method: POST
+[28-Aug-2025 21:57:56 Europe/Berlin] Content type: application/json
+[28-Aug-2025 21:57:56 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 21:57:56 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 21:57:56 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:57:56 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 21:57:56 Europe/Berlin] DB host: localhost
+[28-Aug-2025 21:57:56 Europe/Berlin] DB user: root
+[28-Aug-2025 21:57:56 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 21:57:56 Europe/Berlin] DB connection successful
+[28-Aug-2025 21:57:56 Europe/Berlin] User found: diseno
+[28-Aug-2025 21:57:56 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 21:57:56 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 21:57:56 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 21:57:56 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 21:57:56 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 21:57:56 Europe/Berlin] ==========================================
+[28-Aug-2025 22:09:08 Europe/Berlin] ==========================================
+[28-Aug-2025 22:09:08 Europe/Berlin] API Login called: 2025-08-28 22:09:08
+[28-Aug-2025 22:09:08 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 22:09:08 Europe/Berlin] Content type: none
+[28-Aug-2025 22:09:08 Europe/Berlin] Remote addr: 10.200.7.5
+[28-Aug-2025 22:09:08 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 22:09:08 Europe/Berlin] ==========================================
+[28-Aug-2025 22:09:08 Europe/Berlin] API Login called: 2025-08-28 22:09:08
+[28-Aug-2025 22:09:08 Europe/Berlin] Request method: POST
+[28-Aug-2025 22:09:08 Europe/Berlin] Content type: application/json
+[28-Aug-2025 22:09:08 Europe/Berlin] Remote addr: 10.200.7.5
+[28-Aug-2025 22:09:08 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 22:09:08 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 22:09:08 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 22:09:08 Europe/Berlin] DB host: localhost
+[28-Aug-2025 22:09:08 Europe/Berlin] DB user: root
+[28-Aug-2025 22:09:08 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 22:09:08 Europe/Berlin] DB connection successful
+[28-Aug-2025 22:09:08 Europe/Berlin] User found: diseno
+[28-Aug-2025 22:09:08 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 22:09:08 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 22:09:08 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 22:09:08 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 22:09:08 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 22:09:08 Europe/Berlin] ==========================================
+[28-Aug-2025 22:10:22 Europe/Berlin] ==========================================
+[28-Aug-2025 22:10:22 Europe/Berlin] API Login called: 2025-08-28 22:10:22
+[28-Aug-2025 22:10:22 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 22:10:22 Europe/Berlin] Content type: none
+[28-Aug-2025 22:10:22 Europe/Berlin] Remote addr: 10.200.7.5
+[28-Aug-2025 22:10:22 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 22:10:22 Europe/Berlin] ==========================================
+[28-Aug-2025 22:10:22 Europe/Berlin] API Login called: 2025-08-28 22:10:22
+[28-Aug-2025 22:10:22 Europe/Berlin] Request method: POST
+[28-Aug-2025 22:10:22 Europe/Berlin] Content type: application/json
+[28-Aug-2025 22:10:22 Europe/Berlin] Remote addr: 10.200.7.5
+[28-Aug-2025 22:10:22 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 22:10:22 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 22:10:22 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 22:10:22 Europe/Berlin] DB host: localhost
+[28-Aug-2025 22:10:22 Europe/Berlin] DB user: root
+[28-Aug-2025 22:10:22 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 22:10:22 Europe/Berlin] DB connection successful
+[28-Aug-2025 22:10:22 Europe/Berlin] User found: diseno
+[28-Aug-2025 22:10:22 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 22:10:22 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 22:10:22 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 22:10:22 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 22:10:22 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 22:10:22 Europe/Berlin] ==========================================
+[28-Aug-2025 23:40:22 Europe/Berlin] ==========================================
+[28-Aug-2025 23:40:22 Europe/Berlin] API Login called: 2025-08-28 23:40:22
+[28-Aug-2025 23:40:22 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 23:40:22 Europe/Berlin] Content type: none
+[28-Aug-2025 23:40:22 Europe/Berlin] Remote addr: 10.200.7.8
+[28-Aug-2025 23:40:22 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 23:40:22 Europe/Berlin] ==========================================
+[28-Aug-2025 23:40:22 Europe/Berlin] API Login called: 2025-08-28 23:40:22
+[28-Aug-2025 23:40:22 Europe/Berlin] Request method: POST
+[28-Aug-2025 23:40:22 Europe/Berlin] Content type: application/json
+[28-Aug-2025 23:40:22 Europe/Berlin] Remote addr: 10.200.7.8
+[28-Aug-2025 23:40:22 Europe/Berlin] Raw input: {"email":"artesplasticas@unicauca.edu.co","password":"artesplasticas"}
+[28-Aug-2025 23:40:22 Europe/Berlin] Email: artesplasticas@unicauca.edu.co
+[28-Aug-2025 23:40:22 Europe/Berlin] Password received: artesplasticas
+[28-Aug-2025 23:40:22 Europe/Berlin] DB host: localhost
+[28-Aug-2025 23:40:22 Europe/Berlin] DB user: root
+[28-Aug-2025 23:40:22 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 23:40:22 Europe/Berlin] DB connection successful
+[28-Aug-2025 23:40:23 Europe/Berlin] User found: artesplasticas
+[28-Aug-2025 23:40:23 Europe/Berlin] Hash from DB: $2y$10$57cEXlI8l3dDEuLoFHiDn.TDd0vJpWR2v1EnXlIjdBEEE21UJNGs.
+[28-Aug-2025 23:40:23 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 23:40:23 Europe/Berlin] Password verification SUCCESSFUL for: artesplasticas@unicauca.edu.co
+[28-Aug-2025 23:40:23 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 23:40:23 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 21
+            [Name] => artesplasticas
+            [Email] => artesplasticas@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 1
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => DUBERNEY MARIN MARIN
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 23:40:23 Europe/Berlin] ==========================================
+[28-Aug-2025 23:54:16 Europe/Berlin] ==========================================
+[28-Aug-2025 23:54:16 Europe/Berlin] API Login called: 2025-08-28 23:54:16
+[28-Aug-2025 23:54:16 Europe/Berlin] Request method: OPTIONS
+[28-Aug-2025 23:54:16 Europe/Berlin] Content type: none
+[28-Aug-2025 23:54:16 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 23:54:16 Europe/Berlin] OPTIONS request handled - CORS preflight
+[28-Aug-2025 23:54:16 Europe/Berlin] ==========================================
+[28-Aug-2025 23:54:16 Europe/Berlin] API Login called: 2025-08-28 23:54:16
+[28-Aug-2025 23:54:16 Europe/Berlin] Request method: POST
+[28-Aug-2025 23:54:16 Europe/Berlin] Content type: application/json
+[28-Aug-2025 23:54:16 Europe/Berlin] Remote addr: 10.200.7.4
+[28-Aug-2025 23:54:16 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[28-Aug-2025 23:54:16 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[28-Aug-2025 23:54:16 Europe/Berlin] Password received: jefadiseno
+[28-Aug-2025 23:54:16 Europe/Berlin] DB host: localhost
+[28-Aug-2025 23:54:16 Europe/Berlin] DB user: root
+[28-Aug-2025 23:54:16 Europe/Berlin] DB name: contratacion_temporales_b
+[28-Aug-2025 23:54:16 Europe/Berlin] DB connection successful
+[28-Aug-2025 23:54:16 Europe/Berlin] User found: diseno
+[28-Aug-2025 23:54:16 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[28-Aug-2025 23:54:16 Europe/Berlin] Tipo usuario: 3
+[28-Aug-2025 23:54:16 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[28-Aug-2025 23:54:16 Europe/Berlin] Login successful, returning user data
+[28-Aug-2025 23:54:16 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[28-Aug-2025 23:54:16 Europe/Berlin] ==========================================
+[29-Aug-2025 15:36:29 Europe/Berlin] ==========================================
+[29-Aug-2025 15:36:29 Europe/Berlin] API Login called: 2025-08-29 15:36:29
+[29-Aug-2025 15:36:29 Europe/Berlin] Request method: OPTIONS
+[29-Aug-2025 15:36:29 Europe/Berlin] Content type: none
+[29-Aug-2025 15:36:29 Europe/Berlin] Remote addr: 10.200.7.7
+[29-Aug-2025 15:36:29 Europe/Berlin] OPTIONS request handled - CORS preflight
+[29-Aug-2025 15:36:29 Europe/Berlin] ==========================================
+[29-Aug-2025 15:36:29 Europe/Berlin] API Login called: 2025-08-29 15:36:29
+[29-Aug-2025 15:36:29 Europe/Berlin] Request method: POST
+[29-Aug-2025 15:36:29 Europe/Berlin] Content type: application/json
+[29-Aug-2025 15:36:29 Europe/Berlin] Remote addr: 10.200.7.7
+[29-Aug-2025 15:36:29 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[29-Aug-2025 15:36:29 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[29-Aug-2025 15:36:29 Europe/Berlin] Password received: jefadiseno
+[29-Aug-2025 15:36:29 Europe/Berlin] DB host: localhost
+[29-Aug-2025 15:36:29 Europe/Berlin] DB user: root
+[29-Aug-2025 15:36:29 Europe/Berlin] DB name: contratacion_temporales_b
+[29-Aug-2025 15:36:29 Europe/Berlin] DB connection successful
+[29-Aug-2025 15:36:29 Europe/Berlin] User found: diseno
+[29-Aug-2025 15:36:29 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[29-Aug-2025 15:36:30 Europe/Berlin] Tipo usuario: 3
+[29-Aug-2025 15:36:30 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[29-Aug-2025 15:36:30 Europe/Berlin] Login successful, returning user data
+[29-Aug-2025 15:36:30 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[29-Aug-2025 15:36:30 Europe/Berlin] ==========================================
+[29-Aug-2025 15:54:37 Europe/Berlin] ==========================================
+[29-Aug-2025 15:54:37 Europe/Berlin] API Login called: 2025-08-29 15:54:37
+[29-Aug-2025 15:54:37 Europe/Berlin] Request method: OPTIONS
+[29-Aug-2025 15:54:37 Europe/Berlin] Content type: none
+[29-Aug-2025 15:54:37 Europe/Berlin] Remote addr: 10.200.7.7
+[29-Aug-2025 15:54:37 Europe/Berlin] OPTIONS request handled - CORS preflight
+[29-Aug-2025 15:54:37 Europe/Berlin] ==========================================
+[29-Aug-2025 15:54:37 Europe/Berlin] API Login called: 2025-08-29 15:54:37
+[29-Aug-2025 15:54:37 Europe/Berlin] Request method: POST
+[29-Aug-2025 15:54:37 Europe/Berlin] Content type: application/json
+[29-Aug-2025 15:54:37 Europe/Berlin] Remote addr: 10.200.7.7
+[29-Aug-2025 15:54:37 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[29-Aug-2025 15:54:37 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[29-Aug-2025 15:54:37 Europe/Berlin] Password received: jefadiseno
+[29-Aug-2025 15:54:37 Europe/Berlin] DB host: localhost
+[29-Aug-2025 15:54:37 Europe/Berlin] DB user: root
+[29-Aug-2025 15:54:37 Europe/Berlin] DB name: contratacion_temporales_b
+[29-Aug-2025 15:54:37 Europe/Berlin] DB connection successful
+[29-Aug-2025 15:54:37 Europe/Berlin] User found: diseno
+[29-Aug-2025 15:54:37 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[29-Aug-2025 15:54:37 Europe/Berlin] Tipo usuario: 3
+[29-Aug-2025 15:54:37 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[29-Aug-2025 15:54:37 Europe/Berlin] Login successful, returning user data
+[29-Aug-2025 15:54:37 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[29-Aug-2025 15:54:37 Europe/Berlin] ==========================================
+[29-Aug-2025 16:01:43 Europe/Berlin] ==========================================
+[29-Aug-2025 16:01:43 Europe/Berlin] API Login called: 2025-08-29 16:01:43
+[29-Aug-2025 16:01:43 Europe/Berlin] Request method: OPTIONS
+[29-Aug-2025 16:01:43 Europe/Berlin] Content type: none
+[29-Aug-2025 16:01:43 Europe/Berlin] Remote addr: 10.200.7.7
+[29-Aug-2025 16:01:43 Europe/Berlin] OPTIONS request handled - CORS preflight
+[29-Aug-2025 16:01:43 Europe/Berlin] ==========================================
+[29-Aug-2025 16:01:43 Europe/Berlin] API Login called: 2025-08-29 16:01:43
+[29-Aug-2025 16:01:43 Europe/Berlin] Request method: POST
+[29-Aug-2025 16:01:43 Europe/Berlin] Content type: application/json
+[29-Aug-2025 16:01:43 Europe/Berlin] Remote addr: 10.200.7.7
+[29-Aug-2025 16:01:43 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[29-Aug-2025 16:01:43 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[29-Aug-2025 16:01:43 Europe/Berlin] Password received: jefadiseno
+[29-Aug-2025 16:01:43 Europe/Berlin] DB host: localhost
+[29-Aug-2025 16:01:43 Europe/Berlin] DB user: root
+[29-Aug-2025 16:01:43 Europe/Berlin] DB name: contratacion_temporales_b
+[29-Aug-2025 16:01:43 Europe/Berlin] DB connection successful
+[29-Aug-2025 16:01:43 Europe/Berlin] User found: diseno
+[29-Aug-2025 16:01:43 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[29-Aug-2025 16:01:43 Europe/Berlin] Tipo usuario: 3
+[29-Aug-2025 16:01:43 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[29-Aug-2025 16:01:43 Europe/Berlin] Login successful, returning user data
+[29-Aug-2025 16:01:43 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[29-Aug-2025 16:01:43 Europe/Berlin] ==========================================
+[30-Aug-2025 00:08:48 Europe/Berlin] ==========================================
+[30-Aug-2025 00:08:48 Europe/Berlin] API Login called: 2025-08-30 00:08:48
+[30-Aug-2025 00:08:48 Europe/Berlin] Request method: OPTIONS
+[30-Aug-2025 00:08:48 Europe/Berlin] Content type: none
+[30-Aug-2025 00:08:48 Europe/Berlin] Remote addr: 10.200.7.4
+[30-Aug-2025 00:08:48 Europe/Berlin] OPTIONS request handled - CORS preflight
+[30-Aug-2025 00:08:48 Europe/Berlin] ==========================================
+[30-Aug-2025 00:08:48 Europe/Berlin] API Login called: 2025-08-30 00:08:48
+[30-Aug-2025 00:08:48 Europe/Berlin] Request method: POST
+[30-Aug-2025 00:08:48 Europe/Berlin] Content type: application/json
+[30-Aug-2025 00:08:48 Europe/Berlin] Remote addr: 10.200.7.4
+[30-Aug-2025 00:08:48 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[30-Aug-2025 00:08:48 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[30-Aug-2025 00:08:48 Europe/Berlin] Password received: jefadiseno
+[30-Aug-2025 00:08:48 Europe/Berlin] DB host: localhost
+[30-Aug-2025 00:08:48 Europe/Berlin] DB user: root
+[30-Aug-2025 00:08:48 Europe/Berlin] DB name: contratacion_temporales_b
+[30-Aug-2025 00:08:48 Europe/Berlin] DB connection successful
+[30-Aug-2025 00:08:48 Europe/Berlin] User found: diseno
+[30-Aug-2025 00:08:48 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[30-Aug-2025 00:08:48 Europe/Berlin] Tipo usuario: 3
+[30-Aug-2025 00:08:48 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[30-Aug-2025 00:08:48 Europe/Berlin] Login successful, returning user data
+[30-Aug-2025 00:08:48 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[30-Aug-2025 00:08:48 Europe/Berlin] ==========================================
+[01-Sep-2025 15:10:34 Europe/Berlin] ==========================================
+[01-Sep-2025 15:10:34 Europe/Berlin] API Login called: 2025-09-01 15:10:34
+[01-Sep-2025 15:10:34 Europe/Berlin] Request method: OPTIONS
+[01-Sep-2025 15:10:34 Europe/Berlin] Content type: none
+[01-Sep-2025 15:10:34 Europe/Berlin] Remote addr: 10.200.7.8
+[01-Sep-2025 15:10:34 Europe/Berlin] OPTIONS request handled - CORS preflight
+[01-Sep-2025 15:10:34 Europe/Berlin] ==========================================
+[01-Sep-2025 15:10:34 Europe/Berlin] API Login called: 2025-09-01 15:10:34
+[01-Sep-2025 15:10:34 Europe/Berlin] Request method: POST
+[01-Sep-2025 15:10:34 Europe/Berlin] Content type: application/json
+[01-Sep-2025 15:10:34 Europe/Berlin] Remote addr: 10.200.7.8
+[01-Sep-2025 15:10:34 Europe/Berlin] Raw input: {"email":"jefadiseno@unicauca.edu.co","password":"jefadiseno"}
+[01-Sep-2025 15:10:34 Europe/Berlin] Email: jefadiseno@unicauca.edu.co
+[01-Sep-2025 15:10:34 Europe/Berlin] Password received: jefadiseno
+[01-Sep-2025 15:10:34 Europe/Berlin] DB host: localhost
+[01-Sep-2025 15:10:34 Europe/Berlin] DB user: root
+[01-Sep-2025 15:10:34 Europe/Berlin] DB name: contratacion_temporales_b
+[01-Sep-2025 15:10:34 Europe/Berlin] DB connection successful
+[01-Sep-2025 15:10:34 Europe/Berlin] User found: diseno
+[01-Sep-2025 15:10:34 Europe/Berlin] Hash from DB: $2y$10$3bWKhHIBXTxhMfcWcF2V9eUai/tUIF.H/2Mn/e22ZzNtidz8oYqBq
+[01-Sep-2025 15:10:34 Europe/Berlin] Tipo usuario: 3
+[01-Sep-2025 15:10:34 Europe/Berlin] Password verification SUCCESSFUL for: jefadiseno@unicauca.edu.co
+[01-Sep-2025 15:10:34 Europe/Berlin] Login successful, returning user data
+[01-Sep-2025 15:10:34 Europe/Berlin] User data: Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [Id] => 85
+            [Name] => diseno
+            [Email] => jefadiseno@unicauca.edu.co
+            [tipo_usuario] => 3
+            [fk_depto_user] => 2
+            [fk_fac_user] => 
+            [u_nombre_en_cargo] => FABIAN ALEXANDER ORDONEZ CASTILLO
+            [email_padre] => facartes@unicauca.edu.co
+            [DocUsuario] => 
+        )
+
+)
+
+[01-Sep-2025 15:10:34 Europe/Berlin] ==========================================

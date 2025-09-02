@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico - Sistema de Contratación</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+        
+        .panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .panel h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .panel h2 i {
+            margin-right: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .test-section {
+            margin-bottom: 20px;
+        }
+        
+        .test-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+        
+        .test-button:hover {
+            background: #2980b9;
+        }
+        
+        .result-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .success {
+            color: #27ae60;
+        }
+        
+        .error {
+            color: #e74c3c;
+        }
+        
+        .loading {
+            color: #f39c12;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .step-number {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .status-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+        
+        .status-unknown {
+            background: #bdc3c7;
+        }
+        
+        .status-success {
+            background: #2ecc71;
+        }
+        
+        .status-error {
+            background: #e74c3c;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .data-table th {
+            background-color: #f2f2f2;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .test-button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistema de Gestión de Contratación</h1>
+            <p class="subtitle">Panel de diagnóstico y verificación de datos</p>
+        </header>
+        
+        <div class="panel">
+            <h2><i>🔍</i> Diagnóstico del Sistema</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">Verificar conexión con el backend</div>
+                <div class="status-indicator status-unknown" id="status-backend"></div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">Verificar conexión con la base de datos</div>
+                <div class="status-indicator status-unknown" id="status-database"></div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">Verificar datos en la tabla de solicitudes</div>
+                <div class="status-indicator status-unknown" id="status-data"></div>
+            </div>
+            
+            <div class="test-section">
+                <button class="test-button" onclick="runAllTests()">Ejecutar todas las pruebas</button>
+                <button class="test-button" onclick="testBackend()">Probar Backend</button>
+                <button class="test-button" onclick="testDatabase()">Probar Base de Datos</button>
+                <button class="test-button" onclick="testSolicitudes()">Ver Solicitudes</button>
+            </div>
+            
+            <div class="result-box" id="test-result">
+                Resultados de las pruebas aparecerán aquí...
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h2><i>📊</i> Datos de Solicitudes</h2>
+            <div class="test-section">
+                <button class="test-button" onclick="loadSolicitudes()">Cargar Solicitudes</button>
+                <div>
+                    <label for="depto-select">Departamento:</label>
+                    <select id="depto-select">
+                        <option value="1">Artes Plásticas</option>
+                        <option value="2">Matemáticas</option>
+                        <option value="3">Ingeniería</option>
+                    </select>
+                    
+                    <label for="periodo-input" style="margin-left: 15px;">Período:</label>
+                    <input type="text" id="periodo-input" value="2025-1" placeholder="Ej: 2025-1">
+                </div>
+            </div>
+            
+            <div class="result-box">
+                <table class="data-table" id="solicitudes-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Cédula</th>
+                            <th>Tipo Docente</th>
+                            <th>Horas</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h2><i>🔧</i> Soluciones Comunes</h2>
+            <ol style="padding-left: 20px; margin-bottom: 15px;">
+                <li>Verifica que XAMPP esté ejecutándose con Apache y MySQL activos</li>
+                <li>Asegúrate de que la base de datos "contratacion_temporales_b" existe</li>
+                <li>Verifica que la tabla "solicitudes" exista y tenga datos</li>
+                <li>Comprueba las credenciales de la base de datos en el archivo .env</li>
+                <li>Revisa la consola del navegador (F12) para más detalles de error</li>
+            </ol>
+            <button class="test-button" onclick="checkDatabaseStructure()">Verificar Estructura de BD</button>
+            <div class="result-box" id="db-structure-result"></div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(elementId, status) {
+            const indicator = document.getElementById(elementId);
+            indicator.className = 'status-indicator ' + status;
+        }
+        
+        function logResult(message, isError = false) {
+            const resultBox = document.getElementById('test-result');
+            const newEntry = document.createElement('div');
+            newEntry.textContent = message;
+            newEntry.className = isError ? 'error' : 'success';
+            resultBox.appendChild(newEntry);
+            resultBox.scrollTop = resultBox.scrollHeight;
+        }
+        
+        function clearResults() {
+            document.getElementById('test-result').innerHTML = '';
+        }
+        
+        async function testBackend() {
+            clearResults();
+            updateStatus('status-backend', 'loading');
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/test');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    logResult('✅ Backend funcionando correctamente: ' + data.message);
+                    updateStatus('status-backend', 'status-success');
+                } else {
+                    throw new Error(data.error || 'Error desconocido');
+                }
+            } catch (error) {
+                logResult('❌ Error conectando con el backend: ' + error.message, true);
+                updateStatus('status-backend', 'status-error');
+            }
+        }
+        
+        async function testDatabase() {
+            clearResults();
+            updateStatus('status-database', 'loading');
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/test-db');
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    logResult('✅ Conexión a la base de datos exitosa');
+                    logResult('📊 Total de solicitudes en sistema: ' + data.total_solicitudes);
+                    updateStatus('status-database', 'status-success');
+                } else {
+                    throw new Error(data.error || 'Error en la respuesta del servidor');
+                }
+            } catch (error) {
+                logResult('❌ Error conectando con la base de datos: ' + error.message, true);
+                updateStatus('status-database', 'status-error');
+            }
+        }
+        
+        async function testSolicitudes() {
+            clearResults();
+            updateStatus('status-data', 'loading');
+            
+            try {
+                const deptoId = document.getElementById('depto-select').value;
+                const periodo = document.getElementById('periodo-input').value;
+                
+                const response = await fetch(`http://localhost:5000/api/solicitudes/depto/${deptoId}?periodo=${periodo}`);
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    if (data.solicitudes && data.solicitudes.length > 0) {
+                        logResult(`✅ Se encontraron ${data.solicitudes.length} solicitudes`);
+                        updateStatus('status-data', 'status-success');
+                    } else {
+                        logResult('⚠️ No se encontraron solicitudes para los criterios seleccionados');
+                        updateStatus('status-data', 'status-error');
+                    }
+                } else {
+                    throw new Error(data.error || 'Error en la respuesta del servidor');
+                }
+            } catch (error) {
+                logResult('❌ Error obteniendo solicitudes: ' + error.message, true);
+                updateStatus('status-data', 'status-error');
+            }
+        }
+        
+        async function loadSolicitudes() {
+            try {
+                const deptoId = document.getElementById('depto-select').value;
+                const periodo = document.getElementById('periodo-input').value;
+                
+                const response = await fetch(`http://localhost:5000/api/solicitudes/depto/${deptoId}?periodo=${periodo}`);
+                const data = await response.json();
+                
+                const tableBody = document.querySelector('#solicitudes-table tbody');
+                tableBody.innerHTML = '';
+                
+                if (data.success && data.solicitudes && data.solicitudes.length > 0) {
+                    data.solicitudes.forEach(solicitud => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${solicitud.PK_SOLICITUD || solicitud.id || 'N/A'}</td>
+                            <td>${solicitud.nombre || 'N/A'}</td>
+                            <td>${solicitud.cedula || 'N/A'}</td>
+                            <td>${solicitud.tipo_docente || 'N/A'}</td>
+                            <td>${solicitud.horas || 'N/A'}</td>
+                            <td>${solicitud.estado || 'N/A'}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="6">No se encontraron solicitudes</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error cargando solicitudes:', error);
+                document.querySelector('#solicitudes-table tbody').innerHTML = 
+                    '<tr><td colspan="6">Error cargando los datos</td></tr>';
+            }
+        }
+        
+        async function checkDatabaseStructure() {
+            const resultBox = document.getElementById('db-structure-result');
+            resultBox.innerHTML = 'Verificando estructura de la base de datos...';
+            
+            try {
+                // Aquí podrías implementar verificaciones adicionales de la estructura de la BD
+                // Por ahora, solo mostraremos un mensaje
+                resultBox.innerHTML = `
+                    <div>Para verificar la estructura de la base de datos:</div>
+                    <ol>
+                        <li>Abre phpMyAdmin en <a href="http://localhost/phpmyadmin" target="_blank">http://localhost/phpmyadmin</a></li>
+                        <li>Selecciona la base de datos "contratacion_temporales_b"</li>
+                        <li>Verifica que exista la tabla "solicitudes"</li>
+                        <li>Verifica que la tabla "solicitudes" tenga datos</li>
+                    </ol>
+                `;
+            } catch (error) {
+                resultBox.innerHTML = 'Error verificando la estructura: ' + error.message;
+            }
+        }
+        
+        function runAllTests() {
+            clearResults();
+            logResult('Iniciando pruebas completas del sistema...');
+            
+            setTimeout(testBackend, 100);
+            setTimeout(testDatabase, 800);
+            setTimeout(testSolicitudes, 1500);
+        }
+        
+        // Ejecutar pruebas al cargar la página
+        window.onload = function() {
+            logResult('Panel de diagnóstico cargado. Haz clic en "Ejecutar todas las pruebas" para comenzar.');
+        };
+    </script>
+</body>
+</html>
