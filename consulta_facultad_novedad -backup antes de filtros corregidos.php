@@ -9,21 +9,7 @@ require('funciones.php');
 
 // --- VARIABLES ESENCIALES ---
 $anio_semestre = $_POST['anio_semestre'] ?? $_GET['anio_semestre'] ?? '2025-2';
-// --- VARIABLES ESENCIALES ---
 
-// ===== INICIA EL NUEVO CÓDIGO DE FILTRO =====
-// Leemos el filtro desde la URL. Por defecto, será 'all'.
-$rawFiltro = $_GET['filtro'] ?? 'all';
-// Creamos una "lista blanca" de filtros permitidos para seguridad.
-$allowed_filters = ['all', 'fac-pending', 'vra-pending'];
-// Si el filtro de la URL no es válido, usamos 'all' por defecto.
-$filtro = in_array($rawFiltro, $allowed_filters) ? $rawFiltro : 'all';
-
-// Si el usuario NO es Jefe de Departamento (tipo 3), forzamos el filtro a 'all'.
-if ((int)$tipo_usuario !== 3) {
-    $filtro = 'all';
-}
-// ===== TERMINA EL NUEVO CÓDIGO DE FILTRO =====
 // Obtenemos los datos del usuario logueado
 $id_facultad = null;
 $id_departamento = null;
@@ -239,54 +225,6 @@ $oficio_statuses_facultad[$nombre_depto][$oficio_fecha] = [ // o $oficio_statuse
     $solicitudes_json = json_encode($solicitudes_procesadas_facultad);
     $statuses_json = json_encode($oficio_statuses_facultad);
 }
-// ... final del bloque elseif ($tipo_usuario == 2) ...
-
- elseif ($tipo_usuario == 1) {
-    // ===== INICIA LA NUEVA LÓGICA PARA USUARIO TIPO 1 (VRA) =====
-
-    // 1. Consulta SQL para traer todos los datos necesarios anidados
-    $sql_vra = "
-        SELECT 
-            f.nombre_fac_min AS nombre_facultad,
-            d.depto_nom_propio AS nombre_departamento,
-            s.* FROM 
-            solicitudes_working_copy s
-        JOIN 
-            deparmanentos d ON s.departamento_id = d.PK_DEPTO
-        JOIN 
-            facultad f ON s.facultad_id = f.PK_FAC
-        WHERE 
-            s.anio_semestre = ? 
-            AND s.oficio_con_fecha_fac IS NOT NULL
-            AND s.estado_facultad = 'APROBADO'
-        ORDER BY 
-            f.nombre_fac_min ASC, 
-            d.depto_nom_propio ASC,
-            s.fecha_oficio_fac ASC,
-            s.oficio_fac ASC
-    ";
-    $stmt_vra = $conn->prepare($sql_vra);
-    $stmt_vra->bind_param("s", $anio_semestre);
-    $stmt_vra->execute();
-    $todas_las_solicitudes_vra = $stmt_vra->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt_vra->close();
-
-    // 2. Agrupar los datos en una estructura de tres niveles: Facultad -> Departamento -> Oficio
-    $datos_agrupados_vra = [];
-    foreach ($todas_las_solicitudes_vra as $sol) {
-        $datos_agrupados_vra[$sol['nombre_facultad']]
-                             [$sol['nombre_departamento']]
-                             [$sol['oficio_con_fecha_fac']][] = $sol;
-    }
-
-    // 3. (Opcional, pero recomendado) Calcular los estados para las tarjetas de oficio
-    //    Por ahora lo dejaremos simple, pero aquí iría la lógica de estados si la necesitas.
-
-    // 4. Pasar los datos a JavaScript
-    $solicitudes_json = json_encode($todas_las_solicitudes_vra);
-    // Pasamos la nueva estructura anidada a una variable JSON que usará el script
-    $datos_vra_json = json_encode($datos_agrupados_vra); 
-}
 $conn->close();
 ?>
 
@@ -299,44 +237,11 @@ $conn->close();
     <script src="https://cdn.tailwindcss.com"></script>
     
 </head>
-<style>
- .bg-pink-highlight {
-        background-color: rgba(252, 231, 243, 0.7);
- /* Rosa suave de Tailwind - pink-100 */
-        border-left: 4px solid #ec4899; /* Borde rosa más oscuro */
-    }
-     .accordion-header .accordion-button {
-        padding-top: 0.65rem !important;
-        padding-bottom: 0.65rem !important;
-        font-size: 0.9rem; /* Opcional: reduce un poco el tamaño de la fuente */
-    }
-.border-red-300 {
-  border-color: #ec4899;
-}
-    </style>
 <body class="bg-gray-100">
 
     <div class="container mx-auto p-8">
-<h1 class="text-3xl font-bold text-gray-800 mb-6">Novedades por Oficio (<?php echo htmlspecialchars($anio_semestre); ?>)</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Novedades por Oficio (<?php echo htmlspecialchars($anio_semestre); ?>)</h1>
 
-<?php if ($tipo_usuario == 3): ?>
-<div class="bg-white p-4 rounded-lg shadow-md mb-6">
-    <div class="flex flex-wrap items-center gap-4">
-        <span class="font-semibold text-gray-700">Mostrar oficios:</span>
-        <div class="flex flex-wrap gap-2">
-            <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=all" class="px-4 py-2 text-sm font-semibold rounded-md shadow-sm <?= ($filtro === 'all') ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' ?>">
-                <i class="fas fa-list-ul mr-1"></i> Ver Todos
-            </a>
-            <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=fac-pending" class="px-4 py-2 text-sm font-semibold rounded-md shadow-sm <?= ($filtro === 'fac-pending') ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' ?>">
-                <i class="fas fa-hourglass-half mr-1"></i> Pendientes Facultad
-            </a>
-            <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=vra-pending" class="px-4 py-2 text-sm font-semibold rounded-md shadow-sm <?= ($filtro === 'vra-pending') ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' ?>">
-                <i class="fas fa-hourglass-half mr-1"></i> Pendientes VRA
-            </a>
-        </div>
-    </div>
-</div>
-<?php endif; ?>
         <?php if ($tipo_usuario == 3): ?>
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -346,24 +251,7 @@ $conn->close();
                                 $oficio_fecha = $oficio['oficio_con_fecha'];
                                 $status = $oficio_statuses[$oficio_fecha] ?? 'Desconocido';
                                 $status_color_class = ($status === 'En Proceso') ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800';
-                           $status_fac = $oficio_statuses[$oficio_fecha]['facultad'];
-                $status_vra = $oficio_statuses[$oficio_fecha]['vra'];
-
-                // ===== INICIA LA NUEVA LÓGICA DE FILTRADO =====
-                // Si el filtro es 'Pendientes Facultad' y este oficio NO está en proceso en facultad, lo saltamos.
-                if ($filtro === 'fac-pending' && $status_fac !== 'En Proceso') {
-                    continue; // Pasa al siguiente oficio
-                }
-                // Si el filtro es 'Pendientes VRA' y este oficio NO está en proceso en VRA, lo saltamos.
-                if ($filtro === 'vra-pending' && $status_vra !== 'En Proceso') {
-                    continue; // Pasa al siguiente oficio
-                }
-                // ===== TERMINA LA NUEVA LÓGICA DE FILTRADO =====
- 
-                    
-                    
-                    
-                    ?>
+                            ?>
                             <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#003366] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
                                 <div>
                                     <div class="flex justify-between items-start mb-2">
@@ -430,7 +318,7 @@ $conn->close();
                     <div class="flex items-center">
                         <input type="radio" id="filtro_pendientes" name="filtro_estado" value="pendientes" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
                         <label for="filtro_pendientes" class="ml-2 block text-sm text-gray-900">
-                            Ver solo con pendientes de trámite en Facultad
+                            Mostrar solo Pendientes de la Facultad
                         </label>
                     </div>
                 </div>
@@ -443,7 +331,7 @@ $conn->close();
                                 <span class="text-xl font-semibold text-gray-800"><?php echo htmlspecialchars($nombre_depto); ?></span>
                                 <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
-                            <div class="accordion-body hidden p-2 bg-gray-50 border-t border-gray-200">
+                            <div class="accordion-body hidden p-6 bg-gray-50 border-t border-gray-200">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     </div>
                             </div>
@@ -563,18 +451,6 @@ $conn->close();
         </form>
     </div>
 </div>
-    
-    
-    <div id="loadingOverlay" class="fixed inset-0 bg-gray-800 bg-opacity-75 h-full w-full hidden z-50 flex items-center justify-center" style="z-index: 100;">
-    <div class="bg-white rounded-lg p-8 flex items-center space-x-4 shadow-xl">
-        <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        <span id="loadingMessage" class="text-lg font-semibold text-gray-700">Procesando...</span>
-    </div>
-</div>
-
 <script>
     // --- 1. DECLARACIÓN DE VARIABLES Y ELEMENTOS DEL DOM ---
     const tipoUsuario = <?php echo json_encode($tipo_usuario); ?>;
@@ -776,41 +652,23 @@ modal.addEventListener('click', (event) => {
     const filtroRadios = document.querySelectorAll('input[name="filtro_estado"]');
 
     // --- 2. FUNCIÓN CENTRAL PARA DIBUJAR LAS TARJETAS (¡LA NUEVA LÓGICA!) ---
-function renderizarContenidoAcordeon(headerElement) {
-    const deptoName = headerElement.querySelector('span').textContent;
-    const body = headerElement.nextElementSibling;
-    const cardsContainer = body.querySelector('.grid');
-    cardsContainer.innerHTML = ''; // Limpiamos el contenido anterior
+    function renderizarContenidoAcordeon(headerElement) {
+        const deptoName = headerElement.querySelector('span').textContent;
+        const body = headerElement.nextElementSibling;
+        const cardsContainer = body.querySelector('.grid');
+        cardsContainer.innerHTML = ''; // Limpiamos el contenido anterior
 
-    const oficiosDepto = datosAgrupados[deptoName];
-    const statusesDepto = statusesFacultad[deptoName];
-    const filtroSeleccionado = document.querySelector('input[name="filtro_estado"]:checked').value;
-    if (!oficiosDepto || Object.keys(oficiosDepto).length === 0) {
-        cardsContainer.innerHTML = '<p class="text-gray-500 col-span-full">Este departamento no tiene oficios enviados.</p>';
-        return; // Salimos de la función
-    }
+        const oficiosDepto = datosAgrupados[deptoName];
+        const statusesDepto = statusesFacultad[deptoName];
+        const filtroSeleccionado = document.querySelector('input[name="filtro_estado"]:checked').value;
 
-    // Verificar si este departamento tiene pendientes para mantener el resaltado
-    let tienePendientes = false;
-    if (statusesDepto) {
-        for (const oficio in statusesDepto) {
-            if (statusesDepto[oficio].facultad === 'En Proceso') {
-                tienePendientes = true;
-                break;
-            }
+        if (!oficiosDepto || Object.keys(oficiosDepto).length === 0) {
+            cardsContainer.innerHTML = '<p class="text-gray-500 col-span-full">Este departamento no tiene oficios enviados.</p>';
+            return; // Salimos de la función
         }
-    }
-    
-    // Aplicar o quitar el resaltado
-    if (tienePendientes) {
-        headerElement.classList.add('bg-pink-highlight');
-    } else {
-        headerElement.classList.remove('bg-pink-highlight');
-    }
 
-    // Resto de la función sin cambios...
-    let tarjetasRenderizadas = 0;
-    for (const oficio in oficiosDepto) {
+        let tarjetasRenderizadas = 0;
+        for (const oficio in oficiosDepto) {
             const statusOficio = statusesDepto[oficio];
 
             // === ¡AQUÍ ESTÁ LA MAGIA DEL FILTRO! ===
@@ -823,10 +681,7 @@ function renderizarContenidoAcordeon(headerElement) {
             // (El código para generar el HTML de la tarjeta es el mismo de antes)
             const statusObj = statusOficio || { facultad: 'Desconocido', vra: 'Desconocido' };
             const status_fac = statusObj.facultad;
-            
-        const borderColorClass = (status_fac === 'En Proceso') ? 'border-red-300' : 'border-[#003366]';
-
-        let color_fac = 'bg-gray-200 text-gray-700', icon_fac = '<i class="fas fa-eye"></i>', text_fac = 'Facultad';
+            let color_fac = 'bg-gray-200 text-gray-700', icon_fac = '<i class="fas fa-eye"></i>', text_fac = 'Facultad';
             if (status_fac === 'En Proceso') { color_fac = 'bg-orange-100 text-orange-800'; icon_fac = '<i class="fas fa-hourglass-half"></i>'; text_fac = 'En Proceso Facultad'; }
             else if (status_fac === 'Aprobado Total') { color_fac = 'bg-green-100 text-green-800'; icon_fac = '<i class="fas fa-check"></i>'; text_fac = 'Tramitado OK Facultad'; }
             else if (status_fac === 'Rechazado Total') { color_fac = 'bg-red-100 text-red-800'; icon_fac = '<i class="fas fa-times"></i>'; text_fac = 'No Avalado por Facultad'; }
@@ -838,7 +693,7 @@ function renderizarContenidoAcordeon(headerElement) {
             else { color_vra = (status_vra === 'En Proceso') ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'; icon_vra = (status_vra === 'En Proceso') ? '<i class="fas fa-hourglass-half"></i>' : '<i class="fas fa-check-circle"></i>'; text_vra = (status_vra === 'En Proceso') ? 'En Proceso VRA' : 'Finalizado VRA'; }
             
             const cardHtml = `
-<div class="bg-[#F0F4F9] rounded-lg shadow-md p-6 border-l-4 ${borderColorClass} flex flex-col justify-between oficio-card" data-depto="${deptoName}">
+                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#003366] flex flex-col justify-between oficio-card" data-depto="${deptoName}">
                     <div>
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Oficio</h3>
@@ -860,60 +715,42 @@ function renderizarContenidoAcordeon(headerElement) {
     }
 
     // --- 3. FUNCIÓN PARA APLICAR EL FILTRO A TODO ---
-   function aplicarFiltroGlobal() {
-    const todosLosAcordeones = document.querySelectorAll('.accordion-header');
-    
-    todosLosAcordeones.forEach(header => {
-        const body = header.nextElementSibling;
-        const contenedorAcordeon = header.parentElement;
+    function aplicarFiltroGlobal() {
+        const todosLosAcordeones = document.querySelectorAll('.accordion-header');
         
-        // Primero, verificamos si el acordeón está abierto. Si lo está,
-        // lo volvemos a renderizar para que aplique el nuevo filtro.
-        if (!body.classList.contains('hidden')) {
-            renderizarContenidoAcordeon(header);
-        }
-
-        // Ahora, una lógica para ocultar el departamento completo si no tiene pendientes
-        const deptoName = header.querySelector('span').textContent;
-        const statusesDepto = statusesFacultad[deptoName];
-        const filtroSeleccionado = document.querySelector('input[name="filtro_estado"]:checked').value;
-
-        // Lógica para resaltar departamentos con pendientes
-        let tienePendientes = false;
-        if (statusesDepto) {
-            for (const oficio in statusesDepto) {
-                if (statusesDepto[oficio].facultad === 'En Proceso') {
-                    tienePendientes = true;
-                    break;
-                }
+        todosLosAcordeones.forEach(header => {
+            const body = header.nextElementSibling;
+            const contenedorAcordeon = header.parentElement;
+            
+            // Primero, verificamos si el acordeón está abierto. Si lo está,
+            // lo volvemos a renderizar para que aplique el nuevo filtro.
+            if (!body.classList.contains('hidden')) {
+                renderizarContenidoAcordeon(header);
             }
-        }
-        
-        // Aplicar o quitar el resaltado
-        if (tienePendientes) {
-            header.classList.add('bg-pink-highlight');
-        } else {
-            header.classList.remove('bg-pink-highlight');
-        }
 
-        if (filtroSeleccionado === 'pendientes') {
-            let tienePendientes = false;
-            if (statusesDepto) {
-                for (const oficio in statusesDepto) {
-                    if (statusesDepto[oficio].facultad === 'En Proceso') {
-                        tienePendientes = true;
-                        break;
+            // Ahora, una lógica para ocultar el departamento completo si no tiene pendientes
+            const deptoName = header.querySelector('span').textContent;
+            const statusesDepto = statusesFacultad[deptoName];
+            const filtroSeleccionado = document.querySelector('input[name="filtro_estado"]:checked').value;
+
+            if (filtroSeleccionado === 'pendientes') {
+                let tienePendientes = false;
+                if (statusesDepto) {
+                    for (const oficio in statusesDepto) {
+                        if (statusesDepto[oficio].facultad === 'En Proceso') {
+                            tienePendientes = true;
+                            break; // Encontramos uno, no hace falta seguir buscando
+                        }
                     }
                 }
+                // Si el filtro es 'pendientes' y este depto no tiene ninguno, lo ocultamos.
+                contenedorAcordeon.style.display = tienePendientes ? 'block' : 'none';
+            } else {
+                // Si el filtro es 'todos', nos aseguramos de que todos los deptos sean visibles.
+                contenedorAcordeon.style.display = 'block';
             }
-            // Si el filtro es 'pendientes' y este depto no tiene ninguno, lo ocultamos.
-            contenedorAcordeon.style.display = tienePendientes ? 'block' : 'none';
-        } else {
-            // Si el filtro es 'todos', nos aseguramos de que todos los deptos sean visibles.
-            contenedorAcordeon.style.display = 'block';
-        }
-    });
-}
+        });
+    }
 
     // --- 4. ASIGNACIÓN DE EVENTOS ---
     
@@ -992,30 +829,6 @@ function renderizarContenidoAcordeon(headerElement) {
     const btnNoAvalar = document.getElementById('btn-no-avalar-seleccionados');
     const wordGenModal = document.getElementById('wordGenModal');
 
-      
-      
-// ===== INICIA LA NUEVA FUNCIÓN DE CARGA =====
-function toggleLoading(show, message = 'Procesando...') {
-    const overlay = document.getElementById('loadingOverlay');
-    const messageEl = document.getElementById('loadingMessage');
-    // Agrupamos todos los botones de acción para manejarlos fácilmente
-    const actionButtons = [
-        document.getElementById('btn-avalar-seleccionados'),
-        document.getElementById('btn-no-avalar-seleccionados'),
-        document.getElementById('btn-limpiar-seleccion')
-    ];
-
-    if (show) {
-        messageEl.textContent = message;
-        overlay.classList.remove('hidden');
-        // Deshabilitamos los botones para prevenir múltiples envíos
-        actionButtons.forEach(btn => btn && (btn.disabled = true));
-    } else {
-        overlay.classList.add('hidden');
-        // Volvemos a habilitar los botones
-        actionButtons.forEach(btn => btn && (btn.disabled = false));
-    }
-}
 // ===== INICIA EL NUEVO CÓDIGO =====
 const btnLimpiar = document.getElementById('btn-limpiar-seleccion');
 if (btnLimpiar) {
@@ -1024,72 +837,63 @@ if (btnLimpiar) {
 // ===== TERMINA EL NUEVO CÓDIGO =====
 
     // --- ACCIÓN DE AVALAR ---
- // --- ACCIÓN DE AVALAR (MEJORADA) ---
-btnAvalar.addEventListener('click', () => {
-    if (solicitudesSeleccionadas.length === 0) return alert('Por favor, seleccione al menos una solicitud.');
-
-    toggleLoading(true, 'Procesando aval... Enviando correo...'); // <-- MOSTRAR MENSAJE
-
-    const formData = new FormData();
-    formData.append('action', 'avalar');
-    formData.append('anio_semestre', anioSemestre);
-    solicitudesSeleccionadas.forEach(id => formData.append('selected_ids[]', id));
-
-    fetch('procesar_facultad_seleccion.php', { method: 'POST', body: formData })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(data.message);
-            document.getElementById('wordGenSelectedIds').value = data.data.processed_ids.join(',');
-            document.getElementById('fecha_oficio').value = new Date().toISOString().split('T')[0];
-            wordGenModal.classList.remove('hidden');
-        } else {
-            alert('Error: ' + data.message);
-        }
-    }).catch(error => {
-        console.error('Error de conexión o script:', error);
-        alert('Ocurrió un error inesperado al procesar la solicitud.');
-    }).finally(() => {
-        toggleLoading(false); // <-- OCULTAR MENSAJE (SIEMPRE se ejecuta)
-    });
-});
-
-    // --- ACCIÓN DE NO AVALAR ---
-// --- ACCIÓN DE NO AVALAR (MEJORADA) ---
-btnNoAvalar.addEventListener('click', () => {
-    if (solicitudesSeleccionadas.length === 0) return alert('Por favor, seleccione al menos una solicitud.');
-    
-    const observacion = prompt("Por favor, ingrese la justificación para el NO AVAL (obligatorio):");
-    
-    if (observacion === null) return; // El usuario presionó "Cancelar"
-
-    if (observacion.trim() !== '') {
-        toggleLoading(true, 'Procesando devolución... Enviando correo...'); // <-- MOSTRAR MENSAJE
+    btnAvalar.addEventListener('click', () => {
+        if (solicitudesSeleccionadas.length === 0) return alert('Por favor, seleccione al menos una solicitud.');
 
         const formData = new FormData();
-        formData.append('action', 'no_avalar');
-        // ... (el resto del formData no cambia) ...
+        formData.append('action', 'avalar');
+        formData.append('anio_semestre', anioSemestre);
         solicitudesSeleccionadas.forEach(id => formData.append('selected_ids[]', id));
 
         fetch('procesar_facultad_seleccion.php', { method: 'POST', body: formData })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            if (data.success) {
-                location.reload();
+           if (data.success) {
+                alert(data.message);
+                // ===== ¡ESTA ES LA LÍNEA CORRECTA! =====
+                document.getElementById('wordGenSelectedIds').value = data.data.processed_ids.join(',');
+                // ========================================
+                document.getElementById('fecha_oficio').value = new Date().toISOString().split('T')[0];
+                wordGenModal.classList.remove('hidden');
+            }  else {
+                alert('Error: ' + data.message);
             }
         }).catch(error => {
             console.error('Error de conexión o script:', error);
-            alert('Ocurrió un error inesperado al procesar la solicitud.');
-        }).finally(() => {
-            toggleLoading(false); // <-- OCULTAR MENSAJE (SIEMPRE se ejecuta)
+            alert('Ocurrió un error inesperado al procesar la solicitud. Revise la consola para más detalles.');
         });
-    } else {
-        alert('La justificación es obligatoria para no avalar.');
-    }
-});  
-      
-      aplicarFiltroGlobal();
+    });
+
+    // --- ACCIÓN DE NO AVALAR ---
+    btnNoAvalar.addEventListener('click', () => {
+        if (solicitudesSeleccionadas.length === 0) return alert('Por favor, seleccione al menos una solicitud.');
+        
+        const observacion = prompt("Por favor, ingrese la justificación para el NO AVAL (obligatorio):");
+        
+        if (observacion === null) return; // El usuario presionó "Cancelar"
+
+        if (observacion.trim() !== '') {
+            const formData = new FormData();
+            formData.append('action', 'no_avalar');
+            formData.append('observacion', observacion.trim());
+            formData.append('anio_semestre', anioSemestre);
+            solicitudesSeleccionadas.forEach(id => formData.append('selected_ids[]', id));
+
+            fetch('procesar_facultad_seleccion.php', { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    location.reload();
+                }
+            }).catch(error => {
+                console.error('Error de conexión o script:', error);
+                alert('Ocurrió un error inesperado al procesar la solicitud. Revise la consola para más detalles.');
+            });
+        } else {
+            alert('La justificación es obligatoria para no avalar.');
+        }
+    });    aplicarFiltroGlobal();
       
 }
 

@@ -1,0 +1,12 @@
+2025-09-04 16:35:59 - Script iniciado
+2025-09-04 16:35:59 - Datos recibidos: action=avalar, ids_count=2
+2025-09-04 16:35:59 - IDs a procesar: 42, 43, 41
+2025-09-04 16:35:59 - Email encontrado para departamento: Ciencias Políticas - elmerjs@unicauca.edu.co
+2025-09-04 16:35:59 - Email encontrado para departamento: Ciencias Políticas - elmerjs@unicauca.edu.co
+2025-09-04 16:35:59 - Email encontrado para departamento: Ciencias Políticas - elmerjs@unicauca.edu.co
+2025-09-04 16:35:59 - Transacción completada. 3 registros procesados. 1 departamentos para notificar.
+2025-09-04 16:35:59 - Intentando enviar correos a 1 departamentos
+2025-09-04 16:35:59 - Preparando correo para: elmerjs@unicauca.edu.co
+2025-09-04 16:36:03 - PHPMailer Exception al enviar a elmerjs@unicauca.edu.co: SMTP Error: Could not connect to SMTP host. Failed to connect to server
+2025-09-04 16:36:03 - PHPMailer ErrorInfo: SMTP Error: Could not connect to SMTP host. Failed to connect to serverSMTP server error: Failed to connect to server SMTP code: 10061 Additional SMTP info: No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+2025-09-04 16:36:03 - Procesamiento exitoso. Respondiendo JSON.

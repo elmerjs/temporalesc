@@ -9,6 +9,19 @@ use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\SimpleType\TblWidth;
 use PhpOffice\PhpWord\Style\Language;
 
+
+// ===== INICIA EL NUEVO BLOQUE PARA PHPMailer =====
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/phpmailer/phpmailer/src/Exception.php';
+require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require 'vendor/phpmailer/phpmailer/src/SMTP.php';
+
+// Cargar la configuración de correo que ya tienes y funciona
+$config = require 'config_email.php';
+
+
 setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES', 'Spanish_Spain', 'es');
 
 // --- 1. PARÁMETROS RECIBIDOS ---
@@ -817,6 +830,108 @@ $section->addText(
     'Folios: ' . $folios,
     'normalSize9', 'left'
 );
+// ===== INICIA EL NUEVO BLOQUE DE ENVÍO DE CORREO (CORREGIDO) =====
+
+// 1. Agrupamos todas las solicitudes por departamento para enviar un correo consolidado a cada uno.
+//    Reutilizamos la variable '$grouped_solicitudes' que ya contiene toda la información.
+$emails_a_enviar = [];
+foreach ($grouped_solicitudes as $nombre_depto => $novedades_del_depto) {
+    foreach ($novedades_del_depto as $tipo_novedad => $solicitudes) {
+        foreach ($solicitudes as $sol) {
+            $email_depto_mail = 'elmerjs@unicauca.edu.co'; // Para pruebas
+            // $email_depto_mail = $sol['email_depto']; // Línea para producción
+
+            if (!empty($email_depto_mail)) {
+                // Inicializamos el array para este departamento si es la primera vez que lo vemos.
+                if (!isset($emails_a_enviar[$email_depto_mail])) {
+                    $emails_a_enviar[$email_depto_mail] = [
+                        'nombre_depto' => $nombre_depto, // Usamos el nombre del depto del bucle principal
+                        'solicitudes' => []
+                    ];
+                }
+                // Añadimos la solicitud actual al grupo de su departamento.
+                $emails_a_enviar[$email_depto_mail]['solicitudes'][] = $sol;
+            }
+        }
+    }
+}
+
+// 2. Ahora, recorremos los departamentos agrupados y enviamos un correo a cada uno.
+$email_vra = 'ejurado@unicauca.edu.co'; // Email de VRA, obtener de BD si es necesario
+
+foreach ($emails_a_enviar as $email_depto => $data) {
+    $nombre_depto = $data['nombre_depto'];
+    $solicitudes_para_correo = $data['solicitudes'];
+
+    // 3. Construimos el cuerpo del correo con el formato de tabla que definiste.
+    $email_body = "
+        <p>Cordial saludo, </p>
+        <p>La Facultad ha AVALADO y generado el oficio para las siguientes solicitudes de novedad de vinculación del departamento de <strong>{$nombre_depto}</strong>:</p>
+        <table style='width:100%; border-collapse: collapse; margin-top: 15px;'>
+            <thead>
+                <tr style='background-color:#f2f2f2;'>
+                    <th style='border: 1px solid #ddd; padding: 8px; text-align: left;'>Profesor(a)</th>
+                    <th style='border: 1px solid #ddd; padding: 8px; text-align: left;'>Cédula</th>
+                    <th style='border: 1px solid #ddd; padding: 8px; text-align: left;'>Periodo</th>
+                    <th style='border: 1px solid #ddd; padding: 8px; text-align: left;'>Novedad</th>
+                    <th style='border: 1px solid #ddd; padding: 8px; text-align: left;'>Observación</th>
+                </tr>
+            </thead>
+            <tbody>
+    ";
+
+    foreach ($solicitudes_para_correo as $solicitud) {
+        $obs_display = empty($solicitud['observacion_facultad']) ? "Sin observación." : htmlspecialchars($solicitud['observacion_facultad']);
+        $email_body .= "
+                <tr>
+                    <td style='border: 1px solid #ddd; padding: 8px;'><strong>" . htmlspecialchars($solicitud['nombre']) . "</strong></td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>" . htmlspecialchars($solicitud['cedula']) . "</td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>" . htmlspecialchars($solicitud['anio_semestre']) . "</td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>" . htmlspecialchars($solicitud['novedad']) . "</td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{$obs_display}</td>
+                </tr>
+        ";
+    }
+
+    $email_body .= "
+            </tbody>
+        </table>
+        <p style='margin-top: 20px;'>El trámite continuará en la Vicerrectoría Académica. Para más detalles, por favor revise la plataforma: <a href='http://192.168.42.175/temporalesc/'>Sistema de Vinculación Temporal</a> <em>(acceso restringido a la red interna de la Universidad del Cauca)</em></p>
+        <p>Universitariamente,</p>
+        <p><strong>Decanatura de Facultad</strong></p>
+    ";
+
+    // 4. Configuramos y enviamos el correo usando PHPMailer
+    $asunto = "Novedades Avaladas por Facultad - Dpto. de " . $nombre_depto;
+    $mail = new PHPMailer(true);
+    try {
+        // --- Usamos la configuración que ya sabemos que funciona ---
+        $mail->isSMTP();
+        $mail->Host       = $config['smtp_host'];
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $config['smtp_username'];
+        $mail->Password   = $config['smtp_password'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = $config['smtp_port'];
+        $mail->CharSet    = 'UTF-8';
+        $mail->SMTPOptions = ['ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true]];
+
+        // --- Remitente y Destinatarios ---
+        $mail->setFrom($config['from_email'], $config['from_name']);
+        $mail->addAddress($email_depto, $nombre_depto);
+        $mail->addAddress($email_vra); // Con copia a VRA
+        
+        // --- Contenido del Correo ---
+        $mail->isHTML(true);
+        $mail->Subject = $asunto;
+        $mail->Body    = $email_body;
+
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("PHPMailer Error en generar_word_solicitudes_seleccion.php: {$mail->ErrorInfo}");
+    }
+}
+// ===== TERMINA EL NUEVO BLOQUE DE ENVÍO DE CORREO =====
 
 // Configurar el nombre del archivo y las cabeceras para la descarga
 $fileName = 'Novedades_' . $anio_semestre . '_Facultad_' . $nombre_facultad_principal . '_' . date('Ymd') . '.docx';
