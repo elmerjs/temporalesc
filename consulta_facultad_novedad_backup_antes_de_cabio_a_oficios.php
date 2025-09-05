@@ -743,9 +743,8 @@ if ($tipo_usuario == 2 && $action === 'aprobar_seleccionados' && $success_count 
 
     // Asegúrate de que $current_anio_semestre y $current_id_facultad contengan los valores correctos
     // De dónde vienen estos valores depende de tu lógica de negocio
-    $anio_semestre_para_js = $anio_semestre ?? ''; // Reemplaza con tu variable real
-    $id_facultad_para_js = $id_facultad ?? '';     // Reemplaza con tu variable real
-
+    $anio_semestre_para_js = $anio_semestre ?? ''; 
+    $id_facultad_para_js = $id_facultad ?? '';     
 echo "<script>
     document.addEventListener('DOMContentLoaded', function() {
         if (confirm('¿Desea generar el documento Word con las solicitudes avaladas?')) {
@@ -766,9 +765,7 @@ echo "<script>
 
         }
 
-            // *** LÓGICA DE ENVÍO DE CORREOS CONSOLIDADOS (PARA FACULTAD) ***
-            // Esto se ejecuta después de procesar todas las solicitudes seleccionadas
-            // *** LÓGICA DE ENVÍO DE CORREOS CONSOLIDADOS (PARA FACULTAD) ***
+          ***
             // *** LÓGICA DE ENVÍO DE CORREOS CONSOLIDADOS (PARA FACULTAD) ***
             if ($tipo_usuario == 2 && !empty($departamento_emails)) {
                 foreach ($departamento_emails as $email_depto => $depto_data) {

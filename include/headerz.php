@@ -1372,8 +1372,11 @@ document.querySelectorAll('.novedades-periodo').forEach(function(link) {
 
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = '../../temporalesc/consulta_facultad_novedad.php'; // Página para gestionar novedades
-
+        if (tipoUsuario === "1") {
+            form.action = '../../temporalesc/consulta_facultad_novedad.php';
+        } else {
+            form.action = '../../temporalesc/consulta_facultad_novedad12.php';
+        }
         // Facultad
         if (facultadId) {
             var inputFacultad = document.createElement('input');
