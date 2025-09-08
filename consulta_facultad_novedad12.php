@@ -122,7 +122,7 @@ function procesarCambiosVinculacion($solicitudes) {
 $solicitudes_json = '[]';
 $statuses_json = '[]';
 
-if ($tipo_usuario == 3) {
+if ($tipo_usuario == 3) {   
     // --- LÓGICA PARA JEFE DE DEPARTAMENTO ---
     $sql_oficios = "SELECT DISTINCT oficio_con_fecha FROM solicitudes_working_copy WHERE departamento_id = ? AND anio_semestre = ? AND oficio_con_fecha IS NOT NULL ORDER BY fecha_oficio_depto,oficio_depto asc";
     $stmt_oficios = $conn->prepare($sql_oficios);
@@ -235,54 +235,32 @@ $oficio_statuses_facultad[$nombre_depto][$oficio_fecha] = [ // o $oficio_statuse
 // ===== TERMINA EL CÓDIGO A REEMPLAZAR =====
             }
         }
-            $solicitudes_procesadas_facultad = procesarCambiosVinculacion($todas_las_solicitudes_facultad);
-    $solicitudes_json = json_encode($solicitudes_procesadas_facultad);
+ // ===================================================================
+// ===== INICIA CORRECCIÓN: Procesar cada oficio por separado =====
+// ===================================================================
+
+$solicitudes_procesadas_final = [];
+// Recorremos la estructura que ya está agrupada por departamento y oficio ($datos_agrupados_facultad)
+foreach ($datos_agrupados_facultad as $nombre_depto => $oficios_depto) {
+    foreach ($oficios_depto as $oficio_fecha => $solicitudes_del_oficio) {
+        
+        // Aplicamos la función de procesamiento SÓLO a las solicitudes de ESTE oficio
+        $solicitudes_procesadas_del_oficio = procesarCambiosVinculacion($solicitudes_del_oficio);
+        
+        // Unimos los resultados procesados de cada oficio en una sola lista plana
+        $solicitudes_procesadas_final = array_merge($solicitudes_procesadas_final, $solicitudes_procesadas_del_oficio);
+    }
+}
+
+// Creamos el JSON final a partir de la lista correctamente procesada
+$solicitudes_json = json_encode($solicitudes_procesadas_final);
+
+// ===================================================================
+// ===== FIN DE LA CORRECCIÓN =====
+// ===================================================================
     $statuses_json = json_encode($oficio_statuses_facultad);
 }
-// ... final del bloque elseif ($tipo_usuario == 2) ...
-// En la sección de tipo_usuario == 1
-elseif ($tipo_usuario == 1) {
-    // --- LÓGICA PARA VICERRECTORÍA ACADÉMICA (VRA) ---
-    $sql_vra = "
-        SELECT
-            f.NOMBREF_FAC AS nombre_facultad,
-            d.depto_nom_propio AS nombre_departamento, 
-            s.*
-        FROM solicitudes_working_copy s
-        JOIN deparmanentos d ON s.departamento_id = d.PK_DEPTO
-        JOIN facultad f ON s.facultad_id = f.PK_FAC
-        WHERE s.anio_semestre = ?
-          AND s.estado_facultad = 'APROBADO'
-          AND s.oficio_con_fecha_fac IS NOT NULL 
-          AND s.oficio_con_fecha_fac != ''
-        ORDER BY f.NOMBREF_FAC ASC, d.depto_nom_propio ASC, s.oficio_con_fecha_fac ASC
-    ";
-    
-    $stmt_vra = $conn->prepare($sql_vra);
-    $stmt_vra->bind_param("s", $anio_semestre);
-    $stmt_vra->execute();
-    $todas_las_solicitudes_vra = $stmt_vra->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt_vra->close();
 
-    // Agrupamos los datos en la estructura anidada: Facultad -> Departamento -> Oficio
-    $datos_agrupados_vra = [];
-    foreach ($todas_las_solicitudes_vra as $sol) {
-        $datos_agrupados_vra[$sol['nombre_facultad']][$sol['nombre_departamento']][$sol['oficio_con_fecha_fac']][] = $sol;
-    }
-
-    // Pasamos todos los datos al JavaScript para que los necesite
-    $solicitudes_json = json_encode($todas_las_solicitudes_vra);
-    // Pasamos la estructura agrupada también para construir las tarjetas dinámicamente
-    $estructura_vra_json = json_encode($datos_agrupados_vra);
-    
-    // Datos de depuración para JavaScript
-    $debug_info = [
-        'total_solicitudes' => count($todas_las_solicitudes_vra),
-        'facultades' => array_keys($datos_agrupados_vra),
-        'query_executed' => true
-    ];
-    $debug_json = json_encode($debug_info);
-}
 $conn->close();
 ?>
 
@@ -332,26 +310,58 @@ $conn->close();
 <body class="bg-gray-100">
 
     <div class="container mx-auto p-8">
-<h1 class="text-3xl font-bold text-gray-800 mb-6">Novedades por Oficio (<?php echo htmlspecialchars($anio_semestre); ?>)</h1>
 
-<?php if ($tipo_usuario == 3): ?>
-<div class="bg-white p-4 rounded-lg shadow-md mb-6">
-    <div class="flex flex-wrap items-center gap-4">
-        <span class="font-semibold text-gray-700">Mostrar oficios:</span>
-        <div class="flex flex-wrap gap-2">
-            <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=all" class="px-4 py-2 text-sm font-semibold rounded-md shadow-sm <?= ($filtro === 'all') ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' ?>">
-                <i class="fas fa-list-ul mr-1"></i> Ver Todos
-            </a>
-            <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=fac-pending" class="px-4 py-2 text-sm font-semibold rounded-md shadow-sm <?= ($filtro === 'fac-pending') ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' ?>">
-                <i class="fas fa-hourglass-half mr-1"></i> Pendientes Facultad
-            </a>
-            <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=vra-pending" class="px-4 py-2 text-sm font-semibold rounded-md shadow-sm <?= ($filtro === 'vra-pending') ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' ?>">
-                <i class="fas fa-hourglass-half mr-1"></i> Pendientes VRA
-            </a>
+        <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+            
+            <h1 class="text-3xl font-bold text-gray-800">
+                Novedades por Oficio 
+                <span class="text-2xl font-normal text-gray-500">(<?= htmlspecialchars($anio_semestre) ?>)</span>
+            </h1>
+
+            <?php
+            // --- LÓGICA INTEGRADA DEL BOTÓN DE NOVEDADES (SOLO PARA USUARIO TIPO 3) ---
+            if ($tipo_usuario == 3) {
+                $cierreperiodonov = obtenerperiodonov($anio_semestre);
+                $url_novedad = "consulta_todo_depto_novedad.php?" .
+                               "&anio_semestre=" . urlencode($anio_semestre) .
+                               "&departamento_id=" . urlencode($id_departamento);
+
+                // Si el período de novedades está ABIERTO
+                if ($cierreperiodonov <> 1) { ?>
+                    <a href="<?= htmlspecialchars($url_novedad); ?>" class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2 border border-transparent text-base font-medium rounded-md text-white bg-[#003366] hover:bg-[#002244] shadow-sm transition-colors">
+                        <i class="fas fa-plus mr-2"></i>
+                        Gestionar Novedades
+                    </a>
+                <?php } else { // Si el período de novedades está CERRADO ?>
+                    <button disabled class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-400 cursor-not-allowed" title="El período para gestionar novedades se encuentra cerrado.">
+                        <i class="fas fa-lock mr-2"></i>
+                        Gestionar Novedades
+                    </button>
+                <?php }
+            }
+            // --- FIN DE LA LÓGICA DEL BOTÓN ---
+            ?>
         </div>
-    </div>
-</div>
-<?php endif; ?>
+
+        <?php if ($tipo_usuario == 3): ?>
+        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-6">
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold text-gray-600 text-sm mr-2">Mostrar:</span>
+                
+                <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=all" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'all') ? 'bg-blue-600 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
+                    <i class="fas fa-list-ul mr-1 opacity-80"></i> Todos
+                </a>
+                
+                <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=fac-pending" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'fac-pending') ? 'bg-orange-500 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
+                    <i class="fas fa-hourglass-half mr-1 opacity-80"></i> Pendientes Facultad
+                </a>
+                
+                <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=vra-pending" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'vra-pending') ? 'bg-orange-500 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
+                    <i class="fas fa-hourglass-half mr-1 opacity-80"></i> Pendientes VRA
+                </a>
+            </div>
+        </div>
+        <?php endif; ?>
         <?php if ($tipo_usuario == 3): ?>
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -475,86 +485,50 @@ $conn->close();
                 </h3>
                 <p class="text-green-700 mt-2">No se encontraron oficios con estado 'Pendiente' en ningún departamento.</p>
             </div>
-  <?php elseif ($tipo_usuario == 1): ?>
-    <div class="space-y-4" id="lista-facultades">
-        <?php if (!empty($datos_agrupados_vra)): ?>
-            <?php foreach ($datos_agrupados_vra as $nombre_facultad => $departamentos): ?>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <button class="accordion-facultad w-full text-left p-6 flex justify-between items-center hover:bg-gray-50 focus:outline-none">
-                        <span class="text-2xl font-semibold text-gray-800"><?= htmlspecialchars($nombre_facultad) ?></span>
-                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div class="accordion-body-facultad hidden p-4 md:p-6 bg-gray-50 border-t border-gray-200">
-                        <div class="space-y-4">
-                            <?php foreach ($departamentos as $nombre_departamento => $oficios): ?>
-                                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                                  <button 
-    class="accordion-departamento w-full text-left p-4 flex justify-between items-center hover:bg-gray-50 focus:outline-none" 
-    data-facultad="<?= htmlspecialchars($nombre_facultad) ?>" 
-    data-depto="<?= htmlspecialchars($nombre_departamento) ?>">
 
-                                        <span class="text-xl font-semibold text-gray-800"><?= htmlspecialchars($nombre_departamento) ?></span>
-                                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
-                                    <div class="accordion-body-departamento hidden p-4 bg-gray-100 border-t border-gray-200">
-                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 oficios-container">
-                                            <!-- Las tarjetas de oficios se insertarán aquí dinámicamente con JavaScript -->
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p class="text-gray-500 text-center p-10">No hay novedades aprobadas por las facultades para este periodo.</p>
-        <?php endif; ?>
-    </div>
 <?php endif; ?>
     
         
     </div>
 
-    <div id="detailsModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 h-full w-full hidden z-50">
-        <div class="relative top-40 mx-auto p-5 border w-11/12 lg:w-4/5 shadow-lg rounded-md bg-white">
-            <div class="flex justify-between items-center pb-3 border-b">
-                <h3 class="text-2xl font-semibold" id="modalTitle"></h3>
-                <button id="closeModalBtn" class="text-black text-3xl hover:text-gray-600">&times;</button>
-            </div>
-            <div class="mt-3 overflow-y-auto" style="max-height: 70vh;">
-                <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <?php if ($tipo_usuario == 2): // Condición: Solo mostrar para Facultad ?>
-                        <th rowspan="2" class="px-4 py-2 text-center align-middle">
-                            <input type="checkbox" id="selectAllCheckbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                        </th>
-                        <?php endif; ?>
+        <div id="detailsModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 h-full w-full hidden z-50">
+            <div class="relative top-40 mx-auto p-5 border w-11/12 lg:w-4/5 shadow-lg rounded-md bg-white">
+                <div class="flex justify-between items-center pb-3 border-b">
+                    <h3 class="text-2xl font-semibold" id="modalTitle"></h3>
+                    <button id="closeModalBtn" class="text-black text-3xl hover:text-gray-600">&times;</button>
+                </div>
+                <div class="mt-3 overflow-y-auto" style="max-height: 70vh;">
+                    <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <?php if ($tipo_usuario == 2): // Condición: Solo mostrar para Facultad ?>
+                            <th rowspan="2" class="px-4 py-2 text-center align-middle">
+                                <input type="checkbox" id="selectAllCheckbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            </th>
+                            <?php endif; ?>
 
-                        <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Novedad</th>
-                        <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Justificación</th>
-                        <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Nombre</th>
-                        <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Cédula</th>
-                        <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Tipo</th>
-                        <th colspan="2" class="px-6 py-2 text-center text-xs font-medium text-gray-500 uppercase">Dedicación</th>
-                        <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Estado Facultad</th>
-                        <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Estado VRA</th>
-                    </tr>
-                    <tr>
-                        <th class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase bg-gray-100">Popayán</th>
-                        <th class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase bg-gray-100">Regionalización</th>
-                    </tr>
-                </thead>
-                                        <tbody id="modalTableBody" class="bg-white divide-y divide-gray-200"></tbody>
-                </table>
+                            <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Novedad</th>
+                            <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Justificación</th>
+                            <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Nombre</th>
+                            <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Cédula</th>
+                            <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Tipo</th>
+                            <th colspan="2" class="px-6 py-2 text-center text-xs font-medium text-gray-500 uppercase">Dedicación</th>
+                            <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Rta. Facultad</th>
+                             <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">
+            Detalle Fac
+        </th>
+                            <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Rta. VRA</th>
+                        </tr>
+                        <tr>
+                            <th class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase bg-gray-100">Pop</th>
+                            <th class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase bg-gray-100">Reg</th>
+                        </tr>
+                    </thead>
+                                            <tbody id="modalTableBody" class="bg-white divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 <div id="actionPanel" class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 transform translate-y-full transition-transform duration-300 ease-in-out z-50">
             <div class="container mx-auto p-4">
                 <div class="flex justify-between items-center mb-2">
@@ -763,41 +737,80 @@ function actualizarPanelDeAcciones() {
             const id = parseInt(sol.id_solicitud);
             const isChecked = solicitudesSeleccionadas.includes(id);
 
-            // --- ¡NUEVA LÓGICA! ---
-            // 1. Verificar si la solicitud ya fue procesada por la facultad.
             const isProcessed = sol.estado_facultad !== 'PENDIENTE';
-            
-            // 2. Definir los atributos y clases según el estado.
             const disabledAttribute = isProcessed ? 'disabled' : '';
             const rowClass = isProcessed ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : (isChecked ? 'bg-blue-50' : '');
-            // --- FIN DE LA NUEVA LÓGICA ---
 
             let checkboxHtml = '';
             if (tipoUsuario == 2) {
-                // 3. Añadir el atributo 'disabled' al checkbox si es necesario.
                 checkboxHtml = `<td class="px-4 py-2 text-center"><input type="checkbox" data-id="${id}" class="solicitud-checkbox h-4 w-4 border-gray-300 rounded focus:ring-blue-500" ${isChecked ? 'checked' : ''} ${disabledAttribute}></td>`;
             }
 
-   let popayanData = '<span class="text-gray-400">N/A</span>';
-                let regionalizacionData = '<span class="text-gray-400">N/A</span>';
-                if (sol.tipo_docente === 'Ocasional') {
-                    if (sol.tipo_dedicacion) popayanData = `<span class="bg-gray-200 px-2 py-1 rounded">${sol.tipo_dedicacion}</span>`;
-                    if (sol.tipo_dedicacion_r) regionalizacionData = `<span class="bg-gray-200 px-2 py-1 rounded">${sol.tipo_dedicacion_r}</span>`;
-                } else if (sol.tipo_docente === 'Catedra') {
-                    if (sol.horas && sol.horas > 0) popayanData = `<span class="bg-blue-100 px-2 py-1 rounded">${sol.horas} hrs</span>`;
-                    if (sol.horas_r && sol.horas_r > 0) regionalizacionData = `<span class="bg-blue-100 px-2 py-1 rounded">${sol.horas_r} hrs</span>`;
-                }
-                const tipoDocenteDisplay = (sol.tipo_docente === 'Catedra') ? 'Cátedra' : sol.tipo_docente;
-                const estadoFacultadHtml = crearEtiquetaEstado(sol.estado_facultad, sol.observacion_facultad, 'facultad');
-                const estadoVraHtml = crearEtiquetaEstado(sol.estado_vra, sol.observacion_vra, 'vra');
-                
-            // 4. Añadir la clase a la fila <tr>.
-             const filaHTML = `<tr class="${rowClass}">${checkboxHtml}<td class="px-6 py-2 whitespace-nowrap">${sol.novedad || ''}</td><td class="px-6 py-2 whitespace-normal max-w-xs break-words text-gray-700">${sol.s_observacion || ''}</td><td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.nombre}</td><td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.cedula}</td><td class="px-6 py-2 whitespace-nowrap text-gray-700">${tipoDocenteDisplay}</td><td class="px-6 py-2 whitespace-nowrap text-gray-700">${popayanData}</td><td class="px-6 py-2 whitespace-nowrap text-gray-700">${regionalizacionData}</td><td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoFacultadHtml}</td><td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoVraHtml}</td></tr>`;
-                modalTableBody.innerHTML += filaHTML;
+            let popayanData = '<span class="text-gray-400">N/A</span>';
+            let regionalizacionData = '<span class="text-gray-400">N/A</span>';
+            if (sol.tipo_docente === 'Ocasional') {
+                if (sol.tipo_dedicacion) popayanData = `<span class="bg-gray-200 px-2 py-1 rounded">${sol.tipo_dedicacion}</span>`;
+                if (sol.tipo_dedicacion_r) regionalizacionData = `<span class="bg-gray-200 px-2 py-1 rounded">${sol.tipo_dedicacion_r}</span>`;
+            } else if (sol.tipo_docente === 'Catedra') {
+                if (sol.horas && sol.horas > 0) popayanData = `<span class="bg-blue-100 px-2 py-1 rounded">${sol.horas} hrs</span>`;
+                if (sol.horas_r && sol.horas_r > 0) regionalizacionData = `<span class="bg-blue-100 px-2 py-1 rounded">${sol.horas_r} hrs</span>`;
+            }
+            const tipoDocenteDisplay = (sol.tipo_docente === 'Catedra') ? 'Cátedra' : sol.tipo_docente;
+            const estadoFacultadHtml = crearEtiquetaEstado(sol.estado_facultad, sol.observacion_facultad, 'facultad');
+let estadoVraHtml; // Creamos la variable que contendrá la etiqueta final
+
+// Si la solicitud fue RECHAZADA por la Facultad...
+if (sol.estado_facultad === 'RECHAZADO') {
+    // ...creamos una etiqueta gris especial que dice '--' (No Aplica).
+    estadoVraHtml = `<span 
+                        class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-200 text-gray-700" 
+                        title="No aplica para trámite en VRA, fue devuelta por la Facultad.">
+                        --
+                     </span>`;
+} else {
+    // Si no fue rechazada, usamos la función normal para mostrar el estado real de VRA.
+    estadoVraHtml = crearEtiquetaEstado(sol.estado_vra, sol.observacion_vra, 'vra');
+}
+
+// ===================================================================
+// ===== FIN DEL BLOQUE DE CÓDIGO REEMPLAZADO =====
+// ==
+            // ===================================================================
+            // ===== INICIA NUEVO BLOQUE: LÓGICA PARA LA COLUMNA "DETALLE FAC" =====
+            // ===================================================================
+            let detalleFacultadHtml = '<td class="px-6 py-2 whitespace-nowrap text-gray-700">--</td>'; // Valor por defecto para PENDIENTE
+
+            if (sol.estado_facultad === 'APROBADO') {
+                const oficioFac = sol.oficio_con_fecha_fac || 'No asignado';
+                detalleFacultadHtml = `<td class="px-6 py-2 whitespace-nowrap text-xs text-gray-600" title="Oficio Facultad: ${oficioFac}">Avalado Oficio: ${oficioFac}</td>`;
+            } else if (sol.estado_facultad === 'RECHAZADO') {
+                const observacionFac = sol.observacion_facultad || 'Sin justificación.';
+                // Usamos clases para que el texto se ajuste si es muy largo
+                detalleFacultadHtml = `<td class="px-6 py-2 whitespace-normal max-w-xs break-words text-xs text-red-700 font-semibold" title="${observacionFac}">${observacionFac}</td>`;
+            }
+            // ===================================================================
+            // ===== FIN DEL NUEVO BLOQUE =====
+            // ===================================================================
+            
+            // Se añade la nueva celda 'detalleFacultadHtml' a la fila
+            const filaHTML = `<tr class="${rowClass}">
+                ${checkboxHtml}
+                <td class="px-6 py-2 whitespace-nowrap">${sol.novedad || ''}</td>
+                <td class="px-6 py-2 whitespace-normal max-w-xs break-words text-gray-700">${sol.s_observacion || ''}</td>
+                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.nombre}</td>
+                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.cedula}</td>
+                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${tipoDocenteDisplay}</td>
+                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${popayanData}</td>
+                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${regionalizacionData}</td>
+                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoFacultadHtml}</td>
+                ${detalleFacultadHtml} <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoVraHtml}</td>
+            </tr>`;
+            modalTableBody.innerHTML += filaHTML;
         });
     } else {
-        const colspan = (tipoUsuario == 2) ? 10 : 9;
-            modalTableBody.innerHTML = `<tr><td colspan="${colspan}" class="text-center py-4">No se encontraron solicitudes para este oficio.</td></tr>`;
+        // <-- CAMBIO: Aumentamos el colspan para que la fila vacía ocupe todo el ancho
+        const colspan = (tipoUsuario == 2) ? 11 : 10;
+        modalTableBody.innerHTML = `<tr><td colspan="${colspan}" class="text-center py-4">No se encontraron solicitudes para este oficio.</td></tr>`;
     }
     
     // Asignar eventos solo si eres usuario de Facultad
@@ -1123,118 +1136,60 @@ btnAvalar.addEventListener('click', () => {
 
     // --- ACCIÓN DE NO AVALAR ---
 // --- ACCIÓN DE NO AVALAR (MEJORADA) ---
+// --- ACCIÓN DE NO AVALAR (REVISADA) ---
 btnNoAvalar.addEventListener('click', () => {
-    if (solicitudesSeleccionadas.length === 0) return alert('Por favor, seleccione al menos una solicitud.');
-    
-    const observacion = prompt("Por favor, ingrese la justificación para el NO AVAL (obligatorio):");
-    
-    if (observacion === null) return; // El usuario presionó "Cancelar"
-
-    if (observacion.trim() !== '') {
-        toggleLoading(true, 'Procesando devolución... Enviando correo...'); // <-- MOSTRAR MENSAJE
-
-        const formData = new FormData();
-        formData.append('action', 'no_avalar');
-        // ... (el resto del formData no cambia) ...
-        solicitudesSeleccionadas.forEach(id => formData.append('selected_ids[]', id));
-
-        fetch('procesar_facultad_seleccion.php', { method: 'POST', body: formData })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            if (data.success) {
-                location.reload();
-            }
-        }).catch(error => {
-            console.error('Error de conexión o script:', error);
-            alert('Ocurrió un error inesperado al procesar la solicitud.');
-        }).finally(() => {
-            toggleLoading(false); // <-- OCULTAR MENSAJE (SIEMPRE se ejecuta)
-        });
-    } else {
-        alert('La justificación es obligatoria para no avalar.');
+    if (solicitudesSeleccionadas.length === 0) {
+        alert('Por favor, seleccione al menos una solicitud.');
+        return;
     }
-});  
+
+    const observacion = prompt("Por favor, ingrese la justificación para el NO AVAL (obligatorio):");
+
+    // Check if the user clicked "Cancel"
+    if (observacion === null) {
+        return; 
+    }
+
+    // Check if the user entered an empty string
+    if (observacion.trim() === '') {
+        alert('La justificación es obligatoria para no avalar.');
+        return;
+    }
+
+    toggleLoading(true, 'Procesando devolución... Enviando correo...');
+
+    const formData = new FormData();
+    formData.append('action', 'no_avalar');
+    formData.append('observacion', observacion); // Send the observation
+    formData.append('anio_semestre', '<?php echo $anio_semestre; ?>'); // Send the semester
+    solicitudesSeleccionadas.forEach(id => {
+        formData.append('selected_ids[]', id);
+    });
+
+    fetch('procesar_facultad_seleccion.php', { 
+        method: 'POST', 
+        body: formData 
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error de conexión o script:', error);
+        alert('Ocurrió un error inesperado al procesar la solicitud.');
+    })
+    .finally(() => {
+        toggleLoading(false);
+    });
+}); 
       
       aplicarFiltroGlobal();
       
 // ... justo después del cierre del `if (tipoUsuario == 2)`
-}   else if (tipoUsuario == 1) {
-            // --- LÓGICA INDEPENDIENTE Y ROBUSTA PARA VRA (USUARIO 1) ---
-            const estructuraVRA = <?php echo $estructura_vra_json ?? '{}'; ?>;
-
-            function llenarModalVRA(oficio_fac) {
-                modalTitle.textContent = 'Solicitudes del Oficio: ' + oficio_fac;
-                modalTableBody.innerHTML = '';
-                const solicitudesFiltradas = todasLasSolicitudes.filter(sol => sol.oficio_con_fecha_fac === oficio_fac);
-
-                if (solicitudesFiltradas.length > 0) {
-                    solicitudesFiltradas.forEach(sol => {
-                        let popayanData = '<span class="text-gray-400">N/A</span>', regionalizacionData = '<span class="text-gray-400">N/A</span>';
-                        if (sol.tipo_docente === 'Ocasional') {
-                            if (sol.tipo_dedicacion) popayanData = `<span class="bg-gray-200 px-2 py-1 rounded">${sol.tipo_dedicacion}</span>`;
-                            if (sol.tipo_dedicacion_r) regionalizacionData = `<span class="bg-gray-200 px-2 py-1 rounded">${sol.tipo_dedicacion_r}</span>`;
-                        } else if (sol.tipo_docente === 'Catedra') {
-                            if (sol.horas && sol.horas > 0) popayanData = `<span class="bg-blue-100 px-2 py-1 rounded">${sol.horas} hrs</span>`;
-                            if (sol.horas_r && sol.horas_r > 0) regionalizacionData = `<span class="bg-blue-100 px-2 py-1 rounded">${sol.horas_r} hrs</span>`;
-                        }
-                        const tipoDocenteDisplay = (sol.tipo_docente === 'Catedra') ? 'Cátedra' : sol.tipo_docente;
-                        const estadoFacultadHtml = crearEtiquetaEstado(sol.estado_facultad, sol.observacion_facultad, 'facultad');
-                        const estadoVraHtml = crearEtiquetaEstado(sol.estado_vra, sol.observacion_vra, 'vra');
-                        modalTableBody.innerHTML += `<tr><td class="px-6 py-2">${sol.novedad || ''}</td><td class="px-6 py-2 max-w-xs break-words">${sol.s_observacion || ''}</td><td class="px-6 py-2">${sol.nombre}</td><td class="px-6 py-2">${sol.cedula}</td><td class="px-6 py-2">${tipoDocenteDisplay}</td><td class="px-6 py-2">${popayanData}</td><td class="px-6 py-2">${regionalizacionData}</td><td class="px-6 py-2">${estadoFacultadHtml}</td><td class="px-6 py-2">${estadoVraHtml}</td></tr>`;
-                    });
-                } else {
-                    modalTableBody.innerHTML = `<tr><td colspan="9" class="text-center py-4">No se encontraron solicitudes para este oficio.</td></tr>`;
-                }
-                modal.classList.remove('hidden');
-            }
-
-            const listaFacultades = document.querySelector('#lista-facultades');
-            if (listaFacultades) {
-                listaFacultades.addEventListener('click', function(event) {
-                    const headerFacultad = event.target.closest('.accordion-facultad');
-                    if (headerFacultad) {
-                        const bodyFacultad = headerFacultad.nextElementSibling;
-                        const iconFacultad = headerFacultad.querySelector('svg');
-                        bodyFacultad.classList.toggle('hidden');
-                        iconFacultad.classList.toggle('rotate-180');
-                    }
-
-                    const headerDepto = event.target.closest('.accordion-departamento');
-                    if (headerDepto) {
-                        const bodyDepto = headerDepto.nextElementSibling;
-                        const iconDepto = headerDepto.querySelector('svg');
-                        bodyDepto.classList.toggle('hidden');
-                        iconDepto.classList.toggle('rotate-180');
-                        
-                        // Usamos los data-attributes, que son 100% fiables
-                        const deptoName = headerDepto.dataset.depto;
-                        const facultadName = headerDepto.dataset.facultad;
-                        const cardsContainer = bodyDepto.querySelector('.oficios-container');
-                        
-                        if (!bodyDepto.classList.contains('hidden') && cardsContainer.innerHTML.trim() === '') {
-                            const oficios = estructuraVRA[facultadName]?.[deptoName] || {};
-                            for (const oficio_fac in oficios) {
-                                let tienePendientesVRA = oficios[oficio_fac].some(sol => sol.estado_vra === 'PENDIENTE');
-                                const estadoVRA = tienePendientesVRA ? 'En Proceso' : 'Finalizado';
-                                const colorVRA = estadoVRA === 'En Proceso' ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800';
-                                const iconVRA = estadoVRA === 'En Proceso' ? '<i class="fas fa-hourglass-half"></i>' : '<i class="fas fa-check-circle"></i>';
-                                const cardHtml = `<div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500 flex flex-col justify-between"><div><div class="flex justify-between items-start mb-2"><h3 class="text-xs font-semibold text-gray-500 uppercase">Oficio Facultad</h3><span title="Estado en VRA: ${estadoVRA}" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 ${colorVRA}">${iconVRA} <span>${estadoVRA}</span></span></div><p class="text-md font-bold text-gray-800 my-2 truncate" title="${oficio_fac}">${oficio_fac}</p></div><button data-oficio-fac="${oficio_fac}" class="ver-detalles-btn-vra w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-md text-sm">Ver Solicitudes</button></div>`;
-                                cardsContainer.innerHTML += cardHtml;
-                            }
-                             if (Object.keys(oficios).length === 0) {
-                                cardsContainer.innerHTML = '<p class="col-span-full text-gray-500">No hay oficios de facultad para este departamento.</p>';
-                            }
-                        }
-                    }
-
-                    const verDetallesBtn = event.target.closest('.ver-detalles-btn-vra');
-                    if (verDetallesBtn) {
-                        llenarModalVRA(verDetallesBtn.dataset.oficioFac);
-                    }
-                });
-            }
-        }
+}   
     });
 </script>
 </body>

@@ -1,100 +1,102 @@
 <?php
-// procesar_aprobacion_vra.php
+// procesar_aprobacion_vra.php (Versión Corregida para Observaciones Individuales)
 
-// --- CONFIGURACIÓN Y SEGURIDAD INICIAL ---
+ob_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
-require_once('conn.php');
-session_start(); // Es crucial iniciar la sesión para leer las variables
-
 header('Content-Type: application/json');
 
-// --- 1. Verificación de sesión y permisos (VERSIÓN CORREGIDA Y SEGURA) ---
+require_once('conn.php');
 
-// Primero, verificamos que el usuario haya iniciado sesión.
-if (!isset($_SESSION['name'])) {
-    echo json_encode(['success' => false, 'error' => 'Sesión no iniciada. Por favor, ingrese de nuevo.']);
-    exit;
-}
+$response = ['success' => false, 'error' => 'Error desconocido.'];
 
-// Ahora, consultamos la base de datos para obtener el tipo de usuario real.
-// Esto evita depender de variables de sesión que pueden no estar actualizadas.
-$nombre_sesion = $_SESSION['name'];
-$stmt_user = $conn->prepare("SELECT tipo_usuario FROM users WHERE Name = ?");
-if (!$stmt_user) {
-    echo json_encode(['success' => false, 'error' => 'Error preparando la consulta de usuario.']);
-    exit;
-}
-$stmt_user->bind_param("s", $nombre_sesion);
-$stmt_user->execute();
-$result_user = $stmt_user->get_result();
-
-if ($result_user->num_rows === 0) {
-    echo json_encode(['success' => false, 'error' => 'Usuario de sesión no encontrado en la base de datos.']);
-    exit;
-}
-
-$user_row = $result_user->fetch_assoc();
-$tipo_usuario_db = $user_row['tipo_usuario'];
-$stmt_user->close();
-
-// Finalmente, comparamos el tipo de usuario de la base de datos.
-if ($tipo_usuario_db != 1) {
-    echo json_encode(['success' => false, 'error' => 'Acceso denegado. Permiso insuficiente.']);
-    exit;
-}
-// --- FIN DE LA VERIFICACIÓN CORREGIDA ---
-
-
-
-// --- 2. Recepción y validación de datos (VERSIÓN CORREGIDA) ---
-$accion = $_POST['accion'] ?? null;
-// Leemos el string de IDs y lo convertimos en un array
-$ids_string = $_POST['ids'] ?? '';
-$ids = !empty($ids_string) ? explode(',', $ids_string) : null;
-$observacion = trim($_POST['observacion'] ?? '');
-
-if (!$accion || !$ids) {
-    echo json_encode(['success' => false, 'error' => 'Datos incompletos o en formato incorrecto.']);
-    exit;
-}
-
-
-// 3. Mapeo de acción a estado de la base de datos
-$estado_db = '';
-if ($accion === 'aprobar') {
-    $estado_db = 'APROBADO';
-} elseif ($accion === 'rechazar') {
-    $estado_db = 'RECHAZADO';
-    if (empty($observacion)) {
-        echo json_encode(['success' => false, 'error' => 'La observación es obligatoria para rechazar.']);
-        exit;
+try {
+    if ($conn->connect_error) {
+        throw new Exception('Fallo en la conexión a la base de datos: ' . $conn->connect_error);
     }
-} else {
-    echo json_encode(['success' => false, 'error' => 'Acción no válida.']);
-    exit;
-}
+    session_start();
 
-// 4. Preparación de la consulta SQL
-    // --- 4. Preparación de la consulta SQL (VERSIÓN CORREGIDA) ---
-    // La sanitización ahora se hace sobre el array que creamos nosotros
-    $ids_sanitizados = array_filter($ids, 'is_numeric');
+    // 1. Verificación de Permisos (sin cambios)
+    if (!isset($_SESSION['name'])) throw new Exception('Sesión no iniciada.');
+    $nombre_sesion = $_SESSION['name'];
+    $stmt_user = $conn->prepare("SELECT Id, tipo_usuario FROM users WHERE Name = ?");
+    $stmt_user->bind_param("s", $nombre_sesion);
+    $stmt_user->execute();
+    $result_user = $stmt_user->get_result();
+    if ($result_user->num_rows === 0) throw new Exception('Usuario de sesión no encontrado.');
+    $user_row = $result_user->fetch_assoc();
+    $aprobador_id = $user_row['Id'];
+    if ($user_row['tipo_usuario'] != 1) throw new Exception('Acceso denegado.');
+    $stmt_user->close();
 
-    if (empty($ids_sanitizados)) {
-         echo json_encode(['success' => false, 'error' => 'No se proporcionaron IDs válidos.']);
-         exit;
+    // CAMBIO 1: Recibimos un JSON de solicitudes en lugar de datos sueltos
+    $accion = $_POST['accion'] ?? null;
+    $solicitudes_json = $_POST['solicitudes'] ?? null;
+    $anio_semestre = $_POST['anio_semestre'] ?? null;
+
+    if (!$accion || !$solicitudes_json || !$anio_semestre) {
+        throw new Exception('Datos incompletos (accion, solicitudes o anio_semestre).');
     }
 
-// 5. Vinculación de parámetros y ejecución
-$stmt->bind_param("ss" . $types, $estado_db, $observacion, ...$ids_sanitizados);
+    $solicitudes = json_decode($solicitudes_json, true);
 
-if ($stmt->execute()) {
-    echo json_encode(['success' => true]);
-} else {
-    echo json_encode(['success' => false, 'error' => 'Error al ejecutar la actualización: ' . $stmt->error]);
+    if (empty($solicitudes) || !is_array($solicitudes)) {
+        throw new Exception('No se proporcionaron solicitudes válidas.');
+    }
+    
+    $estado_db = ($accion === 'aprobar') ? 'APROBADO' : 'RECHAZADO';
+
+    // CAMBIO 2: Usamos una transacción. Si algo falla, se revierte todo.
+    $conn->begin_transaction();
+
+    // CAMBIO 3: Preparamos una sola consulta y la ejecutamos en un bucle para cada solicitud
+    // Nota: La columna de la llave primaria parece ser 'solicitud_id' según tu SQL y el JS.
+    $sql = "UPDATE solicitudes_working_copy 
+            SET estado_vra = ?, observacion_vra = ?, fecha_aprobacion_vra = NOW(), aprobador_vra_id = ? 
+            WHERE id_solicitud = ? AND estado_vra = 'PENDIENTE'";
+    
+    $stmt = $conn->prepare($sql);
+
+    foreach ($solicitudes as $sol) {
+        $id = $sol['id'] ?? null;
+        $observacion = trim($sol['observacion'] ?? '');
+
+        if (!is_numeric($id)) continue; // Ignorar si el ID no es válido
+
+        if ($estado_db === 'RECHAZADO' && empty($observacion)) {
+            // Si una sola observación falta al rechazar, detenemos todo.
+            throw new Exception("La observación es obligatoria para rechazar la solicitud ID: " . $id);
+        }
+
+        // La lógica de "pareo" se podría integrar aquí si fuera necesario,
+        // pero por ahora procesamos directamente lo que el usuario seleccionó.
+
+        $stmt->bind_param("ssii", $estado_db, $observacion, $aprobador_id, $id);
+        if (!$stmt->execute()) {
+            // Si una sola actualización falla, detenemos todo.
+            throw new Exception("Error al actualizar la solicitud ID: " . $id . " - " . $stmt->error);
+        }
+    }
+
+    // Si el bucle se completó sin errores, confirmamos todos los cambios en la BD
+    $conn->commit();
+    $stmt->close();
+    
+    $response['success'] = true;
+
+} catch (Exception $e) {
+    // Si ocurrió cualquier error, revertimos todos los cambios.
+    if (isset($conn) && $conn->ping()) {
+        $conn->rollback();
+    }
+    $response['error'] = $e->getMessage();
+} finally {
+    if (isset($conn) && $conn->ping()) {
+        $conn->close();
+    }
 }
 
-$stmt->close();
-$conn->close();
+ob_end_clean();
+echo json_encode($response);
+exit;
 ?>

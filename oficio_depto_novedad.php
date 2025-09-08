@@ -304,7 +304,7 @@ $sql_cambio_vinculacion = "
       AND T1.anio_semestre = '$anio_semestre'
       AND T2.departamento_id = '$departamento_id'
       AND T2.anio_semestre = '$anio_semestre'
-      AND T1.novedad = 'eliminar'
+      AND T1.novedad = 'Eliminar'
       AND T2.novedad = 'adicionar'
       AND T1.estado_depto = 'PENDIENTE'
       AND T2.estado_depto = 'PENDIENTE'
@@ -727,9 +727,9 @@ $consultacant = "
 ";
 
 // Excluir de nuevo las cédulas que ya se manejaron en el conteo total de profesores.
-if (!empty($cedulas_excluir_str)) {
+/*if (!empty($cedulas_excluir_str)) {
     $consultacant .= " AND cedula NOT IN ($cedulas_excluir_str)";
-}
+}*/
 
 $resultadocant = $con->query($consultacant);
 
