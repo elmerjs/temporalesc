@@ -669,7 +669,7 @@ for (const oficio_fac in oficios) {
             iconVRA = '<i class="fas fa-check-circle"></i>';
         }
     }
-
+const { codigo, fechaFormateada } = dividirOficio(oficio_fac);
     // 3. Creamos el HTML de la tarjeta con los nuevos valores dinámicos
     const cardHtml = `<div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500 flex flex-col justify-between">
         <div>
@@ -679,7 +679,9 @@ for (const oficio_fac in oficios) {
                     ${iconVRA} <span>${estadoVRA}</span>
                 </span>
             </div>
-            <p class="text-md font-bold text-gray-800 my-2 truncate" title="${oficio_fac}">${oficio_fac}</p>
+            <p class="text-md text-gray-800 my-2 truncate" title="${oficio_fac}">
+    <strong>${codigo}</strong> <span class="font-normal">${fechaFormateada}</span>
+</p>
         </div>
         <button data-oficio-fac="${oficio_fac}" class="ver-detalles-btn-vra w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-md text-sm">
             Ver Solicitudes
@@ -687,6 +689,27 @@ for (const oficio_fac in oficios) {
     </div>`;
     cardsContainer.innerHTML += cardHtml;
 }
+                
+                function dividirOficio(oficio) {
+    const partes = oficio.split(" ");
+    if (partes.length < 2) return { codigo: oficio, fechaFormateada: "" };
+
+    const codigo = partes[0];
+    const fecha = partes[1];
+
+    const [anio, mes, dia] = fecha.split("-");
+    const meses = {
+        "01": "ene.", "02": "feb.", "03": "mar.", "04": "abr.",
+        "05": "may.", "06": "jun.", "07": "jul.", "08": "ago.",
+        "09": "sept.", "10": "oct.", "11": "nov.", "12": "dic."
+    };
+
+    const mesEsp = meses[mes] || mes;
+    const fechaFormateada = `(${parseInt(dia)} de ${mesEsp} de ${anio})`;
+
+    return { codigo, fechaFormateada };
+}
+
 // ===================================================================
 // ===== FIN DEL BLOQUE DE CÓDIGO REEMPLAZADO =====
 // ===================================================================
@@ -705,6 +728,94 @@ for (const oficio_fac in oficios) {
 }
           actualizarEstilosPendientes(); 
     }); // CORRECCIÓN: Se eliminó un }); extra y se reorganizó la estructura.
+       
+       
+</script>
+    
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // =================================================================
+    // PARTE 1: INICIALIZACIÓN Y DEPURACIÓN DE DATOS (LA CLAVE)
+    // =================================================================
+    const statusesVRA = <?php echo $statuses_json; ?>;
+
+    // --- Inicio del Bloque de Depuración ---
+    console.log("--- INICIO DEPURACIÓN DEL FILTRO ---");
+    console.log("1. El objeto de estados (statusesVRA) que se recibió de PHP es:");
+    console.log(statusesVRA);
+    console.log("2. Las claves (nombres de facultad) disponibles en el objeto son:");
+    console.log(Object.keys(statusesVRA));
+    console.log("--- FIN DEPURACIÓN ---");
+    // --- Fin del Bloque de Depuración ---
+
+
+    // ==================================================
+    // PARTE 2: LÓGICA DEL ACORDEÓN (SIN CAMBIOS)
+    // ==================================================
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const body = header.nextElementSibling;
+            const icon = header.querySelector('svg');
+            body.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        });
+    });
+
+    // ==================================================
+    // PARTE 3: LÓGICA DEL FILTRO (CON DEPURACIÓN ADICIONAL)
+    // ==================================================
+    const filtroRadios = document.querySelectorAll('input[name="filtro_estado"]');
+    const mensajeNoPendientes = document.getElementById('mensaje-no-pendientes');
+
+    function aplicarFiltroGlobal() {
+        const filtroSeleccionado = document.querySelector('input[name="filtro_estado"]:checked').value;
+        const todasLasFacultades = document.querySelectorAll('#lista-facultades > .bg-white.rounded-lg');
+        let facultadesVisibles = 0;
+
+        console.log(`\n--- Aplicando filtro: '${filtroSeleccionado}' ---`);
+
+        todasLasFacultades.forEach(contenedor => {
+            const header = contenedor.querySelector('.accordion-header');
+            const facName = header.querySelector('span').textContent.trim();
+            
+            // Depuración: mostramos qué nombre estamos buscando
+            console.log(`Buscando estados para la facultad: "'${facName}'"`);
+
+            const statusesFacultad = statusesVRA[facName];
+            let tienePendientes = false;
+            
+            // Depuración: verificamos si encontramos la facultad en el objeto
+            if (statusesFacultad) {
+                console.log(" -> ¡Encontrada! Revisando sus oficios...");
+                for (const oficio in statusesFacultad) {
+                    if (statusesFacultad[oficio].vra === 'En Proceso VRA') {
+                        tienePendientes = true;
+                        break;
+                    }
+                }
+            } else {
+                console.log(" -> X No encontrada en el objeto de estados.");
+            }
+
+            if (filtroSeleccionado === 'pendientes' && !tienePendientes) {
+                contenedor.style.display = 'none';
+            } else {
+                contenedor.style.display = 'block';
+                facultadesVisibles++;
+            }
+        });
+
+        if (filtroSeleccionado === 'pendientes' && facultadesVisibles === 0) {
+            if (mensajeNoPendientes) mensajeNoPendientes.classList.remove('hidden');
+        } else {
+            if (mensajeNoPendientes) mensajeNoPendientes.classList.add('hidden');
+        }
+    }
+
+    filtroRadios.forEach(radio => {
+        radio.addEventListener('change', aplicarFiltroGlobal);
+    });
+});
 </script>
 </body>
 </html>

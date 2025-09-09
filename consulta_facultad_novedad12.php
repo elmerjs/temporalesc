@@ -58,7 +58,8 @@ if (isset($_SESSION['name'])) {
     }
     $stmt_user->close();
 }
-
+$nombre_decano=obtenerDecano($id_facultad);
+$trd_fac= obtenerTRDFacultad($id_facultad);
 // --- VALIDACIÓN DE ACCESO ---
 if ($tipo_usuario === null) {
     die("Error: Sesión no iniciada o usuario no encontrado.");
@@ -121,8 +122,7 @@ function procesarCambiosVinculacion($solicitudes) {
 
 $solicitudes_json = '[]';
 $statuses_json = '[]';
-
-if ($tipo_usuario == 3) {   
+if ($tipo_usuario == 3) {
     // --- LÓGICA PARA JEFE DE DEPARTAMENTO ---
     $sql_oficios = "SELECT DISTINCT oficio_con_fecha FROM solicitudes_working_copy WHERE departamento_id = ? AND anio_semestre = ? AND oficio_con_fecha IS NOT NULL ORDER BY fecha_oficio_depto,oficio_depto asc";
     $stmt_oficios = $conn->prepare($sql_oficios);
@@ -142,27 +142,86 @@ if ($tipo_usuario == 3) {
         if($sol['oficio_con_fecha']) $solicitudes_por_oficio[$sol['oficio_con_fecha']][] = $sol;
     }
 
-    // --- Lógica de cálculo de DOS estados ---
+    // ===== INICIA EL BLOQUE CORREGIDO =====
+    // --- Lógica de cálculo de estados (VERSIÓN MEJORADA Y COMPLETA) ---
     $oficio_statuses = [];
     foreach ($solicitudes_por_oficio as $oficio_fecha => $solicitudes_del_oficio) {
-        $estado_facultad_oficio = 'Finalizado';
-        $estado_vra_oficio = 'Finalizado';
-        foreach ($solicitudes_del_oficio as $sol) {
-            // Lógica para el estado de Facultad
-            if ($sol['estado_facultad'] === 'PENDIENTE') {
-                $estado_facultad_oficio = 'En Proceso';
-            }
-            // Lógica para el estado de VRA (la que ya tenías)
-            if ($sol['estado_vra'] === 'PENDIENTE' && $sol['estado_facultad'] !== 'RECHAZADO') {
-                $estado_vra_oficio = 'En Proceso';
-            }
+        
+        
+    // --- LÓGICA MEJORADA PARA ESTADO DE FACULTAD ---
+    $pendientes_fac_count = 0;
+    $aprobados_fac_count = 0;
+    $rechazados_fac_count = 0;
+    
+    foreach ($solicitudes_del_oficio as $sol) {
+        if ($sol['estado_facultad'] === 'PENDIENTE') {
+            $pendientes_fac_count++;
+        } elseif ($sol['estado_facultad'] === 'APROBADO') {
+            $aprobados_fac_count++;
+        } elseif ($sol['estado_facultad'] === 'RECHAZADO') {
+            $rechazados_fac_count++;
         }
+    }
+    
+    $estado_facultad_oficio = '';
+    if ($pendientes_fac_count > 0) {
+        $estado_facultad_oficio = 'En Proceso';
+    } elseif ($rechazados_fac_count > 0 && $aprobados_fac_count > 0) {
+        $estado_facultad_oficio = 'Finalizado Mixto';
+    } elseif ($rechazados_fac_count > 0 && $aprobados_fac_count == 0) {
+        $estado_facultad_oficio = 'Rechazado Total';
+    } elseif ($aprobados_fac_count > 0 && $rechazados_fac_count == 0) {
+        $estado_facultad_oficio = 'Aprobado Total';
+    } else {
+        $estado_facultad_oficio = 'Finalizado'; // Caso por defecto
+    }
+        // --- Lógica MEJORADA para estado de VRA ---
+        $estado_vra_oficio = '';
+        
+    
+            // SEGUNDO: Si no, calcular el estado detallado de VRA
+            $pendientes_vra_count = 0;
+            $aprobados_vra_count = 0;
+            $rechazados_vra_count = 0;
+            $solicitudes_relevantes_vra = 0;
+
+            foreach ($solicitudes_del_oficio as $sol) {
+                if ($sol['estado_facultad'] !== 'RECHAZADO') {
+                    $solicitudes_relevantes_vra++;
+                    if ($sol['estado_vra'] === 'PENDIENTE') {
+                        $pendientes_vra_count++;
+                    } elseif ($sol['estado_vra'] === 'APROBADO') {
+                        $aprobados_vra_count++;
+                    } elseif ($sol['estado_vra'] === 'RECHAZADO') {
+                        $rechazados_vra_count++;
+                    }
+                }
+            }
+            
+            if ($pendientes_vra_count > 0) {
+                $estado_vra_oficio = 'En Proceso';
+            } elseif ($solicitudes_relevantes_vra === 0) {
+                $estado_vra_oficio = 'N/A';
+            } elseif ($rechazados_vra_count > 0 && $aprobados_vra_count > 0) {
+                $estado_vra_oficio = 'Finalizado Mixto VRA';
+            } elseif ($rechazados_vra_count > 0 && $aprobados_vra_count == 0) {
+                $estado_vra_oficio = 'Rechazado Total VRA';
+            } elseif ($aprobados_vra_count > 0 && $rechazados_vra_count == 0) {
+                $estado_vra_oficio = 'Aprobado Total VRA';
+            } else {
+                $estado_vra_oficio = 'Finalizado';
+            }
+        
+        
         $oficio_statuses[$oficio_fecha] = ['facultad' => $estado_facultad_oficio, 'vra' => $estado_vra_oficio];
     }
+    // ===== TERMINA EL BLOQUE CORREGIDO =====
+
     $solicitudes_procesadas = procesarCambiosVinculacion($todas_las_solicitudes);
     $solicitudes_json = json_encode($solicitudes_procesadas);
 
-} elseif ($tipo_usuario == 2) {
+}
+elseif ($tipo_usuario == 2) {
     // --- LÓGICA PARA FACULTAD ---
     $sql_facultad = "SELECT d.depto_nom_propio AS nombre_departamento, s.* FROM solicitudes_working_copy s JOIN deparmanentos d ON s.departamento_id = d.PK_DEPTO WHERE s.facultad_id = ? AND s.anio_semestre = ? AND s.oficio_con_fecha IS NOT NULL ORDER BY d.depto_nom_propio ASC, s.fecha_oficio_depto ASC, s.oficio_depto ASC";
     $stmt_facultad = $conn->prepare($sql_facultad);
@@ -212,27 +271,55 @@ if ($tipo_usuario == 3) {
                 }
 
                 // La lógica para el estado de VRA no cambia
-              // ===== INICIA EL CÓDIGO A REEMPLAZAR =====
+             // ===== INICIA EL CÓDIGO MEJORADO =====
 $estado_vra_oficio = '';
+
 // Si el trámite fue rechazado en su totalidad por la facultad, VRA no aplica.
 if ($estado_final_facultad === 'Rechazado Total') {
     $estado_vra_oficio = 'N/A';
 } else {
-    // Si no, se aplica la lógica normal para VRA.
-    $estado_vra_oficio = 'Finalizado';
+    // Si no fue rechazado, contamos los estados de VRA para las solicitudes relevantes
+    $pendientes_vra_count = 0;
+    $aprobados_vra_count = 0;
+    $rechazados_vra_count = 0;
+    $solicitudes_relevantes_vra = 0;
+
     foreach ($solicitudes_del_oficio as $sol) {
-        if ($sol['estado_vra'] === 'PENDIENTE' && $sol['estado_facultad'] !== 'RECHAZADO') {
-            $estado_vra_oficio = 'En Proceso';
-            break;
+        // Solo consideramos las solicitudes que la facultad NO rechazó
+        if ($sol['estado_facultad'] !== 'RECHAZADO') {
+            $solicitudes_relevantes_vra++;
+            if ($sol['estado_vra'] === 'PENDIENTE') {
+                $pendientes_vra_count++;
+            } elseif ($sol['estado_vra'] === 'APROBADO') {
+                $aprobados_vra_count++;
+            } elseif ($sol['estado_vra'] === 'RECHAZADO') {
+                $rechazados_vra_count++;
+            }
         }
+    }
+
+    // Determinamos el estado final de VRA basado en los conteos
+    if ($pendientes_vra_count > 0) {
+        $estado_vra_oficio = 'En Proceso';
+    } elseif ($solicitudes_relevantes_vra === 0) {
+        // Si no quedó ninguna solicitud para VRA (ej: todas fueron rechazadas por facultad individualmente)
+        $estado_vra_oficio = 'N/A';
+    } elseif ($rechazados_vra_count > 0 && $aprobados_vra_count > 0) {
+        $estado_vra_oficio = 'Finalizado Mixto VRA';
+    } elseif ($rechazados_vra_count > 0 && $aprobados_vra_count == 0) {
+        $estado_vra_oficio = 'Rechazado Total VRA';
+    } elseif ($aprobados_vra_count > 0 && $rechazados_vra_count == 0) {
+        $estado_vra_oficio = 'Aprobado Total VRA';
+    } else {
+        $estado_vra_oficio = 'Finalizado'; // Un caso por defecto si no hay aprobados ni rechazados
     }
 }
 
-$oficio_statuses_facultad[$nombre_depto][$oficio_fecha] = [ // o $oficio_statuses[$oficio_fecha] para usuario 3
+$oficio_statuses_facultad[$nombre_depto][$oficio_fecha] = [
     'facultad' => $estado_final_facultad,
     'vra' => $estado_vra_oficio
 ];
-// ===== TERMINA EL CÓDIGO A REEMPLAZAR =====
+// ===== TERMINA EL CÓDIGO MEJORADO =====
             }
         }
  // ===================================================================
@@ -396,11 +483,36 @@ $conn->close();
                                     <div class="flex flex-col items-end space-y-1">
                                         <?php
                                             // Lógica para el estado de Facultad
-                                            $status_fac = $oficio_statuses[$oficio_fecha]['facultad'];
-                                            $color_fac = ($status_fac === 'En Proceso') ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800';
-                                            $icon_fac = ($status_fac === 'En Proceso') ? '<i class="fas fa-hourglass-half"></i>' : '<i class="fas fa-check"></i>';
+                                    // Lógica MEJORADA para el estado de Facultad
+$status_fac = $oficio_statuses[$oficio_fecha]['facultad'];
+$color_fac = '';
+$icon_fac = '';
+$text_fac = 'Facultad'; // Texto por defecto
+
+if ($status_fac === 'En Proceso') {
+    $color_fac = 'bg-orange-100 text-orange-800';
+    $icon_fac = '<i class="fas fa-hourglass-half"></i>';
+    $text_fac = 'En Proceso Facultad';
+} elseif ($status_fac === 'Aprobado Total') {
+    $color_fac = 'bg-green-100 text-green-800';
+    $icon_fac = '<i class="fas fa-check-circle"></i>';
+    $text_fac = 'Aprobado Facultad';
+} elseif ($status_fac === 'Rechazado Total') {
+    $color_fac = 'bg-red-100 text-red-800';
+    $icon_fac = '<i class="fas fa-times-circle"></i>';
+    $text_fac = 'Rechazado Facultad';
+} elseif ($status_fac === 'Finalizado Mixto') {
+    $color_fac = 'bg-blue-100 text-blue-800';
+    $icon_fac = '<i class="fas fa-check-double"></i>';
+    $text_fac = 'Finalizado Mixto Facultad';
+} else { // Caso por defecto para 'Finalizado'
+    $color_fac = 'bg-blue-100 text-blue-800';
+    $icon_fac = '<i class="fas fa-check"></i>';
+    $text_fac = 'Finalizado Facultad';
+}
                                         ?>
-                                        <span title="Estado Facultad: <?= $status_fac ?>" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 <?= $color_fac ?>"><?= $icon_fac ?> <span>Facultad</span></span>
+                                        <span title="Estado Facultad: <?= $status_fac ?>" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 <?= $color_fac ?>"><?= $icon_fac ?> <span><?= $text_fac ?></span></span>
+
 
                                         <?php
                                         // --- Lógica mejorada para el estado de VRA ---
@@ -412,15 +524,63 @@ $conn->close();
                                             $icon_vra = '<i class="fas fa-ban"></i>'; // Icono de prohibido/cancelado
                                             $text_vra = 'VRA N/A';
                                         } else {
-                                            $color_vra = ($status_vra === 'En Proceso') ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800';
-                                            $icon_vra = ($status_vra === 'En Proceso') ? '<i class="fas fa-hourglass-half"></i>' : '<i class="fas fa-check-circle"></i>';
-                                            $text_vra = ($status_vra === 'En Proceso') ? 'En Proceso VRA' : 'Finalizado VRA';
+                                             // --- INICIA LA LÓGICA DE VISUALIZACIÓN MEJORADA ---
+                                        if ($status_vra === 'En Proceso') {
+                                            $color_vra = 'bg-orange-100 text-orange-800';
+                                            $icon_vra  = '<i class="fas fa-hourglass-half"></i>';
+                                            $text_vra  = 'En Proceso VRA';
+                                        } elseif ($status_vra === 'Aprobado Total VRA') {
+                                            $color_vra = 'bg-green-100 text-green-800';
+                                            $icon_vra  = '<i class="fas fa-check-circle"></i>';
+                                            $text_vra  = 'Finalizado VRA';
+                                        } elseif ($status_vra === 'Rechazado Total VRA') {
+                                            $color_vra = 'bg-red-100 text-red-800';
+                                            $icon_vra  = '<i class="fas fa-times-circle"></i>';
+                                            $text_vra  = 'Finalizado VRA';
+                                        } elseif ($status_vra === 'Finalizado Mixto VRA') {
+                                            $color_vra = 'bg-blue-100 text-blue-800';
+                                            $icon_vra  = '<i class="fas fa-check-double"></i>';
+                                            $text_vra  = 'Finalizado Mixto VRA';
+                                        } else { // Un caso por defecto para 'Finalizado' simple
+                                            $color_vra = 'bg-green-100 text-green-800';
+                                            $icon_vra  = '<i class="fas fa-check-circle"></i>';
+                                            $text_vra  = 'Finalizado VRA';
                                         }
+                                                                            }
                                     ?>
                                     <span title="Estado VRA: <?= $status_vra ?>" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 <?= $color_vra ?>"><?= $icon_vra ?> <span><?= $text_vra ?></span></span>
                                     </div>
+                                        
+                                        
+                                        <?php  
+                                            
+
+                                    // Separar el código y la fecha
+                                    list($codigo, $fecha_str) = explode(" ", $oficio_fecha);
+
+                                    // Crear objeto DateTime
+                                    $fecha = DateTime::createFromFormat("Y-m-d", $fecha_str);
+
+                                    // Mapeo de meses en español (abreviados)
+                                    $meses = [
+                                        '01' => 'ene.', '02' => 'feb.', '03' => 'mar.', '04' => 'abr.',
+                                        '05' => 'may.', '06' => 'jun.', '07' => 'jul.', '08' => 'ago.',
+                                        '09' => 'sept.', '10' => 'oct.', '11' => 'nov.', '12' => 'dic.'
+                                    ];
+
+                                    // Extraer componentes
+                                    $dia = (int)$fecha->format('d');
+                                    $mes = $meses[$fecha->format('m')];
+                                    $anio = $fecha->format('Y');
+
+                                    // Texto final separado para aplicar estilos distintos
+                                    $codigo_negrita = "<strong>" . htmlspecialchars($codigo) . "</strong>";
+                                    $fecha_normal = "<span class=\"font-normal\">($dia de $mes de $anio)</span>";
+                                                                                    ?>
                                 </div>
-                                    <p class="text-lg font-bold text-gray-800 my-2 truncate" title="<?= htmlspecialchars($oficio_fecha) ?>"><?= htmlspecialchars($oficio_fecha) ?></p>
+                                    <p class="text-lg text-gray-800 my-2 truncate" title="<?= htmlspecialchars($oficio_fecha) ?>">
+                                <?= $codigo_negrita ?> <?= $fecha_normal ?>
+                            </p>
                                 </div>
                                 <button data-oficio="<?= htmlspecialchars($oficio_fecha) ?>" class="ver-detalles-btn w-full mt-4 bg-[#003366] hover:bg-[#002244] text-white font-bold py-2 px-4 rounded-md transition-colors duration-200">
                                     Ver Solicitudes
@@ -567,23 +727,21 @@ $conn->close();
 
             <div class="mb-4">
                 <label for="oficio" class="block text-gray-700 text-sm font-bold mb-2">Número de Oficio:</label>
-                <input type="text" id="oficio" name="oficio" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
+                <input type="text" id="oficio" name="oficio" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" value="<?= htmlspecialchars($trd_fac) ?>" required>
+
             </div>
             <div class="mb-4">
                 <label for="fecha_oficio" class="block text-gray-700 text-sm font-bold mb-2">Fecha Oficio:</label>
                 <input type="date" id="fecha_oficio" name="fecha_oficio" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
             </div>
-             <div class="mb-4">
-                <label for="numero_acta" class="block text-gray-700 text-sm font-bold mb-2">Número de Acta (Opcional):</label>
-                <input type="text" id="numero_acta" name="numero_acta" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
-            </div>
+         
             <div class="mb-4">
                 <label for="decano" class="block text-gray-700 text-sm font-bold mb-2">Decano(a):</label>
-                <input type="text" id="decano" name="decano" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" value="" required>
+                <input type="text" id="decano" name="decano" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" value="<?= htmlspecialchars($nombre_decano) ?>" required>
             </div>
             <div class="mb-4">
                 <label for="elaborado_por" class="block text-gray-700 text-sm font-bold mb-2">Elaborado por:</label>
-                <input type="text" id="elaborado_por" name="elaborado_por" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" value="<?php echo htmlspecialchars($_SESSION['name']); ?>" required>
+                <input type="text" id="elaborado_por" name="elaborado_por" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"  required>
             </div>
             <div class="mb-6">
                 <label for="folios" class="block text-gray-700 text-sm font-bold mb-2">Folios:</label>
@@ -591,7 +749,7 @@ $conn->close();
             </div>
             
             <div class="flex items-center justify-end space-x-4">
-                <button type="button" onclick="document.getElementById('wordGenModal').classList.add('hidden'); location.reload();" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                <button type="button" id="btnCloseAndReload" onclick="document.getElementById('wordGenModal').classList.add('hidden'); location.reload();" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-300" disabled>
                     Cerrar y Recargar
                 </button>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -911,25 +1069,52 @@ function renderizarContenidoAcordeon(headerElement) {
             else if (status_fac === 'Rechazado Total') { color_fac = 'bg-red-100 text-red-800'; icon_fac = '<i class="fas fa-times"></i>'; text_fac = 'No Avalado por Facultad'; }
             else if (status_fac === 'Finalizado Mixto') { color_fac = 'bg-blue-100 text-blue-800'; icon_fac = '<i class="fas fa-check"></i>'; text_fac = 'Tramitado (incluye devolución)';}
             
-            const status_vra = statusObj.vra;
+                 const status_vra = statusObj.vra;
             let color_vra, icon_vra, text_vra;
-            if (status_vra === 'N/A') { color_vra = 'bg-gray-200 text-gray-500'; icon_vra = '<i class="fas fa-ban"></i>'; text_vra = 'VRA N/A'; }
-            else { color_vra = (status_vra === 'En Proceso') ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'; icon_vra = (status_vra === 'En Proceso') ? '<i class="fas fa-hourglass-half"></i>' : '<i class="fas fa-check-circle"></i>'; text_vra = (status_vra === 'En Proceso') ? 'En Proceso VRA' : 'Finalizado VRA'; }
-            
-            const cardHtml = `
+
+            if (status_vra === 'N/A') {
+                color_vra = 'bg-gray-200 text-gray-500';
+                icon_vra = '<i class="fas fa-ban"></i>';
+                text_vra = 'VRA N/A';
+            } else if (status_vra === 'En Proceso') {
+                color_vra = 'bg-orange-100 text-orange-800';
+                icon_vra = '<i class="fas fa-hourglass-half"></i>';
+                text_vra = 'En Proceso VRA';
+            } else if (status_vra === 'Aprobado Total VRA') {
+                color_vra = 'bg-green-100 text-green-800';
+                icon_vra = '<i class="fas fa-check-circle"></i>';
+                text_vra = 'Finalizado VRA';
+            } else if (status_vra === 'Rechazado Total VRA') {
+                color_vra = 'bg-red-100 text-red-800';
+                icon_vra = '<i class="fas fa-times-circle"></i>';
+                text_vra = 'Finalizado VRA';
+            } else if (status_vra === 'Finalizado Mixto VRA') {
+                color_vra = 'bg-blue-100 text-blue-800';
+                icon_vra = '<i class="fas fa-check-double"></i>';
+                text_vra = 'Finalizado Mixto VRA';
+            } else { // Caso por defecto para 'Finalizado' simple
+                color_vra = 'bg-green-100 text-green-800';
+                icon_vra = '<i class="fas fa-check-circle"></i>';
+                text_vra = 'Finalizado VRA';
+            }
+            const { codigo, fechaFormateada } = dividirOficio(oficio);
+
+const cardHtml = `
 <div class="bg-[#F0F4F9] rounded-lg shadow-md p-6 border-l-4 ${borderColorClass} flex flex-col justify-between oficio-card" data-depto="${deptoName}">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Oficio</h3>
-                            <div class="flex flex-col items-end space-y-1">
-                                <span title="${status_fac}" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 ${color_fac}">${icon_fac} <span>${text_fac}</span></span>
-                                <span title="${status_vra}" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 ${color_vra}">${icon_vra} <span>${text_vra}</span></span>
-                            </div>
-                        </div>
-                        <p class="text-lg font-bold text-gray-800 my-2 truncate" title="${oficio}">${oficio}</p>
-                    </div>
-                    <button data-oficio="${oficio}" class="ver-detalles-btn w-full mt-4 bg-[#003366] hover:bg-[#002244] text-white font-bold py-2 px-4 rounded-md">Ver Solicitudes</button>
-                </div>`;
+    <div>
+        <div class="flex justify-between items-start mb-2">
+            <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Oficio</h3>
+            <div class="flex flex-col items-end space-y-1">
+                <span title="${status_fac}" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 ${color_fac}">${icon_fac} <span>${text_fac}</span></span>
+                <span title="${status_vra}" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 ${color_vra}">${icon_vra} <span>${text_vra}</span></span>
+            </div>
+        </div>
+        <p class="text-lg text-gray-800 my-2 truncate" title="${codigo} ${fechaFormateada}">
+            <strong>${codigo}</strong> <span class="font-normal">${fechaFormateada}</span>
+        </p>
+    </div>
+    <button data-oficio="${oficio}" class="ver-detalles-btn w-full mt-4 bg-[#003366] hover:bg-[#002244] text-white font-bold py-2 px-4 rounded-md">Ver Solicitudes</button>
+</div>`;
             cardsContainer.innerHTML += cardHtml;
         }
         
@@ -937,7 +1122,24 @@ function renderizarContenidoAcordeon(headerElement) {
             cardsContainer.innerHTML = `<p class="text-gray-500 col-span-full text-center py-4">No se encontraron oficios con estado 'Pendiente' en este departamento.</p>`;
         }
     }
+function dividirOficio(oficio) {
+    const partes = oficio.split(" ");
+    if (partes.length < 2) return { codigo: oficio, fechaFormateada: "" };
 
+    const codigo = partes[0];
+    const fecha = partes[1];
+
+    const [anio, mes, dia] = fecha.split("-");
+    const meses = {
+        "01": "ene.", "02": "feb.", "03": "mar.", "04": "abr.",
+        "05": "may.", "06": "jun.", "07": "jul.", "08": "ago.",
+        "09": "sept.", "10": "oct.", "11": "nov.", "12": "dic."
+    };
+
+    const mesEsp = meses[mes] || mes;
+const fechaFormateada = `(${parseInt(dia)} de ${mesEsp} de ${anio})`;
+    return { codigo, fechaFormateada };
+}
 // --- FUNCIÓN PARA APLICAR EL FILTRO GLOBAL (VERSIÓN FINAL Y COMPLETA) ---
 function aplicarFiltroGlobal() {
     // 1. Seleccionamos los elementos necesarios del DOM
@@ -1191,6 +1393,59 @@ btnNoAvalar.addEventListener('click', () => {
 // ... justo después del cierre del `if (tipoUsuario == 2)`
 }   
     });
+</script>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Seleccionamos los elementos del formulario modal
+    const wordGenForm = document.getElementById('wordGenForm');
+    const oficioInput = document.getElementById('oficio');
+    const btnCloseAndReload = document.getElementById('btnCloseAndReload');
+
+    if (wordGenForm) {
+        // Convertimos el listener a una función 'async' para poder usar 'await'
+        wordGenForm.addEventListener('submit', async function(event) {
+            
+            // PREVENIR el envío automático para hacer nuestras validaciones primero
+            event.preventDefault(); 
+            
+            const oficioValue = oficioInput.value.trim();
+            
+            // VALIDACIÓN 1: Formato del oficio (la que ya tenías)
+            if (oficioValue.includes('/') && oficioValue.substring(oficioValue.lastIndexOf('/') + 1) === '') {
+                alert('El número de oficio debe tener un valor después del "/". Por favor, complételo.');
+                return; // Detiene la ejecución
+            }
+
+            // VALIDACIÓN 2: Verificar si el oficio ya existe en la BD
+            const anioSemestre = document.getElementById('wordGenAnioSemestre').value;
+            const idFacultad = document.getElementById('wordGenIdFacultad').value;
+            const checkUrl = `verificar_oficio_fac.php?oficio=${encodeURIComponent(oficioValue)}&anio_semestre=${anioSemestre}&id_facultad=${idFacultad}`;
+            
+            try {
+                const response = await fetch(checkUrl);
+                const data = await response.json();
+
+                // Si el oficio ya existe, mostrar alerta y detener
+                if (data.existe) {
+                    alert('Error: El número de oficio ya ha sido utilizado en este período para esta facultad. Por favor, ingrese un número diferente.');
+                    return; 
+                }
+                
+                // Si todo está correcto, habilitamos el botón y enviamos el formulario
+                if (btnCloseAndReload) {
+                    btnCloseAndReload.disabled = false;
+                }
+                
+                // Si todas las validaciones pasaron, ahora sí enviamos el formulario
+                this.submit(); 
+
+            } catch (error) {
+                console.error('Error al verificar el oficio:', error);
+                alert('No se pudo verificar el número de oficio. Intente de nuevo.');
+            }
+        });
+    }
+});
 </script>
 </body>
 </html>

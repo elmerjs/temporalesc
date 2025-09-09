@@ -439,20 +439,30 @@ $nombre_usuario = htmlspecialchars($_SESSION['name'] ?? ''); // No se usa direct
                     return false;
                 }
             } else if (tipoDocente === "Catedra") {
-                if ((horas === 0 && horasR === 0) || (isNaN(horas) || isNaN(horasR))) {
-                    alert('Debe ingresar al menos un valor para Horas.');
-                    return false;
-                }
-                
-                if (horas < 0 || horas > 12 || horasR < 0 || horasR > 12) {
-                    alert('Las horas no pueden ser menores de 0 o mayores de 12.');
-                    return false;
-                }
-                
-                if (horas + horasR > 12) {
-                    alert('La suma de las horas no puede ser mayor a 12.');
-                    return false;
-                }
+              // Valida que al menos un campo de horas tenga valor
+                    if ((horas === 0 && horasR === 0) || (isNaN(horas) || isNaN(horasR))) {
+                        alert('Debe ingresar al menos un valor para Horas.');
+                        return false;
+                    }
+
+                    // --- ¡NUEVA VALIDACIÓN! ---
+                    // Verifica que si las horas son mayores a 0, también sean mayores o iguales a 2.
+                    if ((horas > 0 && horas < 2) || (horasR > 0 && horasR < 2)) {
+                        alert('Si ingresa un valor para las horas, este no puede ser menor a 2.');
+                        return false;
+                    }
+
+                    // Mantiene la validación del máximo de horas
+                    if (horas > 12 || horasR > 12) {
+                        alert('Las horas no pueden ser mayores de 12.');
+                        return false;
+                    }
+
+                    // Mantiene la validación de la suma total de horas
+                    if (horas + horasR > 12) {
+                        alert('La suma de las horas no puede ser mayor a 12.');
+                        return false;
+                    }
             }
 
             // Validar campos de Observación y Tipo de Reemplazo (si son obligatorios)
