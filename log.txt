@@ -717,3 +717,15 @@ Inicio del proceso para id_depto_periodo: 2006Datos recibidos: id_depto_periodo=
 fk_depto_dp obtenido: 1Email obtenido: artesplasticas@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 2006
 Inicio del proceso para id_depto_periodo: 2006Datos recibidos: id_depto_periodo=2006, estado=rechazar, observacion=pruebas no tener en cuenta, anio_semestre=2025-2
 fk_depto_dp obtenido: 1Email obtenido: artesplasticas@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 2006
+Inicio del proceso para id_depto_periodo: 2006Datos recibidos: id_depto_periodo=2006, estado=rechazar, observacion=pruebas, anio_semestre=2025-2
+fk_depto_dp obtenido: 1Email obtenido: artesplasticas@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 2006
+Inicio del proceso para id_depto_periodo: 1893Datos recibidos: id_depto_periodo=1893, estado=rechazar, observacion=pruebas, anio_semestre=2025-2
+fk_depto_dp obtenido: 2Email obtenido: jefadiseno@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 1893
+Inicio del proceso para id_depto_periodo: 2006Datos recibidos: id_depto_periodo=2006, estado=aceptar, observacion=, anio_semestre=2025-2
+fk_depto_dp obtenido: 1Email obtenido: artesplasticas@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 2006
+Inicio del proceso para id_depto_periodo: 1893Datos recibidos: id_depto_periodo=1893, estado=aceptar, observacion=, anio_semestre=2025-2
+fk_depto_dp obtenido: 2Email obtenido: jefadiseno@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 1893
+Inicio del proceso para id_depto_periodo: 2006Datos recibidos: id_depto_periodo=2006, estado=rechazar, observacion=verificar ocasionales Artes plásticas ya que sobre pasa el la cantidad e horas pactadas, anio_semestre=2025-2
+fk_depto_dp obtenido: 1Email obtenido: artesplasticas@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 2006
+Inicio del proceso para id_depto_periodo: 2006Datos recibidos: id_depto_periodo=2006, estado=aceptar, observacion=, anio_semestre=2025-2
+fk_depto_dp obtenido: 1Email obtenido: artesplasticas@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 2006

@@ -1237,7 +1237,7 @@ h2.section-title {
 }
 
 .text-info {
-    color: var(--unicauca-accent) !important;
+    color: var(--unicauca-warning) !important;
 }
 
 /* Botones de acción */
@@ -1878,7 +1878,7 @@ document.addEventListener('DOMContentLoaded', function () {
         opacity: 0.65;
         cursor: not-allowed;
     }
-</style>
+
 </style>
 <div class="col-md-4">
     <div class="content-sidebar bg-unicauca-light p-4 rounded-3 border border-unicauca h-100 shadow-sm" style="font-family: 'Open Sans', sans-serif !important;">

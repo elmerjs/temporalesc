@@ -34,6 +34,8 @@ if ($currentMonth >= 7) {
     $nextPeriod = $currentYear . '-2';
     $previousPeriod = ($currentYear - 1) . '-2';
 }
+
+
 //echo "nombre sesion: ". $nombre_sesion;
 $consultaf = "SELECT * FROM users WHERE users.Name= '$nombre_sesion'";
 $resultadof = $con->query($consultaf);
@@ -56,6 +58,26 @@ $profe_en_cargo= $row['u_nombre_en_cargo'];
     }
 }
 
+// NUEVO: Verificar si hay registros pendientes para Novedades
+$hasPendingNovelties = false;
+if ($tipo_usuario != 1 && isset($fk_fac_user) && $fk_fac_user > 0) {
+    $con_check = new mysqli('localhost', 'root', '', 'contratacion_temporales_b');
+    if (!$con_check->connect_error) {
+        $sql_check = "SELECT 1 FROM solicitudes_working_copy 
+                      WHERE facultad_id = ? 
+                      AND estado_facultad = 'PENDIENTE' 
+                      LIMIT 1";
+        $stmt = $con_check->prepare($sql_check);
+        if ($stmt) {
+            $stmt->bind_param("i", $fk_fac_user);
+            $stmt->execute();
+            $result_check = $stmt->get_result();
+            $hasPendingNovelties = $result_check->num_rows > 0;
+            $stmt->close();
+        }
+        $con_check->close();
+    }
+}
 // Conectar a la base de datos
 $con = new mysqli('localhost', 'root', '', 'contratacion_temporales_b');
 if ($con->connect_error) {
@@ -695,10 +717,33 @@ nav ul li ul.submenu li.active a::after { /* Opcional: línea para el sub-ítem 
     margin: 0; /* Remove default margin */
     border-bottom: 1px solid #e9ecef; /* A subtle line at the bottom */
 }
+
+        /* Oculta el menú por defecto para prevenir el "flash" al recargar */
+        .hide-by-default {
+            display: none;
+        }
+
+        /* Cuando Bootstrap lo hace visible, esta regla se anula y se muestra */
+        .dropdown-menu.show {
+            display: block;
+        }
+      /* Mantiene el contenido principal invisible mientras la página termina de cargar */
+        .cargando {
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        /* --- Mantenemos la regla anterior por si acaso --- */
+        .hide-by-default {
+            display: none;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
 </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="cargando">
 <header>
     <div class="header-top-row">
  <div class="logo-and-title">
@@ -738,7 +783,7 @@ nav ul li ul.submenu li.active a::after { /* Opcional: línea para el sub-ítem 
                 </div>
             </button>
             
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+<ul class="dropdown-menu dropdown-menu-end hide-by-default" aria-labelledby="dropdownMenuButton">
                 <li>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
                         <i class="fas fa-user me-2"></i> Perfil
@@ -962,11 +1007,16 @@ nav ul li ul.submenu li.active a::after { /* Opcional: línea para el sub-ítem 
                     <li class="submenu-container <?= ($active_menu_item == 'novedades') ? 'active' : '' ?>" >
                 <a href="#" title="Novedades que se presentan para los profesores temporales vinculados en el periodo actual">
                     Novedades
+                     <?php if ($hasPendingNovelties): ?>
+            <span class="pulse-badge">!</span>
+        <?php endif; ?>
                 </a>
+                                                
+
                  <ul class="submenu novedades-submenu">
                     <?php
                     $periodosMostrados = [];
-                    if ($tipo_usuario == 1):
+                    if ($tipo_usuario == 1 && $id_user != 96 && $id_user != 93 && $id_user != 10):
                         foreach ($departamentos as $departamento):
                             if (!in_array($previousPeriod, $periodosMostrados)):
                                 $periodosMostrados[] = $previousPeriod; ?>
@@ -1065,7 +1115,7 @@ nav ul li ul.submenu li.active a::after { /* Opcional: línea para el sub-ítem 
     <?php if ($tipo_usuario == 1): ?>
             <li class="menu-item <?= ($active_menu_item == 'comparativo') ? 'active' : '' ?>">
                 <a href="#" title="comparativo profesores periodo actual vs anterior">
-                    Comparativo <span class="new-badge">New!</span>
+                    Comparativo 
                 </a>
                 <ul class="submenu">
                         <li class="<?= ($active_menu_item == 'comparativo' && $selected_period == $previousPeriod) ? 'active' : '' ?>">
@@ -1199,7 +1249,7 @@ nav ul li ul.submenu li.active a::after { /* Opcional: línea para el sub-ítem 
                 </li>
             <?php endif; ?>
 
-            <?php if ($tipo_usuario == 1 && ! in_array($id_user, [92, 93, 94])): ?>
+            <?php if ($tipo_usuario == 1 && ! in_array($id_user, [92, 93, 94,96])): ?>
                 <li class="<?= ($active_menu_item == 'gestion_periodos') ? 'active' : '' ?>">
                     <a href="../../temporalesc/gestion_periodos.php">Gestión periodos</a>
                 </li>
@@ -1577,6 +1627,10 @@ document.querySelectorAll('.novedades-periodo').forEach(function(link) {
             });
         });
 </script>
- 
+ <script>
+        // Esta línea se ejecuta inmediatamente después de que el menú es leído por el navegador.
+        // Hace que la página se vuelva visible de forma suave.
+        document.body.classList.remove('cargando');
+    </script>
 </body>
 </html>

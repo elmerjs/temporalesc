@@ -1,5 +1,7 @@
 <?php
 // --- INCLUDES Y CONFIGURACIÓN INICIAL ---
+$active_menu_item = 'novedades';
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -9,6 +11,8 @@ require('funciones.php');
 
 // --- VARIABLES ESENCIALES ---
 $anio_semestre = $_POST['anio_semestre'] ?? $_GET['anio_semestre'] ?? '2025-2';
+$_SESSION['anio_semestre'] = $anio_semestre; // ← Añade esta línea
+
 // --- VARIABLES ESENCIALES ---
 
 // ===== INICIA EL NUEVO CÓDIGO DE FILTRO =====
@@ -30,6 +34,7 @@ $id_departamento = null;
 $tipo_usuario = null;
 $aprobador_id_logged_in = null;
 
+// Reemplaza el bloque de obtención de datos del usuario con este
 if (isset($_SESSION['name'])) {
     $nombre_sesion = $_SESSION['name'];
     $stmt_user = $conn->prepare("SELECT Id, fk_fac_user, fk_depto_user, tipo_usuario FROM users WHERE Name = ?");
@@ -39,22 +44,20 @@ if (isset($_SESSION['name'])) {
 
     if ($result_user->num_rows > 0) {
         $user_row = $result_user->fetch_assoc();
+        
+        // Asignar a variables locales para usar en ESTA página
         $aprobador_id_logged_in = $user_row['Id'];
-            $_SESSION['aprobador_id_logged_in'] = $user_row['Id']; // Guardamos el ID en la sesión
-
         $tipo_usuario = $user_row['tipo_usuario'];
+        $id_facultad = $user_row['fk_fac_user'];
+        $id_departamento = $user_row['fk_depto_user'];
 
-        if ($tipo_usuario == 2) { // Usuario de Facultad
-            $id_facultad = $user_row['fk_fac_user'];
-            
-              // ===== LÍNEA CLAVE A AÑADIR =====
-        $_SESSION['id_facultad'] = $user_row['fk_fac_user']; 
-        } elseif ($tipo_usuario == 3) { // Usuario de Departamento
-            $id_facultad = $user_row['fk_fac_user'];
-            $id_departamento = $user_row['fk_depto_user'];
-                    $_SESSION['id_facultad'] = $user_row['fk_fac_user'];
-
-        }
+        // ===== INICIO DE LA CORRECCIÓN =====
+        // Guardar TODOS los datos en la SESIÓN para que otros scripts los puedan usar
+        $_SESSION['aprobador_id_logged_in'] = $user_row['Id'];
+        $_SESSION['tipo_usuario'] = $user_row['tipo_usuario'];     // <-- LÍNEA CRUCIAL FALTANTE
+        $_SESSION['id_facultad'] = $user_row['fk_fac_user'];
+        $_SESSION['id_departamento'] = $user_row['fk_depto_user']; // <-- LÍNEA CRUCIAL FALTANTE
+        // ===== FIN DE LA CORRECCIÓN =====
     }
     $stmt_user->close();
 }
@@ -393,9 +396,39 @@ $conn->close();
 .hover\:bg-blue-100:hover {
     background-color: #DBEAFE;
 }
-    </style>
-<body class="bg-gray-100">
+  
+    /* Estilos para la Notificación Temporal (Toast) */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #2f855a; /* Un verde oscuro y profesional */
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        z-index: 100;
+        
+        /* Oculto por defecto */
+        opacity: 0;
+        visibility: hidden;
+        
+        /* Transición suave */
+        transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
+        transform: translateY(-20px);
+    }
 
+    .toast-container.show {
+        /* Visible cuando tiene la clase 'show' */
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+</style>
+<body class="bg-gray-100">
+<div id="toast-notification" class="toast-container">
+    <p id="toast-message">Mensaje de éxito</p>
+</div>
     <div class="container mx-auto p-8">
 
         <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
@@ -431,23 +464,32 @@ $conn->close();
         </div>
 
         <?php if ($tipo_usuario == 3): ?>
-        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-6">
-            <div class="flex items-center space-x-2">
-                <span class="font-semibold text-gray-600 text-sm mr-2">Mostrar:</span>
-                
-                <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=all" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'all') ? 'bg-blue-600 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
-                    <i class="fas fa-list-ul mr-1 opacity-80"></i> Todos
-                </a>
-                
-                <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=fac-pending" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'fac-pending') ? 'bg-orange-500 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
-                    <i class="fas fa-hourglass-half mr-1 opacity-80"></i> Pendientes Facultad
-                </a>
-                
-                <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=vra-pending" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'vra-pending') ? 'bg-orange-500 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
-                    <i class="fas fa-hourglass-half mr-1 opacity-80"></i> Pendientes VRA
-                </a>
-            </div>
-        </div>
+   <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-6 flex justify-between items-center">
+    
+    <div class="flex items-center space-x-2">
+        <span class="font-semibold text-gray-600 text-sm mr-2">Mostrar:</span>
+        
+        <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=all" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'all') ? 'bg-blue-600 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
+            <i class="fas fa-list-ul mr-1 opacity-80"></i> Todos
+        </a>
+        
+        <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=fac-pending" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'fac-pending') ? 'bg-orange-500 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
+            <i class="fas fa-hourglass-half mr-1 opacity-80"></i> Pendientes Facultad
+        </a>
+        
+        <a href="?anio_semestre=<?= htmlspecialchars($anio_semestre) ?>&filtro=vra-pending" class="px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 <?= ($filtro === 'vra-pending') ? 'bg-orange-500 text-white shadow' : 'bg-white text-gray-600 hover:bg-gray-100' ?>">
+            <i class="fas fa-hourglass-half mr-1 opacity-80"></i> Pendientes VRA
+        </a>
+    </div>
+
+    <a href="exportar_excel_novedades.php" 
+   class="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-md shadow hover:bg-green-600 transition-colors"
+   target="_blank">
+    <i class="fas fa-file-excel mr-2"></i>
+    Exportar a Excel
+</a>
+
+</div>
         <?php endif; ?>
         <?php if ($tipo_usuario == 3): ?>
             <div class="bg-white p-6 rounded-lg shadow-md">
@@ -476,7 +518,7 @@ $conn->close();
                     
                     
                     ?>
-                            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#003366] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                            <div class="bg-[#F0F4F9] rounded-lg shadow-md p-6 border-l-4 border-[#003366] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
                                 <div>
                                     <div class="flex justify-between items-start mb-2">
                                     <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Oficio</h3>
@@ -603,23 +645,36 @@ if ($status_fac === 'En Proceso') {
         <?php elseif ($tipo_usuario == 2): ?>
            
             
-            <div class="mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                <div class="flex items-center space-x-6">
-                    <span class="font-semibold text-gray-700">Filtrar por estado:</span>
-                    <div class="flex items-center">
-                        <input type="radio" id="filtro_todos" name="filtro_estado" value="todos" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" checked>
-                        <label for="filtro_todos" class="ml-2 block text-sm text-gray-900">
-                            Todos
-                        </label>
-                    </div>
-                    <div class="flex items-center">
-                        <input type="radio" id="filtro_pendientes" name="filtro_estado" value="pendientes" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                        <label for="filtro_pendientes" class="ml-2 block text-sm text-gray-900">
-                            Ver solo con pendientes de trámite en Facultad
-                        </label>
-                    </div>
-                </div>
+      <div class="mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+    <div class="flex justify-between items-center">
+        
+        <div class="flex items-center space-x-6">
+            <span class="font-semibold text-gray-700">Filtrar por estado:</span>
+            <div class="flex items-center">
+                <input type="radio" id="filtro_todos" name="filtro_estado" value="todos" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" checked>
+                <label for="filtro_todos" class="ml-2 block text-sm text-gray-900">
+                    Todos
+                </label>
             </div>
+            <div class="flex items-center">
+                <input type="radio" id="filtro_pendientes" name="filtro_estado" value="pendientes" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                <label for="filtro_pendientes" class="ml-2 block text-sm text-gray-900">
+                    Ver solo con pendientes de trámite en Facultad
+                </label>
+            </div>
+        </div>
+
+   <a href="exportar_excel_novedades.php?anio_semestre=<?php echo urlencode($anio_semestre); ?>" 
+   class="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors no-underline"
+   target="_blank">
+    <i class="fas fa-file-excel mr-2"></i>
+    Exportar a Excel
+</a>
+
+
+
+    </div>
+</div>
             <div class="space-y-4" id="lista-departamentos">
                 <?php if (!empty($datos_agrupados_facultad)): ?>
                     <?php foreach ($datos_agrupados_facultad as $nombre_depto => $oficios_depto): ?>
@@ -748,12 +803,10 @@ if ($status_fac === 'En Proceso') {
                 <input type="number" id="folios" name="folios" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" min="1" required>
             </div>
             
-            <div class="flex items-center justify-end space-x-4">
-                <button type="button" id="btnCloseAndReload" onclick="document.getElementById('wordGenModal').classList.add('hidden'); location.reload();" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-300" disabled>
-                    Cerrar y Recargar
-                </button>
+            <div class="flex items-center justify-end">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Generar Oficio
+                    <i class="fas fa-file-word mr-2"></i>
+                    Generar Oficio y Finalizar
                 </button>
             </div>
         </form>
@@ -1307,10 +1360,11 @@ if (btnLimpiar) {
 
     // --- ACCIÓN DE AVALAR ---
  // --- ACCIÓN DE AVALAR (MEJORADA) ---
+// --- ACCIÓN DE AVALAR (MEJORADA CON NOTIFICACIÓN TEMPORAL) ---
 btnAvalar.addEventListener('click', () => {
     if (solicitudesSeleccionadas.length === 0) return alert('Por favor, seleccione al menos una solicitud.');
 
-    toggleLoading(true, 'Procesando aval... Enviando correo...'); // <-- MOSTRAR MENSAJE
+    toggleLoading(true, 'Procesando aval... Enviando correo...');
 
     const formData = new FormData();
     formData.append('action', 'avalar');
@@ -1318,21 +1372,30 @@ btnAvalar.addEventListener('click', () => {
     solicitudesSeleccionadas.forEach(id => formData.append('selected_ids[]', id));
 
     fetch('procesar_facultad_seleccion.php', { method: 'POST', body: formData })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) throw new Error('La respuesta del servidor no fue exitosa.');
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
-            alert(data.message);
+            // ===== ¡AQUÍ ESTÁ EL CAMBIO! =====
+            // 1. Reemplazamos el alert() por nuestra notificación temporal.
+            showToast(data.message, 5000); 
+
+            // 2. El formulario de Word ahora aparece INMEDIATAMENTE.
             document.getElementById('wordGenSelectedIds').value = data.data.processed_ids.join(',');
             document.getElementById('fecha_oficio').value = new Date().toISOString().split('T')[0];
             wordGenModal.classList.remove('hidden');
         } else {
+            // Si hay un error, sí usamos un alert para detener el proceso.
             alert('Error: ' + data.message);
         }
     }).catch(error => {
         console.error('Error de conexión o script:', error);
         alert('Ocurrió un error inesperado al procesar la solicitud.');
     }).finally(() => {
-        toggleLoading(false); // <-- OCULTAR MENSAJE (SIEMPRE se ejecuta)
+        // Ocultamos la pantalla de carga principal
+        toggleLoading(false);
     });
 });
 
@@ -1431,13 +1494,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     return; 
                 }
                 
-                // Si todo está correcto, habilitamos el botón y enviamos el formulario
-                if (btnCloseAndReload) {
-                    btnCloseAndReload.disabled = false;
-                }
-                
-                // Si todas las validaciones pasaron, ahora sí enviamos el formulario
-                this.submit(); 
+                  // 1. Mostramos una notificación de éxito temporal
+                showToast('Oficio validado. Generando documento y recargando...', 3000);
+
+                // 2. Enviamos el formulario para iniciar la descarga del Word
+                this.submit();
+
+                // 3. Programamos el cierre del modal y la recarga automática
+                setTimeout(() => {
+                    wordGenModal.classList.add('hidden'); // Ocultar el modal
+                    location.reload();                    // Recargar la página
+                }, 3000); // 3 segundos de espera
 
             } catch (error) {
                 console.error('Error al verificar el oficio:', error);
@@ -1446,6 +1513,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+        // Añade esta función en tu <script>
+// Reemplaza tu función showToast con esta
+function showToast(message, duration = 3000) {
+    const toast = document.getElementById('toast-notification');
+    const toastMessage = document.getElementById('toast-message');
+
+    if (toast) {
+        // Ponemos el mensaje y añadimos la clase 'show' para hacerlo visible
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        
+        // Creamos un temporizador para quitar la clase 'show' y ocultarlo de nuevo
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, duration);
+    }
+}
 </script>
 </body>
 </html>

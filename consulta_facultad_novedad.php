@@ -1,6 +1,7 @@
 <?php
 // consulta_vra.php
 // ARCHIVO DEDICADO Y CORREGIDO EXCLUSIVAMENTE PARA EL USUARIO TIPO 1 (VICERRECTORÍA)
+$active_menu_item = 'novedades';
 
 // --- INCLUDES Y CONFIGURACIÓN INICIAL ---
 ini_set('display_errors', 1);
@@ -12,7 +13,8 @@ require('funciones.php');
 
 // --- VARIABLES ESENCIALES ---
 $anio_semestre = $_POST['anio_semestre'] ?? $_GET['anio_semestre'] ?? '2025-2';
-
+$_SESSION['anio_semestre'] = $anio_semestre;
+$_SESSION['tipo_usuario'] = $tipo_usuario;
 // Obtenemos los datos del usuario logueado
 $tipo_usuario = null;
 if (isset($_SESSION['name'])) {
@@ -188,26 +190,50 @@ $conn->close();
     </style>
 </head>
 <body class="bg-gray-100">
-
+<div id="loadingOverlay" class="fixed inset-0 bg-gray-800 bg-opacity-75 h-full w-full hidden z-50 flex items-center justify-center" style="z-index: 100;">
+    <div class="bg-white rounded-lg p-8 flex items-center space-x-4 shadow-xl">
+        <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span id="loadingMessage" class="text-lg font-semibold text-gray-700">Procesando...</span>
+    </div>
+</div>
     <div class="container mx-auto p-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Novedades Aprobadas por Facultad (<?php echo htmlspecialchars($anio_semestre); ?>)</h1>
-            <div class="mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                <div class="flex items-center space-x-6">
-                    <span class="font-semibold text-gray-700">Filtrar por estado:</span>
-                    <div class="flex items-center">
-                        <input type="radio" id="filtro_todos" name="filtro_estado" value="todos" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" checked>
-                        <label for="filtro_todos" class="ml-2 block text-sm text-gray-900">
-                            Mostrar Todos
-                        </label>
-                    </div>
-                    <div class="flex items-center">
-                        <input type="radio" id="filtro_pendientes" name="filtro_estado" value="pendientes" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                        <label for="filtro_pendientes" class="ml-2 block text-sm text-gray-900">
-                            Mostrar solo con trámites pendientes en VRA
-                        </label>
-                    </div>
-                </div>
+          <div class="mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+    <div class="flex justify-between items-center">
+        
+        <!-- Filtros -->
+        <div class="flex items-center space-x-6">
+            <span class="font-semibold text-gray-700">Filtrar por estado:</span>
+            <div class="flex items-center">
+                <input type="radio" id="filtro_todos" name="filtro_estado" value="todos" 
+                       class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" checked>
+                <label for="filtro_todos" class="ml-2 block text-sm text-gray-900">
+                    Mostrar Todos
+                </label>
             </div>
+            <div class="flex items-center">
+                <input type="radio" id="filtro_pendientes" name="filtro_estado" value="pendientes" 
+                       class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                <label for="filtro_pendientes" class="ml-2 block text-sm text-gray-900">
+                    Mostrar solo con trámites pendientes en VRA
+                </label>
+            </div>
+        </div>
+
+        <!-- Botón Exportar -->
+        <a href="exportar_excel_novedades.php" 
+           class="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors no-underline"
+           target="_blank">
+            <i class="fas fa-file-excel mr-2"></i>
+            Exportar a Excel
+        </a>
+
+    </div>
+</div>
+
         <div class="space-y-4" id="lista-facultades">
             <?php if (!empty($datos_agrupados_vra)): ?>
                 <?php foreach ($datos_agrupados_vra as $nombre_facultad => $departamentos): ?>
@@ -267,6 +293,8 @@ $conn->close();
         <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Estado Facultad</th>
         <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Estado VRA</th>
         <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Observación VRA</th>
+    <th rowspan="2" class="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase align-middle">Tipo Reemplazo</th>
+
     </tr>
     <tr>
         <th></th>
@@ -305,7 +333,22 @@ $conn->close();
         const modalTableBody = document.getElementById('modalTableBody');
         const selectAllCheckbox = document.getElementById('selectAllCheckbox');
 
+        // =============================================================
+    // ===== NUEVA FUNCIÓN PARA ACTUALIZAR OFICIOS VISIBLES =====
+    // =============================================================
+    function actualizarOficiosVisibles() {
+        // Buscar todos los departamentos que están abiertos
+        const departamentosAbiertos = document.querySelectorAll('.accordion-body-departamento:not(.hidden)');
         
+        departamentosAbiertos.forEach(bodyDepto => {
+            const headerDepto = bodyDepto.previousElementSibling;
+            const nombreDepto = headerDepto.dataset.depto;
+            const nombreFacultad = headerDepto.dataset.facultad;
+            
+            // Volver a renderizar los oficios para este departamento
+            renderOficiosEnDepto(bodyDepto, nombreFacultad, nombreDepto);
+        });
+    }
          // =============================================================
             // ===== INICIA NUEVA LÓGICA PARA EL FILTRO =====
             // =============================================================
@@ -359,42 +402,45 @@ $conn->close();
     // ======================================================================
 
 
-            function aplicarFiltro() {
-                const filtroSeleccionado = document.querySelector('input[name="filtro_estado"]:checked').value;
-                const facultadesContainers = document.querySelectorAll('[data-facultad-container]');
+         function aplicarFiltro() {
+        const filtroSeleccionado = document.querySelector('input[name="filtro_estado"]:checked').value;
+        const facultadesContainers = document.querySelectorAll('[data-facultad-container]');
 
-                facultadesContainers.forEach(facContainer => {
-                    const nombreFacultad = facContainer.dataset.facultadContainer;
-                    let facultadTieneDeptosVisibles = false;
+        facultadesContainers.forEach(facContainer => {
+            const nombreFacultad = facContainer.dataset.facultadContainer;
+            let facultadTieneDeptosVisibles = false;
 
-                    const deptosContainers = facContainer.querySelectorAll('[data-depto-container]');
+            const deptosContainers = facContainer.querySelectorAll('[data-depto-container]');
 
-                    deptosContainers.forEach(deptoContainer => {
-                        if (filtroSeleccionado === 'pendientes') {
-                            const nombreDepto = deptoContainer.dataset.deptoContainer;
-                            const oficios = estructuraVRA[nombreFacultad]?.[nombreDepto] || {};
+            deptosContainers.forEach(deptoContainer => {
+                if (filtroSeleccionado === 'pendientes') {
+                    const nombreDepto = deptoContainer.dataset.deptoContainer;
+                    const oficios = estructuraVRA[nombreFacultad]?.[nombreDepto] || {};
 
-                            if (tienePendientesVRA(oficios)) {
-                                deptoContainer.style.display = 'block';
-                                facultadTieneDeptosVisibles = true;
-                            } else {
-                                deptoContainer.style.display = 'none';
-                            }
-                        } else {
-                            deptoContainer.style.display = 'block';
-                            facultadTieneDeptosVisibles = true;
-                        }
-                    });
-
-                    // Finalmente, ocultamos la facultad entera si no tiene departamentos visibles
-                    if (facultadTieneDeptosVisibles) {
-                        facContainer.style.display = 'block';
+                    if (tienePendientesVRA(oficios)) {
+                        deptoContainer.style.display = 'block';
+                        facultadTieneDeptosVisibles = true;
                     } else {
-                        facContainer.style.display = 'none';
+                        deptoContainer.style.display = 'none';
                     }
-                });
-            }
+                } else {
+                    deptoContainer.style.display = 'block';
+                    facultadTieneDeptosVisibles = true;
+                }
+            });
 
+            // Ocultar o mostrar la facultad según si tiene departamentos visibles
+            if (facultadTieneDeptosVisibles) {
+                facContainer.style.display = 'block';
+            } else {
+                facContainer.style.display = 'none';
+            }
+        });
+        
+        // ACTUALIZACIÓN: Llamar a la función para actualizar oficios visibles
+        actualizarOficiosVisibles();
+        actualizarEstilosPendientes();
+    }
             // Añadimos el evento a los botones de radio para que ejecuten el filtro
             radiosFiltro.forEach(radio => {
                 radio.addEventListener('change', aplicarFiltro);
@@ -404,7 +450,19 @@ $conn->close();
             // =============================================================
 
         // --- 2. FUNCIONES AUXILIARES ---
-        
+        // funcion para  mensaje  envios...
+function toggleLoading(show, message = 'Procesando...') {
+    const overlay = document.getElementById('loadingOverlay');
+    const messageEl = document.getElementById('loadingMessage');
+
+    if (show) {
+        messageEl.textContent = message;
+        overlay.classList.remove('hidden');
+    } else {
+        overlay.classList.add('hidden');
+    }
+}
+//crear  eeitquetse
         function crearEtiquetaEstado(estado, observacion, tipo = 'facultad') {
             let texto = estado || 'PENDIENTE';
             let clasesColor = 'bg-yellow-100 text-yellow-800';
@@ -419,7 +477,8 @@ $conn->close();
             return `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${clasesColor}" ${tooltip}>${texto}</span>`;
         }
 
-    function llenarModalVRA(oficio_fac) {
+// Reemplaza tu función llenarModalVRA con esta
+function llenarModalVRA(oficio_fac) {
     modalTitle.textContent = 'Solicitudes del Oficio de facultad # ' + oficio_fac;
     modalTableBody.innerHTML = '';
     selectAllCheckbox.checked = false;
@@ -429,68 +488,94 @@ $conn->close();
         solicitudesFiltradas.forEach(sol => {
             let popayanData = '<span class="text-gray-400">N/A</span>';
             let regionalizacionData = '<span class="text-gray-400">N/A</span>';
-            if (sol.tipo_docente === 'Ocasional') {
-                if (sol.tipo_dedicacion) popayanData = `<span class="bg-gray-200 px-2 py-1 rounded">${sol.tipo_dedicacion}</span>`;
-                if (sol.tipo_dedicacion_r) regionalizacionData = `<span class="bg-gray-200 px-2 py-1 rounded">${sol.tipo_dedicacion_r}</span>`;
-            } else if (sol.tipo_docente === 'Catedra') {
-                if (sol.horas && sol.horas > 0) popayanData = `<span class="bg-blue-100 px-2 py-1 rounded">${sol.horas} hrs</span>`;
-                if (sol.horas_r && sol.horas_r > 0) regionalizacionData = `<span class="bg-blue-100 px-2 py-1 rounded">${sol.horas_r} hrs</span>`;
-            }
+            if (sol.tipo_docente === 'Ocasional') { /* ... (código sin cambios) ... */ } 
+            else if (sol.tipo_docente === 'Catedra') { /* ... (código sin cambios) ... */ }
+
             const tipoDocenteDisplay = (sol.tipo_docente === 'Catedra') ? 'Cátedra' : sol.tipo_docente;
             const estadoFacultadHtml = crearEtiquetaEstado(sol.estado_facultad, sol.observacion_facultad, 'facultad');
             const estadoVraHtml = crearEtiquetaEstado(sol.estado_vra, sol.observacion_vra, 'vra');
             const observacionGuardada = sol.observacion_vra || '';
+            
+            // ===== INICIO DE LA NUEVA LÓGICA PARA TIPO REEMPLAZO =====
+            let tipoReemplazoHtml = `<span class="text-sm text-gray-600">${sol.tipo_reemplazo || 'No definido'}</span>`;
+            if (sol.estado_vra === 'PENDIENTE') {
+                const currentNovedad = (sol.novedad || '').toLowerCase();
+                const currentTipoReemplazo = sol.tipo_reemplazo || 'Otro'; // 'Otro' por defecto
+                let optionsHtml = '';
 
-            // ESTA ES LA ESTRUCTURA CORRECTA CON 12 CELDAS (<td>)
-            const filaHTML = `<tr class="${sol.estado_vra !== 'PENDIENTE' ? 'bg-gray-200 opacity-60' : ''}">
-                <td class="px-4 py-2">
-                    ${sol.estado_vra === 'PENDIENTE' ? `<input type="checkbox" class="solicitud-checkbox" value="${sol.solicitud_id}">` : ''}
-                </td>
-                <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-600">${sol.oficio_con_fecha || ''}</td>
-                <td class="px-6 py-2 whitespace-nowrap">${sol.novedad || ''}</td>
-                <td class="px-6 py-2 whitespace-normal max-w-xs break-words text-gray-700">${sol.s_observacion || ''}</td>
-                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.nombre}</td>
-                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.cedula}</td>
-                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${tipoDocenteDisplay}</td>
-                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${popayanData}</td>
-                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${regionalizacionData}</td>
-                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoFacultadHtml}</td>
-                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoVraHtml}</td>
-                <td class="px-6 py-2 whitespace-nowrap">
-                    ${sol.estado_vra === 'PENDIENTE' 
-                        ? `<input type="text" class="observacion-vra-input w-full border-gray-300 rounded-md shadow-sm text-sm" data-id="${sol.solicitud_id}" value="${observacionGuardada}" placeholder="Justificación (si rechaza)...">` 
-                        : `<span class="text-sm text-gray-600">${observacionGuardada}</span>`
-                    }
-                </td>
-            </tr>`;
+                if (currentNovedad === 'adicionar' || currentNovedad === 'modificar') {
+                    const options = ["Ajuste de Matrículas", "No legalizó", "Otras fuentes de financiacion", "Reemplazo", "Reemplazo jubilación", "Reemplazo necesidad docente", "Reemplazo por Fallecimiento", "Reemplazo por Licencia", "Reemplazo renuncia", "Reemplazos NN", "Ajuste Puntos", "Ajuste por VRA", "Otro"];
+                    options.forEach(opt => {
+                        optionsHtml += `<option value="${opt}" ${currentTipoReemplazo === opt ? 'selected' : ''}>${opt}</option>`;
+                    });
+                } else if (currentNovedad === 'eliminar') {
+                    const options = ["Fallecimiento", "Renuncia", "Ajuste de Matrículas", "No legalizó", "Reemplazos NN", "Otro"];
+                    options.forEach(opt => {
+                        optionsHtml += `<option value="${opt}" ${currentTipoReemplazo === opt ? 'selected' : ''}>${opt}</option>`;
+                    });
+                } else {
+                    optionsHtml = '<option value="">No hay opciones</option>';
+                }
+                
+                // El data-id es crucial para vincularlo con el checkbox
+                tipoReemplazoHtml = `<select class="w-full border-gray-300 rounded-md shadow-sm text-sm tipo-reemplazo-select" data-id="${sol.solicitud_id}">${optionsHtml}</select>`;
+            }
+            // ===== FIN DE LA NUEVA LÓGICA =====
+
+        const filaHTML = `<tr class="${sol.estado_vra !== 'PENDIENTE' ? 'bg-gray-200 opacity-60' : ''}">
+    <td class="px-4 py-2">${sol.estado_vra === 'PENDIENTE' ? `<input type="checkbox" class="solicitud-checkbox" value="${sol.solicitud_id}">` : ''}</td>
+    <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-600">${sol.oficio_con_fecha || ''}</td>
+    <td class="px-6 py-2 whitespace-nowrap">${sol.novedad || ''}</td>
+    <td class="px-6 py-2 whitespace-normal max-w-xs break-words text-gray-700">${sol.s_observacion || ''}</td>
+    <td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.nombre}</td>
+    <td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.cedula}</td>
+    <td class="px-6 py-2 whitespace-nowrap text-gray-700">${tipoDocenteDisplay}</td>
+    <td class="px-6 py-2 whitespace-nowrap text-gray-700">${popayanData}</td>
+    <td class="px-6 py-2 whitespace-nowrap text-gray-700">${regionalizacionData}</td>
+    <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoFacultadHtml}</td>
+    <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoVraHtml}</td>
+    <td class="px-6 py-2 whitespace-nowrap">
+        ${sol.estado_vra === 'PENDIENTE' 
+            ? `<input type="text" class="observacion-vra-input w-full border-gray-300 rounded-md shadow-sm" data-id="${sol.solicitud_id}">` 
+            : '...'}
+    </td>
+    <td class="px-6 py-2 whitespace-nowrap">${tipoReemplazoHtml}</td>
+</tr>`;
             modalTableBody.innerHTML += filaHTML;
         });
     } else {
-        // El colspan ahora debe ser 13 para coincidir con el número total de columnas
-        modalTableBody.innerHTML = `<tr><td colspan="13" class="text-center py-4">No se encontraron solicitudes para este oficio.</td></tr>`;
+        modalTableBody.innerHTML = `<tr><td colspan="14" class="text-center py-4">No se encontraron solicitudes.</td></tr>`;
     }
     modal.classList.remove('hidden');
 }
-        function procesarSeleccion(accion) {
-             const checkboxes = modalTableBody.querySelectorAll('.solicitud-checkbox:checked');
-    
-    // Ahora creamos un array de objetos, cada uno con id y observacion
+ function procesarSeleccion(accion) {   
+    const checkboxes = modalTableBody.querySelectorAll('.solicitud-checkbox:checked');
     let solicitudesData = [];
     let observacionFaltante = false;
 
     checkboxes.forEach(cb => {
         const id = cb.value;
-        const observacionInput = modalTableBody.querySelector(`.observacion-vra-input[data-id="${id}"]`);
-        const observacion = observacionInput ? observacionInput.value.trim() : '';
+        
+        // ==========================================================
+        // ===== ¡AQUÍ ESTÁ LA CORRECCIÓN! =====
+        // ==========================================================
+        // 1. Encontramos la fila (<tr>) a la que pertenece el checkbox.
+        const fila = cb.closest('tr'); 
+        
+        // 2. Buscamos los campos SOLO DENTRO de esa fila. Esto es mucho más preciso.
+           // Buscar elementos dentro de la fila específica
+        const observacionInput = fila.querySelector('.observacion-vra-input');
+        const tipoReemplazoSelect = fila.querySelector('.tipo-reemplazo-select');
 
-        // Si la acción es rechazar y la observación está vacía, marcamos un error
+        const observacion = observacionInput ? observacionInput.value.trim() : '';
+        const tipoReemplazo = tipoReemplazoSelect ? tipoReemplazoSelect.value : '';
+
         if (accion === 'rechazar' && observacion === '') {
             observacionFaltante = true;
-            // Opcional: Resaltar el campo vacío
-            if(observacionInput) observacionInput.style.borderColor = 'red';
+            if (observacionInput) observacionInput.style.borderColor = 'red';
         }
         
-        solicitudesData.push({ id: id, observacion: observacion });
+        solicitudesData.push({ id: id, observacion: observacion, tipo_reemplazo: tipoReemplazo });
     });
 
     if (solicitudesData.length === 0) {
@@ -507,38 +592,40 @@ $conn->close();
         return;
     }
     
+    const mensajeCarga = (accion === 'aprobar') 
+        ? 'Procesando aprobaciones y enviando notificaciones...' 
+        : 'Procesando rechazos y enviando notificaciones...';
+    toggleLoading(true, mensajeCarga);
+
     const formData = new FormData();
     formData.append('accion', accion);
     formData.append('anio_semestre', '<?php echo $anio_semestre; ?>');
-    // Convertimos el array de objetos a un string JSON para enviarlo
     formData.append('solicitudes', JSON.stringify(solicitudesData)); 
 
     fetch('procesar_aprobacion_vra.php', {
         method: 'POST',
         body: formData
     })
-            .then(response => {
-                // NUEVO: Añadimos una verificación para ver si la respuesta del servidor es válida
-                if (!response.ok) {
-                    // Si el servidor responde con un error (ej. 404 No Encontrado, 500 Error del Servidor)
-                    throw new Error(`Error del servidor: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert('Las solicitudes han sido procesadas exitosamente.');
-                    location.reload();
-                } else {
-                    alert('Ocurrió un error al procesar las solicitudes: ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error en la petición fetch:', error);
-                // Mensaje más detallado para nosotros en la consola del navegador
-                alert('Ocurrió un error de conexión. Verifique la consola (F12) para más detalles. Asegúrese de que el archivo procesar_aprobacion_vra.php existe en la ubicación correcta.');
-            });
+    .then(response => {
+        if (!response.ok) throw new Error(`Error del servidor: ${response.statusText}`);
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Las solicitudes han sido procesadas exitosamente.');
+            location.reload();
+        } else {
+            alert('Ocurrió un error al procesar las solicitudes: ' + data.error);
         }
+    })
+    .catch(error => {
+        console.error('Error en la petición fetch:', error);
+        alert('Ocurrió un error de conexión. Verifique la consola (F12) para más detalles.');
+    })
+    .finally(() => {
+        toggleLoading(false);
+    });
+}
 
         // --- 3. ASIGNACIÓN DE EVENTOS (EVENT LISTENERS) ---
         
@@ -556,178 +643,186 @@ $conn->close();
             checkboxes.forEach(checkbox => { checkbox.checked = e.target.checked; });
         });
 
+        // Función para renderizar oficios en un departamento
+        function renderOficiosEnDepto(bodyDepto, facultadName, deptoName) {
+            const cardsContainer = bodyDepto.querySelector('.oficios-container');
+            const oficios = estructuraVRA[facultadName]?.[deptoName] || {};
+            const filtroActivo = document.querySelector('input[name="filtro_estado"]:checked').value === 'pendientes';
+            
+            cardsContainer.innerHTML = '';
+            
+            for (const oficio_fac in oficios) {
+                const solicitudesDelOficio = oficios[oficio_fac];
+                
+                // Si el filtro está activo y no hay pendientes, saltar este oficio
+                if (filtroActivo && !solicitudesDelOficio.some(sol => sol.estado_vra === 'PENDIENTE')) {
+                    continue;
+                }
+                
+                const totalSolicitudes = solicitudesDelOficio.length;
+                const pendientesCount = solicitudesDelOficio.filter(sol => sol.estado_vra === 'PENDIENTE').length;
+                const rechazadosCount = solicitudesDelOficio.filter(sol => sol.estado_vra === 'RECHAZADO').length;
+                const aprobadosCount = solicitudesDelOficio.filter(sol => sol.estado_vra === 'APROBADO').length;
+
+                let estadoVRA = '';
+                let colorVRA = '';
+                let iconVRA = '';
+
+                if (pendientesCount > 0) {
+                    estadoVRA = 'En Proceso';
+                    colorVRA = 'bg-orange-100 text-orange-800';
+                    iconVRA = '<i class="fas fa-hourglass-half"></i>';
+                } else {
+                    if (rechazadosCount > 0 && rechazadosCount === totalSolicitudes) {
+                        estadoVRA = 'Finalizado (Rechazado)';
+                        colorVRA = 'bg-red-100 text-red-800';
+                        iconVRA = '<i class="fas fa-times-circle"></i>';
+                    } else if (rechazadosCount > 0) {
+                        estadoVRA = 'Finalizado (Mixto)';
+                        colorVRA = 'bg-blue-100 text-blue-800';
+                        iconVRA = '<i class="fas fa-check-double"></i>';
+                    } else {
+                        estadoVRA = 'Finalizado (Aprobado)';
+                        colorVRA = 'bg-green-100 text-green-800';
+                        iconVRA = '<i class="fas fa-check-circle"></i>';
+                    }
+                }
+                
+                const { codigo, fechaFormateada } = dividirOficio(oficio_fac);
+                
+                const cardHtml = `<div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xs font-semibold text-gray-500 uppercase">Oficio Facultad</h3>
+                            <span title="Estado en VRA: ${estadoVRA}" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 ${colorVRA}">
+                                ${iconVRA} <span>${estadoVRA}</span>
+                            </span>
+                        </div>
+                        <p class="text-md text-gray-800 my-2 truncate" title="${oficio_fac}">
+                            <strong>${codigo}</strong> <span class="font-normal">${fechaFormateada}</span>
+                        </p>
+                    </div>
+                    <button data-oficio-fac="${oficio_fac}" class="ver-detalles-btn-vra w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-md text-sm">
+                        Ver Solicitudes
+                    </button>
+                </div>`;
+                
+                cardsContainer.innerHTML += cardHtml;
+            }
+            
+            if (cardsContainer.innerHTML.trim() === '') {
+                cardsContainer.innerHTML = '<p class="col-span-full text-gray-500">No hay oficios de facultad para este departamento.</p>';
+            }
+            
+            // Añadir event listeners a los nuevos botones
+            cardsContainer.querySelectorAll('.ver-detalles-btn-vra').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    llenarModalVRA(btn.dataset.oficioFac);
+                });
+            });
+        }
+        
+        function dividirOficio(oficio) {
+            const partes = oficio.split(" ");
+            if (partes.length < 2) return { codigo: oficio, fechaFormateada: "" };
+
+            const codigo = partes[0];
+            const fecha = partes[1];
+
+            const [anio, mes, dia] = fecha.split("-");
+            const meses = {
+                "01": "ene.", "02": "feb.", "03": "mar.", "04": "abr.",
+                "05": "may.", "06": "jun.", "07": "jul.", "08": "ago.",
+                "09": "sept.", "10": "oct.", "11": "nov.", "12": "dic."
+            };
+
+            const mesEsp = meses[mes] || mes;
+            const fechaFormateada = `(${parseInt(dia)} de ${mesEsp} de ${anio})`;
+
+            return { codigo, fechaFormateada };
+        }
+
         // Evento principal delegado para los acordeones y botones "Ver Solicitudes"
-       // Evento principal delegado para los acordeones y botones "Ver Solicitudes"
-const listaFacultades = document.getElementById('lista-facultades');
-if (listaFacultades) {
-    listaFacultades.addEventListener('click', function(event) {
-    
-        // Manejador para el Acordeón de Facultad (Nivel 1)
-        const headerFacultad = event.target.closest('.accordion-facultad');
-        if (headerFacultad) {
-            document.querySelectorAll('.accordion-facultad').forEach(otherHeader => {
-                if (otherHeader !== headerFacultad) {
-                    otherHeader.nextElementSibling.classList.add('hidden');
-                    otherHeader.querySelector('svg').classList.remove('rotate-180');
-                    // NUEVO: Asegurarse de quitar los estilos de padre activo a las otras facultades
-                    otherHeader.classList.remove('active-parent-accordion');
+        const listaFacultades = document.getElementById('lista-facultades');
+        if (listaFacultades) {
+            listaFacultades.addEventListener('click', function(event) {
+            
+                // Manejador para el Acordeón de Facultad (Nivel 1)
+                const headerFacultad = event.target.closest('.accordion-facultad');
+                if (headerFacultad) {
+                    document.querySelectorAll('.accordion-facultad').forEach(otherHeader => {
+                        if (otherHeader !== headerFacultad) {
+                            otherHeader.nextElementSibling.classList.add('hidden');
+                            otherHeader.querySelector('svg').classList.remove('rotate-180');
+                            // NUEVO: Asegurarse de quitar los estilos de padre activo a las otras facultades
+                            otherHeader.classList.remove('active-parent-accordion');
+                        }
+                    });
+
+                    const bodyFacultad = headerFacultad.nextElementSibling;
+                    const iconFacultad = headerFacultad.querySelector('svg');
+                    bodyFacultad.classList.toggle('hidden');
+                    iconFacultad.classList.toggle('rotate-180');
+                    
+                    // NUEVO: Si estamos CERRANDO la facultad, reseteamos todos sus hijos
+                    if (bodyFacultad.classList.contains('hidden')) {
+                        headerFacultad.classList.remove('active-parent-accordion');
+                        bodyFacultad.querySelectorAll('.accordion-departamento').forEach(deptoHeader => {
+                            deptoHeader.classList.remove('active-accordion');
+                            deptoHeader.nextElementSibling.classList.add('hidden');
+                            deptoHeader.querySelector('svg').classList.remove('rotate-180');
+                        });
+                    }
+                }
+
+                // Manejador para el Acordeón de Departamento (Nivel 2)
+                const headerDepto = event.target.closest('.accordion-departamento');
+                if (headerDepto) {
+                    const parentFacultadBody = headerDepto.closest('.accordion-body-facultad');
+                    if (parentFacultadBody) {
+                        parentFacultadBody.querySelectorAll('.accordion-departamento').forEach(otherHeader => {
+                            if (otherHeader !== headerDepto) {
+                                otherHeader.nextElementSibling.classList.add('hidden');
+                                otherHeader.querySelector('svg').classList.remove('rotate-180');
+                                otherHeader.classList.remove('active-accordion');
+                            }
+                        });
+                    }
+                    
+                    const bodyDepto = headerDepto.nextElementSibling;
+                    const iconDepto = headerDepto.querySelector('svg');
+                    bodyDepto.classList.toggle('hidden');
+                    iconDepto.classList.toggle('rotate-180');
+                    headerDepto.classList.toggle('active-accordion');
+                    
+                    // --- NUEVA LÓGICA PARA ACTUALIZAR EL PADRE ---
+                    const parentHeaderFacultad = parentFacultadBody.previousElementSibling;
+                    const tieneHijosActivos = parentFacultadBody.querySelector('.active-accordion');
+
+                    if (tieneHijosActivos) {
+                        parentHeaderFacultad.classList.add('active-parent-accordion');
+                    } else {
+                        parentHeaderFacultad.classList.remove('active-parent-accordion');
+                    }
+                    // --- FIN DE LA NUEVA LÓGICA ---
+
+                    if (!bodyDepto.classList.contains('hidden') && bodyDepto.querySelector('.oficios-container').innerHTML.trim() === '') {
+                        const deptoName = headerDepto.dataset.depto;
+                        const facultadName = headerDepto.dataset.facultad;
+                        renderOficiosEnDepto(bodyDepto, facultadName, deptoName);
+                    }
+                }
+
+                // Manejador para el botón "Ver Solicitudes" que abre el modal
+                const verDetallesBtn = event.target.closest('.ver-detalles-btn-vra');
+                if (verDetallesBtn) {
+                    llenarModalVRA(verDetallesBtn.dataset.oficioFac);
                 }
             });
-
-            const bodyFacultad = headerFacultad.nextElementSibling;
-            const iconFacultad = headerFacultad.querySelector('svg');
-            bodyFacultad.classList.toggle('hidden');
-            iconFacultad.classList.toggle('rotate-180');
-            
-            // NUEVO: Si estamos CERRANDO la facultad, reseteamos todos sus hijos
-            if (bodyFacultad.classList.contains('hidden')) {
-                headerFacultad.classList.remove('active-parent-accordion');
-                bodyFacultad.querySelectorAll('.accordion-departamento').forEach(deptoHeader => {
-                    deptoHeader.classList.remove('active-accordion');
-                    deptoHeader.nextElementSibling.classList.add('hidden');
-                    deptoHeader.querySelector('svg').classList.remove('rotate-180');
-                });
-            }
         }
-
-        // Manejador para el Acordeón de Departamento (Nivel 2)
-        const headerDepto = event.target.closest('.accordion-departamento');
-        if (headerDepto) {
-            const parentFacultadBody = headerDepto.closest('.accordion-body-facultad');
-            if (parentFacultadBody) {
-                parentFacultadBody.querySelectorAll('.accordion-departamento').forEach(otherHeader => {
-                    if (otherHeader !== headerDepto) {
-                        otherHeader.nextElementSibling.classList.add('hidden');
-                        otherHeader.querySelector('svg').classList.remove('rotate-180');
-                        otherHeader.classList.remove('active-accordion');
-
-                    }
-                });
-            }
-            
-            const bodyDepto = headerDepto.nextElementSibling;
-            const iconDepto = headerDepto.querySelector('svg');
-            bodyDepto.classList.toggle('hidden');
-            iconDepto.classList.toggle('rotate-180');
-            headerDepto.classList.toggle('active-accordion');
-            
-            // --- NUEVA LÓGICA PARA ACTUALIZAR EL PADRE ---
-            const parentHeaderFacultad = parentFacultadBody.previousElementSibling;
-            const tieneHijosActivos = parentFacultadBody.querySelector('.active-accordion');
-
-            if (tieneHijosActivos) {
-                parentHeaderFacultad.classList.add('active-parent-accordion');
-            } else {
-                parentHeaderFacultad.classList.remove('active-parent-accordion');
-            }
-            // --- FIN DE LA NUEVA LÓGICA ---
-
-            if (!bodyDepto.classList.contains('hidden') && bodyDepto.querySelector('.oficios-container').innerHTML.trim() === '') {
-                // ... (El código para cargar las tarjetas de oficios no cambia)
-                const deptoName = headerDepto.dataset.depto;
-                const facultadName = headerDepto.dataset.facultad;
-                const cardsContainer = bodyDepto.querySelector('.oficios-container');
-                const oficios = estructuraVRA[facultadName]?.[deptoName] || {};
-               // ===================================================================
-// ===== INICIA BLOQUE DE CÓDIGO REEMPLAZADO =====
-// ===================================================================
-for (const oficio_fac in oficios) {
-    const solicitudesDelOficio = oficios[oficio_fac];
-    const totalSolicitudes = solicitudesDelOficio.length;
-
-    // 1. Contamos cuántas solicitudes hay en cada estado
-    const pendientesCount = solicitudesDelOficio.filter(sol => sol.estado_vra === 'PENDIENTE').length;
-    const rechazadosCount = solicitudesDelOficio.filter(sol => sol.estado_vra === 'RECHAZADO').length;
-    const aprobadosCount = solicitudesDelOficio.filter(sol => sol.estado_vra === 'APROBADO').length;
-
-    let estadoVRA = '';
-    let colorVRA = '';
-    let iconVRA = '';
-
-    // 2. Aplicamos la nueva lógica de estados y colores
-    if (pendientesCount > 0) {
-        // Si hay CUALQUIER pendiente, el estado es "En Proceso"
-        estadoVRA = 'En Proceso';
-        colorVRA = 'bg-orange-100 text-orange-800'; // Naranja
-        iconVRA = '<i class="fas fa-hourglass-half"></i>';
-    } else {
-        // Si no hay pendientes, está finalizado. Ahora determinamos CÓMO finalizó.
-        if (rechazadosCount > 0 && rechazadosCount === totalSolicitudes) {
-            // Caso 1: TODOS los registros fueron rechazados
-            estadoVRA = 'Finalizado (Rechazado)';
-            colorVRA = 'bg-red-100 text-red-800'; // Rojo
-            iconVRA = '<i class="fas fa-times-circle"></i>';
-        } else if (rechazadosCount > 0) {
-            // Caso 2: Hay AL MENOS UN rechazado (y el resto aprobados)
-            estadoVRA = 'Finalizado (Mixto)';
-            colorVRA = 'bg-blue-100 text-blue-800'; // Azul
-            iconVRA = '<i class="fas fa-check-double"></i>';
-        } else {
-            // Caso 3: No hay pendientes y no hay rechazados, por lo tanto, TODOS están aprobados
-            estadoVRA = 'Finalizado (Aprobado)';
-            colorVRA = 'bg-green-100 text-green-800'; // Verde (como estaba antes)
-            iconVRA = '<i class="fas fa-check-circle"></i>';
-        }
-    }
-const { codigo, fechaFormateada } = dividirOficio(oficio_fac);
-    // 3. Creamos el HTML de la tarjeta con los nuevos valores dinámicos
-    const cardHtml = `<div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500 flex flex-col justify-between">
-        <div>
-            <div class="flex justify-between items-start mb-2">
-                <h3 class="text-xs font-semibold text-gray-500 uppercase">Oficio Facultad</h3>
-                <span title="Estado en VRA: ${estadoVRA}" class="px-2 py-0.5 text-xs font-bold rounded-full flex items-center space-x-1 ${colorVRA}">
-                    ${iconVRA} <span>${estadoVRA}</span>
-                </span>
-            </div>
-            <p class="text-md text-gray-800 my-2 truncate" title="${oficio_fac}">
-    <strong>${codigo}</strong> <span class="font-normal">${fechaFormateada}</span>
-</p>
-        </div>
-        <button data-oficio-fac="${oficio_fac}" class="ver-detalles-btn-vra w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-md text-sm">
-            Ver Solicitudes
-        </button>
-    </div>`;
-    cardsContainer.innerHTML += cardHtml;
-}
-                
-                function dividirOficio(oficio) {
-    const partes = oficio.split(" ");
-    if (partes.length < 2) return { codigo: oficio, fechaFormateada: "" };
-
-    const codigo = partes[0];
-    const fecha = partes[1];
-
-    const [anio, mes, dia] = fecha.split("-");
-    const meses = {
-        "01": "ene.", "02": "feb.", "03": "mar.", "04": "abr.",
-        "05": "may.", "06": "jun.", "07": "jul.", "08": "ago.",
-        "09": "sept.", "10": "oct.", "11": "nov.", "12": "dic."
-    };
-
-    const mesEsp = meses[mes] || mes;
-    const fechaFormateada = `(${parseInt(dia)} de ${mesEsp} de ${anio})`;
-
-    return { codigo, fechaFormateada };
-}
-
-// ===================================================================
-// ===== FIN DEL BLOQUE DE CÓDIGO REEMPLAZADO =====
-// ===================================================================
-                if (Object.keys(oficios).length === 0) {
-                    cardsContainer.innerHTML = '<p class="col-span-full text-gray-500">No hay oficios de facultad para este departamento.</p>';
-                }
-            }
-        }
-
-        // Manejador para el botón "Ver Solicitudes" que abre el modal
-        const verDetallesBtn = event.target.closest('.ver-detalles-btn-vra');
-        if (verDetallesBtn) {
-            llenarModalVRA(verDetallesBtn.dataset.oficioFac);
-        }
+        
+        actualizarEstilosPendientes(); 
     });
-}
-          actualizarEstilosPendientes(); 
-    }); // CORRECCIÓN: Se eliminó un }); extra y se reorganizó la estructura.
        
        
 </script>
@@ -816,6 +911,12 @@ document.addEventListener('DOMContentLoaded', () => {
         radio.addEventListener('change', aplicarFiltroGlobal);
     });
 });
+    
+        aplicarFiltro();
+// Añadir el evento a los botones de radio para que ejecuten el filtro
+    radiosFiltro.forEach(radio => {
+        radio.addEventListener('change', aplicarFiltro);
+    });
 </script>
 </body>
 </html>

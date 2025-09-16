@@ -416,8 +416,7 @@ input[type="text"][readonly] {
         <input type="hidden" id="anio_semestre_anterior" name="anio_semestre_anterior" value="<?php echo htmlspecialchars($_GET['anio_semestre_anterior']); ?>">
     </form>
 
-  </div>
-    </div>
+
     
     
 <script>

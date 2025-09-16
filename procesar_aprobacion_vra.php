@@ -1,5 +1,18 @@
 <?php
-// procesar_aprobacion_vra.php (Versión Corregida y Unificada)
+// procesar_aprobacion_vra.php (Versión Final con Notificación por Correo)
+
+// ===== INICIO BLOQUE 1: INCLUSIÓN DE PHPMailer =====
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Asegúrate de que las rutas a los archivos de PHPMailer sean correctas
+require 'vendor/phpmailer/phpmailer/src/Exception.php';
+require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require 'vendor/phpmailer/phpmailer/src/SMTP.php';
+
+// Cargar la configuración de correo desde tu archivo config_email.php
+$config = require 'config_email.php';
+// ===== FIN BLOQUE 1 =====
 
 ob_start();
 ini_set('display_errors', 1);
@@ -34,7 +47,7 @@ try {
     $anio_semestre = $_POST['anio_semestre'] ?? null;
 
     if (!$accion || !$solicitudes_json || !$anio_semestre) {
-        throw new Exception('Datos incompletos (accion, solicitudes o anio_semestre).');
+        throw new Exception('Datos incompletos.');
     }
 
     $solicitudes = json_decode($solicitudes_json, true);
@@ -46,30 +59,30 @@ try {
 
     $conn->begin_transaction();
 
-    $sql_update_wc = "UPDATE solicitudes_working_copy 
-                      SET estado_vra = ?, observacion_vra = ?, fecha_aprobacion_vra = NOW(), aprobador_vra_id = ? 
-                      WHERE id_solicitud = ? AND estado_vra = 'PENDIENTE'";
+    // ===== INICIO BLOQUE 2: INICIALIZACIÓN PARA CORREOS =====
+    $email_data_por_destinatario = [];
+    $solicitudes_procesadas_para_email = [];
+    // ===== FIN BLOQUE 2 =====
+
+    $sql_update_wc = "UPDATE solicitudes_working_copy SET estado_vra = ?, observacion_vra = ?, tipo_reemplazo = ?, fecha_aprobacion_vra = NOW(), aprobador_vra_id = ? WHERE id_solicitud = ? AND estado_vra = 'PENDIENTE'";
     $stmt_update_wc = $conn->prepare($sql_update_wc);
 
     foreach ($solicitudes as $sol) {
         $id = $sol['id'] ?? null;
         $observacion = trim($sol['observacion'] ?? '');
+    $tipo_reemplazo = $sol['tipo_reemplazo'] ?? 'Otro'; // Añade esta línea
 
         if (!is_numeric($id)) continue;
-
         if ($estado_db === 'RECHAZADO' && empty($observacion)) {
             throw new Exception("La observación es obligatoria para rechazar la solicitud ID: " . $id);
         }
 
-        // --- PARTE 1: ACTUALIZAR LA SOLICITUD PRINCIPAL Y SU PAREJA (SI EXISTE) ---
-        
-        // Primero, actualizamos la solicitud que recibimos
-        $stmt_update_wc->bind_param("ssii", $estado_db, $observacion, $aprobador_id, $id);
-        if (!$stmt_update_wc->execute()) {
-            throw new Exception("Error al actualizar la solicitud ID: $id en working_copy.");
-        }
+        // --- PARTE 1: ACTUALIZAR WORKING_COPY (LÓGICA EXISTENTE) ---
+$stmt_update_wc->bind_param("sssii", $estado_db, $observacion, $tipo_reemplazo, $aprobador_id, $id);
+        if (!$stmt_update_wc->execute()) throw new Exception("Error al actualizar la solicitud ID: $id en working_copy.");
 
-        // Ahora, buscamos si es parte de un "Cambio de Vinculación" para actualizar su pareja
+        // ... (Tu lógica existente para actualizar la pareja en 'Cambio de Vinculación' y para actualizar la tabla 'solicitudes' va aquí) ...
+// Ahora, buscamos si es parte de un "Cambio de Vinculación" para actualizar su pareja
         $stmt_find_pair = $conn->prepare("SELECT cedula, novedad FROM solicitudes_working_copy WHERE id_solicitud = ?");
         $stmt_find_pair->bind_param("i", $id);
         $stmt_find_pair->execute();
@@ -137,11 +150,92 @@ try {
                 }
             }
         }
+        // ===== INICIO BLOQUE 3: RECOPILACIÓN DE DATOS PARA EL CORREO (DENTRO DEL BUCLE) =====
+        $stmt_info = $conn->prepare("
+            SELECT s.*, d.depto_nom_propio as nombre_depto, d.email_depto, f.NOMBREF_FAC as nombre_fac, f.email_fac
+            FROM solicitudes_working_copy s
+            JOIN deparmanentos d ON s.departamento_id = d.PK_DEPTO
+            JOIN facultad f ON s.facultad_id = f.PK_FAC
+            WHERE s.id_solicitud = ?
+        ");
+        $stmt_info->bind_param("i", $id);
+        $stmt_info->execute();
+        if ($solicitud_data = $stmt_info->get_result()->fetch_assoc()) {
+            $solicitudes_procesadas_para_email[] = $solicitud_data;
+        }
+        $stmt_info->close();
+        // ===== FIN BLOQUE 3 =====
     }
+    $stmt_update_wc->close();
 
     $conn->commit();
-    $stmt_update_wc->close();
     
+    // ===== INICIO BLOQUE 4: ENVÍO DE CORREOS (DESPUÉS DEL COMMIT) =====
+    if (!empty($solicitudes_procesadas_para_email)) {
+        
+        // Agrupar solicitudes por destinatario (email de depto y fac)
+        foreach ($solicitudes_procesadas_para_email as $sol) {
+            $email_depto = 'elmerjs@unicauca.edu.co'; // Para pruebas. Descomentar la siguiente línea para producción.
+            // $email_depto = $sol['email_depto'];
+            $email_fac = 'elmerjs@gmail.com'; // Para pruebas. Descomentar la siguiente línea para producción.
+            // $email_fac = $sol['email_fac'];
+
+            $info_para_tabla = [
+                'nombre_profesor' => $sol['nombre'], 'cedula_profesor' => $sol['cedula'],
+                'anio_semestre' => $sol['anio_semestre'], 'novedad' => $sol['novedad'],
+                'estado_final' => $estado_db, 'observacion_vra' => $sol['observacion_vra']
+            ];
+
+            if (!isset($email_data_por_destinatario[$email_depto])) {
+                $email_data_por_destinatario[$email_depto] = ['nombre_entidad' => $sol['nombre_depto'], 'solicitudes' => []];
+            }
+            $email_data_por_destinatario[$email_depto]['solicitudes'][] = $info_para_tabla;
+
+            if (!isset($email_data_por_destinatario[$email_fac])) {
+                $email_data_por_destinatario[$email_fac] = ['nombre_entidad' => $sol['nombre_fac'], 'solicitudes' => []];
+            }
+            $email_data_por_destinatario[$email_fac]['solicitudes'][] = $info_para_tabla;
+        }
+
+        foreach ($email_data_por_destinatario as $email_destinatario => $data) {
+            $nombre_entidad = $data['nombre_entidad'];
+            
+            $tabla_html = "<table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse; width: 100%;'><thead><tr style='background-color: #f2f2f2;'><th>Profesor</th><th>Cédula</th><th>Periodo</th><th>Novedad</th><th>Resultado VRA</th><th>Observación VRA</th></tr></thead><tbody>";
+            foreach ($data['solicitudes'] as $sol_email) {
+                $resultado = ($sol_email['estado_final'] === 'APROBADO') ? 'Aprobado' : 'Rechazado';
+                $tabla_html .= "<tr><td>" . htmlspecialchars($sol_email['nombre_profesor']) . "</td><td>" . htmlspecialchars($sol_email['cedula_profesor']) . "</td><td>" . htmlspecialchars($sol_email['anio_semestre']) . "</td><td>" . htmlspecialchars($sol_email['novedad']) . "</td><td><strong>" . $resultado . "</strong></td><td>" . htmlspecialchars($sol_email['observacion_vra']) . "</td></tr>";
+            }
+            $tabla_html .= "</tbody></table>";
+
+            $asunto = "Respuesta de Vicerrectoría a Novedades de Contratación - " . $nombre_entidad;
+            $cuerpo_email = "<html><body><h2>Notificación de Trámite de Novedades</h2><p>La Vicerrectoría Académica ha dado respuesta a un grupo de novedades para su dependencia (<strong>" . htmlspecialchars($nombre_entidad) . "</strong>).</p><p>A continuación se presenta el resumen:</p>" . $tabla_html . "<p>Este es un correo generado automáticamente. Por favor, revise la plataforma para más detalles.</p></body></html>";
+            
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host       = $config['smtp_host'];
+                $mail->SMTPAuth   = true;
+                $mail->Username   = $config['smtp_username'];
+                $mail->Password   = $config['smtp_password'];
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = $config['smtp_port'];
+                $mail->CharSet    = 'UTF-8';
+                $mail->SMTPOptions = ['ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true]];
+
+                $mail->setFrom($config['from_email'], $config['from_name']);
+                $mail->addAddress($email_destinatario, $nombre_entidad);
+                
+                $mail->isHTML(true);
+                $mail->Subject = $asunto;
+                $mail->Body    = $cuerpo_email;
+                $mail->send();
+            } catch (Exception $e) {
+                error_log("PHPMailer Error al enviar a $email_destinatario: {$mail->ErrorInfo}");
+            }
+        }
+    }
+    // ===== FIN BLOQUE 4 =====
+
     $response['success'] = true;
 
 } catch (Exception $e) {

@@ -882,16 +882,15 @@ $facultad_id = obtenerIdFacultad($departamento_id);
 $consulta_tipo = "SELECT DISTINCT tipo_docente AS tipo_d
                   FROM solicitudes  where solicitudes.estado <> 'an' OR solicitudes.estado IS NULL;";
 
+
 $resultadotipo = $con->query($consulta_tipo);
 
 if (!$resultadotipo) {
     die('Error en la consulta: ' . $con->error);
 }
        
-     $todosCerrados = true; // Inicializar bandera
-            
-            
-    $obtenerDeptoCerrado = obtenerDeptoCerrado($departamento_id,$anio_semestre); // si cero   no cerrado si 1  cerrado
+$todosCerrados = true; // Inicializar bandera
+$obtenerDeptoCerrado = obtenerDeptoCerrado($departamento_id,$anio_semestre);
 if ($obtenerDeptoCerrado!=1 && $tipo_usuario == 3) {
     echo "<div style='text-align: right;'>
             <label for='selectAll' style='cursor: pointer;'>
@@ -902,404 +901,828 @@ if ($obtenerDeptoCerrado!=1 && $tipo_usuario == 3) {
             </label>
           </div>";
 }
-  $totalItems = 0; // Inicializar el acumulador fuera del bucle principal
-   $contadorHV = 0; // 🔹 Inicializar el contador
+$totalItems = 0;
+$contadorHV = 0;
 $acepta_vra = null;
-while ($rowtipo = $resultadotipo->fetch_assoc()) {
-    $tipo_docente = $rowtipo['tipo_d'];
 
-    $sql = "SELECT solicitudes.*, facultad.nombre_fac_minb AS nombre_facultad, deparmanentos.depto_nom_propio AS nombre_departamento
-            FROM solicitudes
-            JOIN deparmanentos ON (deparmanentos.PK_DEPTO = solicitudes.departamento_id)
-            JOIN facultad ON (facultad.PK_FAC = solicitudes.facultad_id)
-            WHERE facultad_id = '$facultad_id' AND departamento_id = '$departamento_id' AND anio_semestre = '$anio_semestre' and tipo_docente = '$tipo_docente' AND (solicitudes.estado <> 'an' OR solicitudes.estado IS NULL) order by solicitudes.nombre asc";
+// =========================================================================================================
+//  INICIO DE LA ESTRUCTURA DE PESTAÑAS (TABS)
+// =========================================================================================================
+?>
 
-    $result = $conn->query($sql);
+<!-- Contenedor principal para las pestañas -->
+<div class="tabs-container">
+    <!-- Encabezado de las pestañas -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="ocasional-tab" data-bs-toggle="tab" data-bs-target="#ocasional-content" type="button" role="tab" aria-controls="ocasional-content" aria-selected="true">
+                Ocasional
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="catedra-tab" data-bs-toggle="tab" data-bs-target="#catedra-content" type="button" role="tab" aria-controls="catedra-content" aria-selected="false">
+                Cátedra
+            </button>
+        </li>
+    </ul>
 
-    // Generate a unique ID for the section that will be hidden/shown
-    // Replace spaces and special characters to ensure a valid HTML ID
-    $section_id = "section-" . strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $tipo_docente)));
-
-    echo "<div class='box-gray'>";
-    echo "<div class='estado-container'>";
-    // Add onclick and an icon with a unique ID for rotation
-echo "<h4 style='color: #000066; cursor: pointer;' onclick=\"toggleSection('" . htmlspecialchars($section_id) . "')\" title=\"Ocultar/Mostrar Detalles\">
-            <i id=\"icon_" . htmlspecialchars($section_id) . "\" class=\"fas fa-caret-down\"></i>
-            Vinculación: " . htmlspecialchars($tipo_docente) . " ("; // Applied style here
-if ($tipo_docente == 'Catedra') {
-    $estadoDepto = obtenerCierreDeptoCatedra($departamento_id, $aniose);
-    echo "<strong>" . ucfirst(strtolower($estadoDepto)) . "</strong>";
-} else {
-    $estadoDepto = obtenerCierreDeptoOcasional($departamento_id, $aniose);
-    echo "<strong>" . ucfirst(strtolower($estadoDepto)) . "</strong>";
-}
-echo ")</h4>";
-
-    if ($estadoDepto != 'CERRADO') {
-        if ($tipo_usuario == 3) {
-            echo "
-            <form action='nuevo_registro.php' method='GET'>
-                <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
-                <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
-                <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
-                <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
-
-                <div class='d-flex gap-2'>
-                    <button type='submit' class='btn btn-success'>
-                        <i class='fas fa-plus'></i> Agregar Profesor
-                    </button>
-
-                    <button type='button' class='btn btn-danger'
-                        onclick=\"eliminarRegistros(
-                            '" . htmlspecialchars($tipo_docente) . "',
-                            '" . htmlspecialchars($facultad_id) . "',
-                            '" . htmlspecialchars($departamento_id) . "',
-                            '" . htmlspecialchars($anio_semestre) . "'
-                        )\">
-                        <i class='fas fa-trash-alt'></i> Eliminar todos
-                    </button>
-                </div>
-            </form>";
-        }
-
-        $todosCerrados = false;
-    }
-
-    echo "</div>"; // Close estado-container
-
-    // Obtener el conteo de profesores
-    $sqlCount = "SELECT COUNT(*) as count FROM solicitudes WHERE facultad_id = '$facultad_id' AND departamento_id = '$departamento_id' AND anio_semestre = '$anio_semestre' and tipo_docente = '$tipo_docente' AND (solicitudes.estado <> 'an' OR solicitudes.estado IS NULL)";
-    $resultCount = $conn->query($sqlCount);
-    $count = $resultCount->fetch_assoc()['count'];
-
-    // Wrap the table content in a div with the unique ID
-    echo "<div id='" . htmlspecialchars($section_id) . "' style='display: block;'>"; // Initially visible
-
-    if ($result->num_rows > 0) {
-        echo "<table border='1'>
-                <tr>
-                    <th rowspan='2'>Ítem</th>
-                    <th rowspan='2'>Cédula</th>
-                    <th rowspan='2'>Nombre</th>";
-
-        if ($tipo_docente == "Ocasional" || $tipo_docente == "Catedra") {
-            echo "<th colspan='2'>Dedicación</th>";
-        }
-        echo "<th colspan='2'>Hojas de vida</th>";
-
-        if ($estadoDepto != "CERRADO") {
-            echo "<th colspan='3'>Acciones</th>";
-        } else {
-            echo "<th colspan='3' ></th>";
-        }
-
-        echo "</tr>";
-
-        if ($tipo_docente == "Ocasional") {
-            echo "<tr>
-                    <th title='Sede Popayán'>Pop</th>
-                    <th title='Sede Regionalización'>Reg</th>";
-        } elseif ($tipo_docente == "Catedra") {
-            echo "<tr>
-                    <th title='Horas en Sede Popayán'>Horas Pop</th>
-                    <th title='Horas en Sede Regionalización'>Horas Reg</th>";
-        }
-        echo "
-            <th title='Anexa Hoja de Vida para nuevos aspirantes'>Anexa (nuevo)</th>
-            <th title='Actualiza Hoja de Vida para aspirantes antiguos'>Actualiza (antiguo)</th>";
-
-        if ($estadoDepto != "CERRADO") {
-            echo "<th>Eliminar</th>
-                  <th>Editar</th>";
-            if ($tipo_usuario == 3) {
-                echo "<th>Visado</th>";
-                if ($tipo_usuario == 3) {
-                    echo "<th style='display:none;'>FOR.45</th>";
-                }
-            } else {
-                echo "<th>Visado</th>";
+    <!-- Contenido de las pestañas -->
+    <div class="tab-content" id="myTabContent">
+        <!-- PESTAÑA PARA DOCENTES OCASIONALES -->
+        <div class="tab-pane fade show active" id="ocasional-content" role="tabpanel" aria-labelledby="ocasional-tab">
+            <?php
+            // Rebobinar el resultado para volver a usar el bucle
+            // Esto asegura que el $resultadotipo esté listo para la primera pestaña
+            if ($resultadotipo->num_rows > 0) {
+                $resultadotipo->data_seek(0);
             }
-        } else {
-            echo "<th style='display:none;'>Eliminar</th>
-                  <th style='display:none;'>Editar</th>
-                  <th>Visado</th>";
-           // if ($tipo_usuario == 3) {
-                echo "<th style='text-align: center; vertical-align: middle;' title='Formato FOR 45 - Revisión Requisitos Vinculación Docente'>FOR.45</th>";
-            //}
-        }
-
-        echo "</tr>";
-
-        $item = 1;
-        $todosLosRegistrosValidos = true;
-        $datos_acta = obtener_acta($anio_semestre, $departamento_id);
-
-        $num_acta = ($datos_acta !== 0) ? htmlspecialchars($datos_acta['acta_periodo']) : "";
-        $fecha_acta = ($datos_acta !== 0) ? htmlspecialchars($datos_acta['fecha_acta']) : "";
-
-      while ($row = $result->fetch_assoc()) {
-    if ($row["anexa_hv_docente_nuevo"] == 'si' || $row["actualiza_hv_antiguo"] == 'si') {
-        $contadorHV++;
-    }
-  // Obtenemos los datos del profesor (array asociativo o false)
-$datosProfesor = datosProfesorCompleto($row["cedula"], $anio_semestre);
-
-// Preparamos el tooltip
-$tooltip = '';
-
-if ($datosProfesor !== false) {
-    // Escapamos todos los valores para HTML
-    $datosSeguros = array_map('htmlspecialchars', $datosProfesor);
-    
-    // Construimos el tooltip con formato legible
-    //quite del tootlip          <strong>postulado en Departamento(s):</strong> {$datosSeguros['departamento']}<br>        <strong>Teléfono:</strong> {$datosSeguros['telefono']}<br>
-
-
-    $tooltip = "
-     
-        <strong>Email:</strong> {$datosSeguros['email']}<br>
-        <strong>Títulos:</strong> {$datosSeguros['titulos']}<br>
-        <strong>Celular:</strong> {$datosSeguros['celular']}<br>
-        <strong>Trabaja actualmente:</strong> {$datosSeguros['trabaja_actualmente']}<br>
-        <strong>Cargo actual:</strong> {$datosSeguros['cargo_actual']}
-    ";
-}
-// Generamos la fila de la tabla
-echo "<tr>
-    <td class='td-simple'>" . $item . "</td> 
-    <td class='td-simple' style='text-align: left;'>" . htmlspecialchars($row["cedula"]) . "</td>
-    <td class='td-simple' style='text-align: left;' 
-      data-toggle='tooltip' 
-      data-html='true' 
-      title='" . $tooltip . "'>
-      " . htmlspecialchars($row["nombre"]) . "
-    </td>
-";
-
-    if ($tipo_docente == "Ocasional") {
-        echo "<td class='td-simple'>" . htmlspecialchars($row["tipo_dedicacion"]) . "</td>
-              <td class='td-simple'>" . htmlspecialchars($row["tipo_dedicacion_r"]) . "</td>";
-    }
-    if ($tipo_docente == "Catedra") {
-        $horas = ($row["horas"] == 0) ? "" : htmlspecialchars($row["horas"]);
-        $horas_r = ($row["horas_r"] == 0) ? "" : htmlspecialchars($row["horas_r"]);
-
-        echo "<td class='td-simple'>" . $horas . "</td>
-              <td class='td-simple'>" . $horas_r . "</td>";
-    }
-
-    // Verificar si hay un enlace válido en 'anexos'
-    $anexos = trim($row["anexos"]);
-    $hasValidLink = !empty($anexos) && preg_match('/^(https?:\/\/|www\.)/i', $anexos);
-    
-    // Mostrar anexa_hv_docente_nuevo como enlace si hay un enlace válido
-    if ($row["anexa_hv_docente_nuevo"] == 'si' && $hasValidLink) {
-        echo "<td class='td-simple'><a href='" . htmlspecialchars($anexos) . "' target='_blank' class='link-hv'>si</a></td>";
-    } else {
-        echo "<td class='td-simple'>" . htmlspecialchars($row["anexa_hv_docente_nuevo"]) . "</td>";
-    }
-    
-    // Mostrar actualiza_hv_antiguo como enlace si hay un enlace válido
-    if ($row["actualiza_hv_antiguo"] == 'si' && $hasValidLink) {
-        echo "<td class='td-simple'><a href='" . htmlspecialchars($anexos) . "' target='_blank' class='link-hv'>si</a></td>";
-    } else {
-        echo "<td class='td-simple'>" . htmlspecialchars($row["actualiza_hv_antiguo"]) . "</td>";
-    }
-    
-       if ($estadoDepto != "CERRADO") {
-                echo "<td class='td-simple'>";
-                if ($tipo_usuario == 3) {
-                    echo "
-                        <form action='eliminar.php' method='POST' style='display:inline;'>
-                            <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+            // Bucle principal para generar los docentes ocasionales
+            while ($rowtipo = $resultadotipo->fetch_assoc()) {
+                if ($rowtipo['tipo_d'] != 'Ocasional') {
+                    continue; // Saltar si no es Ocasional para esta pestaña
+                }
+                $tipo_docente = $rowtipo['tipo_d'];
+                $sql = "SELECT solicitudes.*, facultad.nombre_fac_minb AS nombre_facultad, deparmanentos.depto_nom_propio AS nombre_departamento
+                        FROM solicitudes
+                        JOIN deparmanentos ON (deparmanentos.PK_DEPTO = solicitudes.departamento_id)
+                        JOIN facultad ON (facultad.PK_FAC = solicitudes.facultad_id)
+                        WHERE facultad_id = '$facultad_id' AND departamento_id = '$departamento_id' AND anio_semestre = '$anio_semestre' and tipo_docente = '$tipo_docente' AND (solicitudes.estado <> 'an' OR solicitudes.estado IS NULL) order by solicitudes.nombre asc";
+                $result = $conn->query($sql);
+                $section_id = "section-" . strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $tipo_docente)));
+                echo "<div class='box-gray'>";
+                echo "<div class='estado-container'>";
+                echo "<h4 style='color: #000066; cursor: pointer;' onclick=\"toggleSection('" . htmlspecialchars($section_id) . "')\" title=\"Ocultar/Mostrar Detalles\">
+                        <i id=\"icon_" . htmlspecialchars($section_id) . "\" class=\"fas fa-caret-down\"></i>
+                        Vinculación: " . htmlspecialchars($tipo_docente) . " (";
+                $estadoDepto = obtenerCierreDeptoOcasional($departamento_id, $aniose);
+                echo "<strong>" . ucfirst(strtolower($estadoDepto)) . "</strong>";
+                echo ")</h4>";
+                if ($estadoDepto != 'CERRADO') {
+                    if ($tipo_usuario == 3) {
+                        echo "
+                        <form action='nuevo_registro.php' method='GET'>
                             <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
                             <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
                             <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
                             <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
-                            <button type='submit' class='delete-btn'><i class='fa-regular fa-trash-can'></i></button>
+                            <div class='d-flex gap-2'>
+                                <button type='submit' class='btn btn-success'>
+                                    <i class='fas fa-plus'></i> Agregar Profesor
+                                </button>
+                                <button type='button' class='btn btn-danger'
+                                    onclick=\"eliminarRegistros(
+                                        '" . htmlspecialchars($tipo_docente) . "',
+                                        '" . htmlspecialchars($facultad_id) . "',
+                                        '" . htmlspecialchars($departamento_id) . "',
+                                        '" . htmlspecialchars($anio_semestre) . "'
+                                    )\">
+                                    <i class='fas fa-trash-alt'></i> Eliminar todos
+                                </button>
+                            </div>
                         </form>";
+                    }
+                    $todosCerrados = false;
                 }
-                echo "</td><td class='td-simple'>";
-                if ($tipo_usuario == 3) {
-                    echo "
-                        <form action='actualizar.php' method='GET' style='display:inline;'>
-                            <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
-                            <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
-                            <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
-                            <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
-                            <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
-                            <button type='submit' class='update-btn'><i class='fas fa-edit'></i></button>
-                        </form>";
+                echo "</div>"; // Close estado-container
+                $sqlCount = "SELECT COUNT(*) as count FROM solicitudes WHERE facultad_id = '$facultad_id' AND departamento_id = '$departamento_id' AND anio_semestre = '$anio_semestre' and tipo_docente = '$tipo_docente' AND (solicitudes.estado <> 'an' OR solicitudes.estado IS NULL)";
+                $resultCount = $conn->query($sqlCount);
+                $count = $resultCount->fetch_assoc()['count'];
+                echo "<div id='" . htmlspecialchars($section_id) . "' style='display: block;'>";
+                if ($result->num_rows > 0) {
+                    echo "<table border='1'>
+                            <tr>
+                                <th rowspan='2'>Ítem</th>
+                                <th rowspan='2'>Cédula</th>
+                                <th rowspan='2'>Nombre</th>
+                                <th colspan='2'>Dedicación</th>
+                                <th colspan='2'>Hojas de vida</th>";
+                    if ($estadoDepto != "CERRADO") {
+                        echo "<th colspan='3'>Acciones</th>";
+                    } else {
+                        echo "<th colspan='3' ></th>";
+                    }
+                    echo "</tr>";
+                    echo "<tr>
+                            <th title='Sede Popayán'>Pop</th>
+                            <th title='Sede Regionalización'>Reg</th>
+                            <th title='Anexa Hoja de Vida para nuevos aspirantes'>Anexa (nuevo)</th>
+                            <th title='Actualiza Hoja de Vida para aspirantes antiguos'>Actualiza (antiguo)</th>";
+                    if ($estadoDepto != "CERRADO") {
+                        echo "<th>Eliminar</th>
+                              <th>Editar</th>";
+                        if ($tipo_usuario == 3) {
+                            echo "<th>Visado</th>";
+                            if ($tipo_usuario == 3) {
+                                echo "<th style='display:none;'>FOR.45</th>";
+                            }
+                        } else {
+                            echo "<th>Visado</th>";
+                        }
+                    } else {
+                        echo "<th style='display:none;'>Eliminar</th>
+                              <th style='display:none;'>Editar</th>
+                              <th>Visado</th>";
+                        echo "<th style='text-align: center; vertical-align: middle;' title='Formato FOR 45 - Revisión Requisitos Vinculación Docente'>FOR.45</th>";
+                    }
+                    echo "</tr>";
+                    $item = 1;
+                    $todosLosRegistrosValidos = true;
+                    $datos_acta = obtener_acta($anio_semestre, $departamento_id);
+                    $num_acta = ($datos_acta !== 0) ? htmlspecialchars($datos_acta['acta_periodo']) : "";
+                    $fecha_acta = ($datos_acta !== 0) ? htmlspecialchars($datos_acta['fecha_acta']) : "";
+                    while ($row = $result->fetch_assoc()) {
+                        if ($row["anexa_hv_docente_nuevo"] == 'si' || $row["actualiza_hv_antiguo"] == 'si') {
+                            $contadorHV++;
+                        }
+                        $datosProfesor = datosProfesorCompleto($row["cedula"], $anio_semestre);
+                        $tooltip = '';
+                        if ($datosProfesor !== false) {
+                            $datosSeguros = array_map('htmlspecialchars', $datosProfesor);
+                            $tooltip = "<strong>Email:</strong> {$datosSeguros['email']}<br><strong>Títulos:</strong> {$datosSeguros['titulos']}<br><strong>Celular:</strong> {$datosSeguros['celular']}<br><strong>Trabaja actualmente:</strong> {$datosSeguros['trabaja_actualmente']}<br><strong>Cargo actual:</strong> {$datosSeguros['cargo_actual']}";
+                        }
+                        echo "<tr>
+                                <td class='td-simple'>" . $item . "</td>
+                                <td class='td-simple' style='text-align: left;'>" . htmlspecialchars($row["cedula"]) . "</td>
+                                <td class='td-simple' style='text-align: left;' data-toggle='tooltip' data-html='true' title='" . $tooltip . "'>" . htmlspecialchars($row["nombre"]) . "</td>";
+                        echo "<td class='td-simple'>" . htmlspecialchars($row["tipo_dedicacion"]) . "</td>
+                              <td class='td-simple'>" . htmlspecialchars($row["tipo_dedicacion_r"]) . "</td>";
+                        $anexos = trim($row["anexos"]);
+                        $hasValidLink = !empty($anexos) && preg_match('/^(https?:\/\/|www\.)/i', $anexos);
+                        if ($row["anexa_hv_docente_nuevo"] == 'si' && $hasValidLink) {
+                            echo "<td class='td-simple'><a href='" . htmlspecialchars($anexos) . "' target='_blank' class='link-hv'>si</a></td>";
+                        } else {
+                            echo "<td class='td-simple'>" . htmlspecialchars($row["anexa_hv_docente_nuevo"]) . "</td>";
+                        }
+                        if ($row["actualiza_hv_antiguo"] == 'si' && $hasValidLink) {
+                            echo "<td class='td-simple'><a href='" . htmlspecialchars($anexos) . "' target='_blank' class='link-hv'>si</a></td>";
+                        } else {
+                            echo "<td class='td-simple'>" . htmlspecialchars($row["actualiza_hv_antiguo"]) . "</td>";
+                        }
+                        if ($estadoDepto != "CERRADO") {
+                            echo "<td class='td-simple'>";
+                            if ($tipo_usuario == 3) {
+                                echo "<form action='eliminar.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='delete-btn'><i class='fa-regular fa-trash-can'></i></button>
+                                    </form>";
+                            }
+                            echo "</td><td class='td-simple'>";
+                            if ($tipo_usuario == 3) {
+                                echo "<form action='actualizar.php' method='GET' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='update-btn'><i class='fas fa-edit'></i></button>
+                                    </form>";
+                            }
+                            echo "</td><td class='td-simple'>";
+                            $disabled = ($tipo_usuario == 3) ? "" : "disabled";
+                            echo "<form class='vistoBuenoForm' style='display:inline;'>
+                                    <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row['id_solicitud']) . "'>
+                                    <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                    <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                    <input type='checkbox' class='individualCheckbox' name='visto_bueno' value='1' " . ($row['visado'] ? 'checked' : '') . " $disabled>
+                                </form>";
+                            echo "</td>";
+                        } else {
+                            echo "<td class='td-simple' style='display:none;'>
+                                    <form action='eliminar.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='delete-btn'><i class='fas fa-trash'></i></button>
+                                    </form>
+                                </td>
+                                <td class='td-simple' style='display:none;'>
+                                    <form action='actualizar.php' method='GET' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='update-btn'><i class='fas fa-edit'></i></button>
+                                    </form>
+                                </td>
+                                <td class='td-simple'>
+                                    <form action='update_visto_bueno.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='checkbox' disabled name='visto_bueno' value='1' " . ($row["visado"] ? "checked" : "") . " onchange='this.form.submit()'>
+                                    </form>
+                                </td>";
+                            echo "<td class='td-simple centered-column'>
+                                <button type='button' class='download-btn btn btn-sm'
+                                    id='btn-solicitud-" . htmlspecialchars($row["id_solicitud"]) . "'
+                                    data-id-solicitud='" . htmlspecialchars($row["id_solicitud"]) . "'
+                                    data-departamento-id='" . htmlspecialchars($departamento_id) . "'
+                                    data-anio-semestre='" . htmlspecialchars($anio_semestre) . "'
+                                    data-numero-acta='" . htmlspecialchars($num_acta) . "'
+                                    data-fecha-acta='" . htmlspecialchars($fecha_acta) . "'
+                                    data-pregrado='" . htmlspecialchars($row["pregrado"] ?? '') . "'
+                                    data-especializacion='" . htmlspecialchars($row["especializacion"] ?? '') . "'
+                                    data-maestria='" . htmlspecialchars($row["maestria"] ?? '') . "'
+                                    data-doctorado='" . htmlspecialchars($row["doctorado"] ?? '') . "'
+                                    data-otro_estudio='" . htmlspecialchars($row["otro_estudio"] ?? '') . "'
+                                    data-experiencia-docente='" . htmlspecialchars($row["experiencia_docente"] ?? '') . "'
+                                    data-experiencia-profesional='" . htmlspecialchars($row["experiencia_profesional"] ?? '') . "'
+                                    data-otra-experiencia='" . htmlspecialchars($row["otra_experiencia"] ?? '') . "'
+                                    data-cedula-profesor='" . htmlspecialchars($row["cedula"] ?? '') . "'  data-bs-toggle='modal'
+                                    data-bs-target='#actaModal'>
+                                    <i class='fa-solid fa-file-arrow-down' style='font-size:16px; color:#1A73E8;'></i>
+                                </button>
+                            </td>";
+                        }
+                        echo "</tr>";
+                        $item++;
+                    }
+                    $totalItems += ($item - 1);
+                    echo "</table>";
+                } else {
+                    echo "<p style='text-align: center;'>No se encontraron resultados.</p>";
+                    if ($tipo_usuario == 3) {
+                        if ($tipo_usuario == 3 && $estadoDepto != 'CERRADO') {
+                            echo '<div class="row mt-3">
+                                    <div class="col-md-12 text-center">
+                                        <a href="indexsolicitud.php?tipo_docente=' . urlencode($tipo_docente) . '&anio_semestre=' . urlencode($anio_semestre) . '" class="btn btn-cargue-masivo">
+                                            <i class="fas fa-upload"></i> Cargue Masivo - Tipo: ' . htmlspecialchars($tipo_docente) . '
+                                        </a>
+                                    </div>
+                                </div>';
+                        }
+                    }
                 }
-                echo "</td><td class='td-simple'>";
-                $disabled = ($tipo_usuario == 3) ? "" : "disabled";
-                echo "
-                    <form class='vistoBuenoForm' style='display:inline;'>
-                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row['id_solicitud']) . "'>
-                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
-                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
-                        <input type='checkbox' class='individualCheckbox' name='visto_bueno' value='1' " . ($row['visado'] ? 'checked' : '') . " $disabled>
-                    </form>";
-                echo "</td>";
-
-            } else {
-                echo "<td class='td-simple' style='display:none;'>
-                            <form action='eliminar.php' method='POST' style='display:inline;'>
-                                <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
-                                <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
-                                <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
-                                <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
-                                <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
-                                <button type='submit' class='delete-btn'><i class='fas fa-trash'></i></button>
-                            </form>
-                        </td>
-                        <td class='td-simple' style='display:none;'>
-                            <form action='actualizar.php' method='GET' style='display:inline;'>
-                                <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
-                                <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
-                                <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
-                                <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
-                                <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
-                                <button type='submit' class='update-btn'><i class='fas fa-edit'></i></button>
-                            </form>
-                        </td>
-                        <td class='td-simple'>
-                            <form action='update_visto_bueno.php' method='POST' style='display:inline;'>
-                                <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
-                                <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
-                                <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
-                                <input type='checkbox' disabled name='visto_bueno' value='1' " . ($row["visado"] ? "checked" : "") . " onchange='this.form.submit()'>
-                            </form>
-                        </td>";
-
-                if ($tipo_usuario == 3) {
-            echo "<td class='td-simple centered-column'>
-        <button type='button' class='download-btn btn btn-sm'
-            id='btn-solicitud-" . htmlspecialchars($row["id_solicitud"]) . "'
-            data-id-solicitud='" . htmlspecialchars($row["id_solicitud"]) . "'
-            data-departamento-id='" . htmlspecialchars($departamento_id) . "'
-            data-anio-semestre='" . htmlspecialchars($anio_semestre) . "'
-            data-numero-acta='" . htmlspecialchars($num_acta) . "'
-            data-fecha-acta='" . htmlspecialchars($fecha_acta) . "'
-            data-pregrado='" . htmlspecialchars($row["pregrado"] ?? '') . "'
-            data-especializacion='" . htmlspecialchars($row["especializacion"] ?? '') . "'
-            data-maestria='" . htmlspecialchars($row["maestria"] ?? '') . "'
-            data-doctorado='" . htmlspecialchars($row["doctorado"] ?? '') . "'
-            data-otro_estudio='" . htmlspecialchars($row["otro_estudio"] ?? '') . "'
-            data-experiencia-docente='" . htmlspecialchars($row["experiencia_docente"] ?? '') . "'
-            data-experiencia-profesional='" . htmlspecialchars($row["experiencia_profesional"] ?? '') . "'
-            data-otra-experiencia='" . htmlspecialchars($row["otra_experiencia"] ?? '') . "'
-            data-cedula-profesor='" . htmlspecialchars($row["cedula"] ?? '') . "'  data-bs-toggle='modal'
-            data-bs-target='#actaModal'>
-            <i class='fa-solid fa-file-arrow-down' style='font-size:16px; color:#1A73E8;'></i>
-        </button>
-    </td>";
-                }
-           else {
-               
-// Construir la URL con todas las variables
-$web_view_url = "for45web.php?" .
-    "id_solicitud=" . htmlspecialchars($row["id_solicitud"]) . "&" .
-    "departamento_id=" . htmlspecialchars($departamento_id) . "&" .
-    "anio_semestre=" . htmlspecialchars($anio_semestre) . "&" .
-    "numero_acta=" . htmlspecialchars($num_acta) . "&" .
-    "fecha_actab=" . htmlspecialchars($fecha_acta) . "&" . // Usar 'fecha_actab' para coincidir con el GET
-    "pregrado=" . urlencode(htmlspecialchars($row["pregrado"] ?? '')) . "&" .
-    "especializacion=" . urlencode(htmlspecialchars($row["especializacion"] ?? '')) . "&" .
-    "maestria=" . urlencode(htmlspecialchars($row["maestria"] ?? '')) . "&" .
-    "doctorado=" . urlencode(htmlspecialchars($row["doctorado"] ?? '')) . "&" .
-    "otro_estudio=" . urlencode(htmlspecialchars($row["otro_estudio"] ?? '')) . "&" .
-    "experiencia_docente=" . urlencode(htmlspecialchars($row["experiencia_docente"] ?? '')) . "&" .
-    "experiencia_profesional=" . urlencode(htmlspecialchars($row["experiencia_profesional"] ?? '')) . "&" .
-    "otra_experiencia=" . urlencode(htmlspecialchars($row["otra_experiencia"] ?? '')) . "&" .
-    "cedula_profesor=" . urlencode(htmlspecialchars($row["cedula"] ?? ''));
-
-// Aquí puedes usar este $web_view_url donde lo necesites, por ejemplo:
-
-// Opción 1: Un botón o enlace al lado del botón de descarga de Word
-echo "<td class='td-simple centered-column'>";
-
-
-// Nuevo botón para la vista web
-echo "<a href='" . $web_view_url . "' target='_blank' class='btn btn-sm btn-info' title='Ver en Web' style='padding-top: 0rem; padding-bottom: 0rem;'>
-          <i class='fa-solid fa-eye' style='color: white; font-size: 0.8em;'></i>
-      </a>";    
-           }
-
-            }
-            echo "</tr>";
-            $item++;
-        }
-        $totalItems += ($item - 1);
-
-        echo "</table>";
-
-    } else {
-        echo "<p style='text-align: center;'>No se encontraron resultados.</p>";
-        if ($tipo_usuario == 3) {
-            if ($tipo_usuario == 3 && $estadoDepto != 'CERRADO') {
-                echo '
-                <div class="row mt-3">
-                    <div class="col-md-12 text-center">
-                        <a href="indexsolicitud.php?tipo_docente=' . urlencode($tipo_docente) . '&anio_semestre=' . urlencode($anio_semestre) . '" class="btn btn-cargue-masivo">
-                            <i class="fas fa-upload"></i> Cargue Masivo - Tipo: ' . htmlspecialchars($tipo_docente) . '
-                        </a>
-                    </div>
-                </div>';
-            }
-        }
-    }
-
-    echo "</div>"; // Close the section-id div
-    ?>
-    <div class="d-flex justify-content-between mt-3">
-
-        <?php
-        if ($estadoDepto == "ABIERTO" && $tipo_usuario == 3) {
-            $mostrarFormulario = true;
-        } else {
-            $mostrarFormulario = false;
-        }
-
-        if ($mostrarFormulario):
-            ?>
-            <form id="confirmForm" action="confirmar_tipo_d_depto.php" method="GET" onsubmit="return confirmarEnvio(<?php echo $count; ?>, '<?php echo $tipo_docente; ?>');">
-                <input type="hidden" name="facultad_id" value="<?php echo htmlspecialchars($facultad_id); ?>">
-                <input type="hidden" name="departamento_id" value="<?php echo htmlspecialchars($departamento_id); ?>">
-                <input type="hidden" name="anio_semestre" value="<?php echo htmlspecialchars($anio_semestre); ?>">
-                <input type="hidden" name="tipo_docente" value="<?php echo htmlspecialchars($tipo_docente); ?>">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-unlock"></i> Confirmar Profesores</button>
-            </form>
-        <?php endif; ?>
-
-        <?php if ($estadoDepto == "CERRADO") {
-            $envio_fac = obtenerenviof($facultad_id, $anio_semestre);
-            $acepta_vra = obteneraceptacionvra($facultad_id, $anio_semestre);
-            if ($tipo_usuario == 3) {
+                echo "</div>";
                 ?>
+                <div class="d-flex justify-content-between mt-3">
+                    <?php if ($estadoDepto == "ABIERTO" && $tipo_usuario == 3) { ?>
+                        <form id="confirmForm_<?php echo strtolower($tipo_docente); ?>" action="confirmar_tipo_d_depto.php" method="GET" onsubmit="return confirmarEnvio(<?php echo $count; ?>, '<?php echo $tipo_docente; ?>');">
+                            <input type="hidden" name="facultad_id" value="<?php echo htmlspecialchars($facultad_id); ?>">
+                            <input type="hidden" name="departamento_id" value="<?php echo htmlspecialchars($departamento_id); ?>">
+                            <input type="hidden" name="anio_semestre" value="<?php echo htmlspecialchars($anio_semestre); ?>">
+                            <input type="hidden" name="tipo_docente" value="<?php echo htmlspecialchars($tipo_docente); ?>">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-unlock"></i> Confirmar Profesores</button>
+                        </form>
+                    <?php } ?>
+                    <?php if ($estadoDepto == "CERRADO" && $tipo_usuario == 3) { ?>
+                        <form action="abrir_estado.php" method="POST">
+                            <input type="hidden" name="facultad_id" value="<?php echo htmlspecialchars($facultad_id); ?>">
+                            <input type="hidden" name="departamento_id" value="<?php echo htmlspecialchars($departamento_id); ?>">
+                            <input type="hidden" name="anio_semestre" value="<?php echo htmlspecialchars($anio_semestre); ?>">
+                            <input type="hidden" name="tipo_docente" value="<?php echo htmlspecialchars($tipo_docente); ?>">
+                            <input type="hidden" name="tipo_usuario" value="<?php echo htmlspecialchars($tipo_usuario); ?>">
+                            <button type="submit" class="btn btn-warning" title="Lista cerrada — haga clic para abrir y editar.">
+                                <i class="fas fa-lock"></i>
+                            </button>
+                        </form>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
 
-                <form action="abrir_estado.php" method="POST">
-                    <input type="hidden" name="facultad_id" value="<?php echo htmlspecialchars($facultad_id); ?>">
-                    <input type="hidden" name="departamento_id" value="<?php echo htmlspecialchars($departamento_id); ?>">
-                    <input type="hidden" name="anio_semestre" value="<?php echo htmlspecialchars($anio_semestre); ?>">
-                    <input type="hidden" name="tipo_docente" value="<?php echo htmlspecialchars($tipo_docente); ?>">
-                    <input type="hidden" name="tipo_usuario" value="<?php echo htmlspecialchars($tipo_usuario); ?>">
-
-                    <button type="submit" class="btn btn-warning" title="Lista cerrada — haga clic para abrir y editar.">
-                        <i class="fas fa-lock"></i>
-                    </button>
-                </form>
-           <?php
+        <!-- PESTAÑA PARA DOCENTES DE CÁTEDRA -->
+        <div class="tab-pane fade" id="catedra-content" role="tabpanel" aria-labelledby="catedra-tab">
+            <?php
+            // Rebobinar el resultado para volver a usar el bucle
+            // Esto asegura que el $resultadotipo esté listo para la segunda pestaña
+            if ($resultadotipo->num_rows > 0) {
+                $resultadotipo->data_seek(0);
             }
-        }
-        // Moved the modal for FOR.45 and its script outside the main loop or ensure it's rendered only once
-        // Also ensure the "Novedad" modal and its script are correctly placed.
-        ?>
+            // Bucle principal para generar los docentes de cátedra
+            while ($rowtipo = $resultadotipo->fetch_assoc()) {
+                if ($rowtipo['tipo_d'] != 'Catedra') {
+                    continue; // Saltar si no es Catedra para esta pestaña
+                }
+                $tipo_docente = $rowtipo['tipo_d'];
+                $sql = "SELECT solicitudes.*, facultad.nombre_fac_minb AS nombre_facultad, deparmanentos.depto_nom_propio AS nombre_departamento
+                        FROM solicitudes
+                        JOIN deparmanentos ON (deparmanentos.PK_DEPTO = solicitudes.departamento_id)
+                        JOIN facultad ON (facultad.PK_FAC = solicitudes.facultad_id)
+                        WHERE facultad_id = '$facultad_id' AND departamento_id = '$departamento_id' AND anio_semestre = '$anio_semestre' and tipo_docente = '$tipo_docente' AND (solicitudes.estado <> 'an' OR solicitudes.estado IS NULL) order by solicitudes.nombre asc";
+                $result = $conn->query($sql);
+                $section_id = "section-" . strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $tipo_docente)));
+                echo "<div class='box-gray'>";
+                echo "<div class='estado-container'>";
+                echo "<h4 style='color: #000066; cursor: pointer;' onclick=\"toggleSection('" . htmlspecialchars($section_id) . "')\" title=\"Ocultar/Mostrar Detalles\">
+                        <i id=\"icon_" . htmlspecialchars($section_id) . "\" class=\"fas fa-caret-down\"></i>
+                        Vinculación: " . htmlspecialchars($tipo_docente) . " (";
+                $estadoDepto = obtenerCierreDeptoCatedra($departamento_id, $aniose);
+                echo "<strong>" . ucfirst(strtolower($estadoDepto)) . "</strong>";
+                echo ")</h4>";
+                if ($estadoDepto != 'CERRADO') {
+                    if ($tipo_usuario == 3) {
+                        echo "
+                        <form action='nuevo_registro.php' method='GET'>
+                            <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                            <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                            <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                            <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                            <div class='d-flex gap-2'>
+                                <button type='submit' class='btn btn-success'>
+                                    <i class='fas fa-plus'></i> Agregar Profesor
+                                </button>
+                                <button type='button' class='btn btn-danger'
+                                    onclick=\"eliminarRegistros(
+                                        '" . htmlspecialchars($tipo_docente) . "',
+                                        '" . htmlspecialchars($facultad_id) . "',
+                                        '" . htmlspecialchars($departamento_id) . "',
+                                        '" . htmlspecialchars($anio_semestre) . "'
+                                    )\">
+                                    <i class='fas fa-trash-alt'></i> Eliminar todos
+                                </button>
+                            </div>
+                        </form>";
+                    }
+                    $todosCerrados = false;
+                }
+                echo "</div>";
+                $sqlCount = "SELECT COUNT(*) as count FROM solicitudes WHERE facultad_id = '$facultad_id' AND departamento_id = '$departamento_id' AND anio_semestre = '$anio_semestre' and tipo_docente = '$tipo_docente' AND (solicitudes.estado <> 'an' OR solicitudes.estado IS NULL)";
+                $resultCount = $conn->query($sqlCount);
+                $count = $resultCount->fetch_assoc()['count'];
+                echo "<div id='" . htmlspecialchars($section_id) . "' style='display: block;'>";
+                if ($result->num_rows > 0) {
+                    echo "<table border='1'>
+                            <tr>
+                                <th rowspan='2'>Ítem</th>
+                                <th rowspan='2'>Cédula</th>
+                                <th rowspan='2'>Nombre</th>
+                                <th colspan='2'>Dedicación</th>
+                                <th colspan='2'>Hojas de vida</th>";
+                    if ($estadoDepto != "CERRADO") {
+                        echo "<th colspan='3'>Acciones</th>";
+                    } else {
+                        echo "<th colspan='3' ></th>";
+                    }
+                    echo "</tr>";
+                    echo "<tr>
+                            <th title='Horas en Sede Popayán'>Horas Pop</th>
+                            <th title='Horas en Sede Regionalización'>Horas Reg</th>
+                            <th title='Anexa Hoja de Vida para nuevos aspirantes'>Anexa (nuevo)</th>
+                            <th title='Actualiza Hoja de Vida para aspirantes antiguos'>Actualiza (antiguo)</th>";
+                    if ($estadoDepto != "CERRADO") {
+                        echo "<th>Eliminar</th>
+                              <th>Editar</th>";
+                        if ($tipo_usuario == 3) {
+                            echo "<th>Visado</th>";
+                            if ($tipo_usuario == 3) {
+                                echo "<th style='display:none;'>FOR.45</th>";
+                            }
+                        } else {
+                            echo "<th>Visado</th>";
+                        }
+                    } else {
+                        echo "<th style='display:none;'>Eliminar</th>
+                              <th style='display:none;'>Editar</th>
+                              <th>Visado</th>";
+                        echo "<th style='text-align: center; vertical-align: middle;' title='Formato FOR 45 - Revisión Requisitos Vinculación Docente'>FOR.45</th>";
+                    }
+                    echo "</tr>";
+                    $item = 1;
+                    $todosLosRegistrosValidos = true;
+                    $datos_acta = obtener_acta($anio_semestre, $departamento_id);
+                    $num_acta = ($datos_acta !== 0) ? htmlspecialchars($datos_acta['acta_periodo']) : "";
+                    $fecha_acta = ($datos_acta !== 0) ? htmlspecialchars($datos_acta['fecha_acta']) : "";
+                    while ($row = $result->fetch_assoc()) {
+                        if ($row["anexa_hv_docente_nuevo"] == 'si' || $row["actualiza_hv_antiguo"] == 'si') {
+                            $contadorHV++;
+                        }
+                        $datosProfesor = datosProfesorCompleto($row["cedula"], $anio_semestre);
+                        $tooltip = '';
+                        if ($datosProfesor !== false) {
+                            $datosSeguros = array_map('htmlspecialchars', $datosProfesor);
+                            $tooltip = "<strong>Email:</strong> {$datosSeguros['email']}<br><strong>Títulos:</strong> {$datosSeguros['titulos']}<br><strong>Celular:</strong> {$datosSeguros['celular']}<br><strong>Trabaja actualmente:</strong> {$datosSeguros['trabaja_actualmente']}<br><strong>Cargo actual:</strong> {$datosSeguros['cargo_actual']}";
+                        }
+                        echo "<tr>
+                                <td class='td-simple'>" . $item . "</td>
+                                <td class='td-simple' style='text-align: left;'>" . htmlspecialchars($row["cedula"]) . "</td>
+                                <td class='td-simple' style='text-align: left;' data-toggle='tooltip' data-html='true' title='" . $tooltip . "'>" . htmlspecialchars($row["nombre"]) . "</td>";
+                        $horas = ($row["horas"] == 0) ? "" : htmlspecialchars($row["horas"]);
+                        $horas_r = ($row["horas_r"] == 0) ? "" : htmlspecialchars($row["horas_r"]);
+                        echo "<td class='td-simple'>" . $horas . "</td>
+                              <td class='td-simple'>" . $horas_r . "</td>";
+                        $anexos = trim($row["anexos"]);
+                        $hasValidLink = !empty($anexos) && preg_match('/^(https?:\/\/|www\.)/i', $anexos);
+                        if ($row["anexa_hv_docente_nuevo"] == 'si' && $hasValidLink) {
+                            echo "<td class='td-simple'><a href='" . htmlspecialchars($anexos) . "' target='_blank' class='link-hv'>si</a></td>";
+                        } else {
+                            echo "<td class='td-simple'>" . htmlspecialchars($row["anexa_hv_docente_nuevo"]) . "</td>";
+                        }
+                        if ($row["actualiza_hv_antiguo"] == 'si' && $hasValidLink) {
+                            echo "<td class='td-simple'><a href='" . htmlspecialchars($anexos) . "' target='_blank' class='link-hv'>si</a></td>";
+                        } else {
+                            echo "<td class='td-simple'>" . htmlspecialchars($row["actualiza_hv_antiguo"]) . "</td>";
+                        }
+                        if ($estadoDepto != "CERRADO") {
+                            echo "<td class='td-simple'>";
+                            if ($tipo_usuario == 3) {
+                                echo "<form action='eliminar.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='delete-btn'><i class='fa-regular fa-trash-can'></i></button>
+                                    </form>";
+                            }
+                            echo "</td><td class='td-simple'>";
+                            if ($tipo_usuario == 3) {
+                                echo "<form action='actualizar.php' method='GET' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='update-btn'><i class='fas fa-edit'></i></button>
+                                    </form>";
+                            }
+                            echo "</td><td class='td-simple'>";
+                            $disabled = ($tipo_usuario == 3) ? "" : "disabled";
+                            echo "<form class='vistoBuenoForm' style='display:inline;'>
+                                    <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row['id_solicitud']) . "'>
+                                    <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                    <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                    <input type='checkbox' class='individualCheckbox' name='visto_bueno' value='1' " . ($row['visado'] ? 'checked' : '') . " $disabled>
+                                </form>";
+                            echo "</td>";
+                        } else {
+                            echo "<td class='td-simple' style='display:none;'>
+                                    <form action='eliminar.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='delete-btn'><i class='fas fa-trash'></i></button>
+                                    </form>
+                                </td>
+                                <td class='td-simple' style='display:none;'>
+                                    <form action='actualizar.php' method='GET' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='update-btn'><i class='fas fa-edit'></i></button>
+                                    </form>
+                                </td>
+                                <td class='td-simple'>
+                                    <form action='update_visto_bueno.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='checkbox' disabled name='visto_bueno' value='1' " . ($row["visado"] ? "checked" : "") . " onchange='this.form.submit()'>
+                                    </form>
+                                </td>";
+                            echo "<td class='td-simple centered-column'>
+                                <button type='button' class='download-btn btn btn-sm'
+                                    id='btn-solicitud-" . htmlspecialchars($row["id_solicitud"]) . "'
+                                    data-id-solicitud='" . htmlspecialchars($row["id_solicitud"]) . "'
+                                    data-departamento-id='" . htmlspecialchars($departamento_id) . "'
+                                    data-anio-semestre='" . htmlspecialchars($anio_semestre) . "'
+                                    data-numero-acta='" . htmlspecialchars($num_acta) . "'
+                                    data-fecha-acta='" . htmlspecialchars($fecha_acta) . "'
+                                    data-pregrado='" . htmlspecialchars($row["pregrado"] ?? '') . "'
+                                    data-especializacion='" . htmlspecialchars($row["especializacion"] ?? '') . "'
+                                    data-maestria='" . htmlspecialchars($row["maestria"] ?? '') . "'
+                                    data-doctorado='" . htmlspecialchars($row["doctorado"] ?? '') . "'
+                                    data-otro_estudio='" . htmlspecialchars($row["otro_estudio"] ?? '') . "'
+                                    data-experiencia-docente='" . htmlspecialchars($row["experiencia_docente"] ?? '') . "'
+                                    data-experiencia-profesional='" . htmlspecialchars($row["experiencia_profesional"] ?? '') . "'
+                                    data-otra-experiencia='" . htmlspecialchars($row["otra_experiencia"] ?? '') . "'
+                                    data-cedula-profesor='" . htmlspecialchars($row["cedula"] ?? '') . "'  data-bs-toggle='modal'
+                                    data-bs-target='#actaModal'>
+                                    <i class='fa-solid fa-file-arrow-down' style='font-size:16px; color:#1A73E8;'></i>
+                                </button>
+                            </td>";
+                        }
+                        echo "</tr>";
+                        $item++;
+                    }
+                    $totalItems += ($item - 1);
+                    echo "</table>";
+                } else {
+                    echo "<p style='text-align: center;'>No se encontraron resultados.</p>";
+                    if ($tipo_usuario == 3) {
+                        if ($tipo_usuario == 3 && $estadoDepto != 'CERRADO') {
+                            echo '<div class="row mt-3">
+                                    <div class="col-md-12 text-center">
+                                        <a href="indexsolicitud.php?tipo_docente=' . urlencode($tipo_docente) . '&anio_semestre=' . urlencode($anio_semestre) . '" class="btn btn-cargue-masivo">
+                                            <i class="fas fa-upload"></i> Cargue Masivo - Tipo: ' . htmlspecialchars($tipo_docente) . '
+                                        </a>
+                                    </div>
+                                </div>';
+                        }
+                    }
+                }
+                echo "</div>";
+                ?>
+                <div class="d-flex justify-content-between mt-3">
+                    <?php if ($estadoDepto == "ABIERTO" && $tipo_usuario == 3) { ?>
+                        <form id="confirmForm_<?php echo strtolower($tipo_docente); ?>" action="confirmar_tipo_d_depto.php" method="GET" onsubmit="return confirmarEnvio(<?php echo $count; ?>, '<?php echo $tipo_docente; ?>');">
+                            <input type="hidden" name="facultad_id" value="<?php echo htmlspecialchars($facultad_id); ?>">
+                            <input type="hidden" name="departamento_id" value="<?php echo htmlspecialchars($departamento_id); ?>">
+                            <input type="hidden" name="anio_semestre" value="<?php echo htmlspecialchars($anio_semestre); ?>">
+                            <input type="hidden" name="tipo_docente" value="<?php echo htmlspecialchars($tipo_docente); ?>">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-unlock"></i> Confirmar Profesores</button>
+                        </form>
+                    <?php } ?>
+                    <?php if ($estadoDepto == "CERRADO" && $tipo_usuario == 3) { ?>
+                        <form action="abrir_estado.php" method="POST">
+                            <input type="hidden" name="facultad_id" value="<?php echo htmlspecialchars($facultad_id); ?>">
+                            <input type="hidden" name="departamento_id" value="<?php echo htmlspecialchars($departamento_id); ?>">
+                            <input type="hidden" name="anio_semestre" value="<?php echo htmlspecialchars($anio_semestre); ?>">
+                            <input type="hidden" name="tipo_docente" value="<?php echo htmlspecialchars($tipo_docente); ?>">
+                            <input type="hidden" name="tipo_usuario" value="<?php echo htmlspecialchars($tipo_usuario); ?>">
+                            <button type="submit" class="btn btn-warning" title="Lista cerrada — haga clic para abrir y editar.">
+                                <i class="fas fa-lock"></i>
+                            </button>
+                        </form>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
 
-    </div></div><br>
+        <div class="tab-pane fade" id="catedra-content" role="tabpanel" aria-labelledby="catedra-tab">
+            <?php
+            // Rebobinar el resultado para volver a usar el bucle
+            // Esto asegura que el $resultadotipo esté listo para la segunda pestaña
+            if ($resultadotipo->num_rows > 0) {
+                $resultadotipo->data_seek(0);
+            }
+            // Bucle principal para generar los docentes de cátedra
+            while ($rowtipo = $resultadotipo->fetch_assoc()) {
+                if ($rowtipo['tipo_d'] != 'Catedra') {
+                    continue; // Saltar si no es Catedra para esta pestaña
+                }
+                $tipo_docente = $rowtipo['tipo_d'];
+                $sql = "SELECT solicitudes.*, facultad.nombre_fac_minb AS nombre_facultad, deparmanentos.depto_nom_propio AS nombre_departamento
+                        FROM solicitudes
+                        JOIN deparmanentos ON (deparmanentos.PK_DEPTO = solicitudes.departamento_id)
+                        JOIN facultad ON (facultad.PK_FAC = solicitudes.facultad_id)
+                        WHERE facultad_id = '$facultad_id' AND departamento_id = '$departamento_id' AND anio_semestre = '$anio_semestre' and tipo_docente = '$tipo_docente' AND (solicitudes.estado <> 'an' OR solicitudes.estado IS NULL) order by solicitudes.nombre asc";
+                $result = $conn->query($sql);
+                $section_id = "section-" . strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $tipo_docente)));
+                echo "<div class='box-gray'>";
+                echo "<div class='estado-container'>";
+                echo "<h4 style='color: #000066; cursor: pointer;' onclick=\"toggleSection('" . htmlspecialchars($section_id) . "')\" title=\"Ocultar/Mostrar Detalles\">
+                        <i id=\"icon_" . htmlspecialchars($section_id) . "\" class=\"fas fa-caret-down\"></i>
+                        Vinculación: " . htmlspecialchars($tipo_docente) . " (";
+                $estadoDepto = obtenerCierreDeptoCatedra($departamento_id, $aniose);
+                echo "<strong>" . ucfirst(strtolower($estadoDepto)) . "</strong>";
+                echo ")</h4>";
+                if ($estadoDepto != 'CERRADO') {
+                    if ($tipo_usuario == 3) {
+                        echo "
+                        <form action='nuevo_registro.php' method='GET'>
+                            <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                            <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                            <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                            <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                            <div class='d-flex gap-2'>
+                                <button type='submit' class='btn btn-success'>
+                                    <i class='fas fa-plus'></i> Agregar Profesor
+                                </button>
+                                <button type='button' class='btn btn-danger'
+                                    onclick=\"eliminarRegistros(
+                                        '" . htmlspecialchars($tipo_docente) . "',
+                                        '" . htmlspecialchars($facultad_id) . "',
+                                        '" . htmlspecialchars($departamento_id) . "',
+                                        '" . htmlspecialchars($anio_semestre) . "'
+                                    )\">
+                                    <i class='fas fa-trash-alt'></i> Eliminar todos
+                                </button>
+                            </div>
+                        </form>";
+                    }
+                    $todosCerrados = false;
+                }
+                echo "</div>";
+                $sqlCount = "SELECT COUNT(*) as count FROM solicitudes WHERE facultad_id = '$facultad_id' AND departamento_id = '$departamento_id' AND anio_semestre = '$anio_semestre' and tipo_docente = '$tipo_docente' AND (solicitudes.estado <> 'an' OR solicitudes.estado IS NULL)";
+                $resultCount = $conn->query($sqlCount);
+                $count = $resultCount->fetch_assoc()['count'];
+                echo "<div id='" . htmlspecialchars($section_id) . "' style='display: block;'>";
+                if ($result->num_rows > 0) {
+                    echo "<table border='1'>
+                            <tr>
+                                <th rowspan='2'>Ítem</th>
+                                <th rowspan='2'>Cédula</th>
+                                <th rowspan='2'>Nombre</th>
+                                <th colspan='2'>Dedicación</th>
+                                <th colspan='2'>Hojas de vida</th>";
+                    if ($estadoDepto != "CERRADO") {
+                        echo "<th colspan='3'>Acciones</th>";
+                    } else {
+                        echo "<th colspan='3' ></th>";
+                    }
+                    echo "</tr>";
+                    echo "<tr>
+                            <th title='Horas en Sede Popayán'>Horas Pop</th>
+                            <th title='Horas en Sede Regionalización'>Horas Reg</th>
+                            <th title='Anexa Hoja de Vida para nuevos aspirantes'>Anexa (nuevo)</th>
+                            <th title='Actualiza Hoja de Vida para aspirantes antiguos'>Actualiza (antiguo)</th>";
+                    if ($estadoDepto != "CERRADO") {
+                        echo "<th>Eliminar</th>
+                              <th>Editar</th>";
+                        if ($tipo_usuario == 3) {
+                            echo "<th>Visado</th>";
+                            if ($tipo_usuario == 3) {
+                                echo "<th style='display:none;'>FOR.45</th>";
+                            }
+                        } else {
+                            echo "<th>Visado</th>";
+                        }
+                    } else {
+                        echo "<th style='display:none;'>Eliminar</th>
+                              <th style='display:none;'>Editar</th>
+                              <th>Visado</th>";
+                        echo "<th style='text-align: center; vertical-align: middle;' title='Formato FOR 45 - Revisión Requisitos Vinculación Docente'>FOR.45</th>";
+                    }
+                    echo "</tr>";
+                    $item = 1;
+                    $todosLosRegistrosValidos = true;
+                    $datos_acta = obtener_acta($anio_semestre, $departamento_id);
+                    $num_acta = ($datos_acta !== 0) ? htmlspecialchars($datos_acta['acta_periodo']) : "";
+                    $fecha_acta = ($datos_acta !== 0) ? htmlspecialchars($datos_acta['fecha_acta']) : "";
+                    while ($row = $result->fetch_assoc()) {
+                        if ($row["anexa_hv_docente_nuevo"] == 'si' || $row["actualiza_hv_antiguo"] == 'si') {
+                            $contadorHV++;
+                        }
+                        $datosProfesor = datosProfesorCompleto($row["cedula"], $anio_semestre);
+                        $tooltip = '';
+                        if ($datosProfesor !== false) {
+                            $datosSeguros = array_map('htmlspecialchars', $datosProfesor);
+                            $tooltip = "<strong>Email:</strong> {$datosSeguros['email']}<br><strong>Títulos:</strong> {$datosSeguros['titulos']}<br><strong>Celular:</strong> {$datosSeguros['celular']}<br><strong>Trabaja actualmente:</strong> {$datosSeguros['trabaja_actualmente']}<br><strong>Cargo actual:</strong> {$datosSeguros['cargo_actual']}";
+                        }
+                        echo "<tr>
+                                <td class='td-simple'>" . $item . "</td>
+                                <td class='td-simple' style='text-align: left;'>" . htmlspecialchars($row["cedula"]) . "</td>
+                                <td class='td-simple' style='text-align: left;' data-toggle='tooltip' data-html='true' title='" . $tooltip . "'>" . htmlspecialchars($row["nombre"]) . "</td>";
+                        $horas = ($row["horas"] == 0) ? "" : htmlspecialchars($row["horas"]);
+                        $horas_r = ($row["horas_r"] == 0) ? "" : htmlspecialchars($row["horas_r"]);
+                        echo "<td class='td-simple'>" . $horas . "</td>
+                              <td class='td-simple'>" . $horas_r . "</td>";
+                        $anexos = trim($row["anexos"]);
+                        $hasValidLink = !empty($anexos) && preg_match('/^(https?:\/\/|www\.)/i', $anexos);
+                        if ($row["anexa_hv_docente_nuevo"] == 'si' && $hasValidLink) {
+                            echo "<td class='td-simple'><a href='" . htmlspecialchars($anexos) . "' target='_blank' class='link-hv'>si</a></td>";
+                        } else {
+                            echo "<td class='td-simple'>" . htmlspecialchars($row["anexa_hv_docente_nuevo"]) . "</td>";
+                        }
+                        if ($row["actualiza_hv_antiguo"] == 'si' && $hasValidLink) {
+                            echo "<td class='td-simple'><a href='" . htmlspecialchars($anexos) . "' target='_blank' class='link-hv'>si</a></td>";
+                        } else {
+                            echo "<td class='td-simple'>" . htmlspecialchars($row["actualiza_hv_antiguo"]) . "</td>";
+                        }
+                        if ($estadoDepto != "CERRADO") {
+                            echo "<td class='td-simple'>";
+                            if ($tipo_usuario == 3) {
+                                echo "<form action='eliminar.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='delete-btn'><i class='fa-regular fa-trash-can'></i></button>
+                                    </form>";
+                            }
+                            echo "</td><td class='td-simple'>";
+                            if ($tipo_usuario == 3) {
+                                echo "<form action='actualizar.php' method='GET' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='update-btn'><i class='fas fa-edit'></i></button>
+                                    </form>";
+                            }
+                            echo "</td><td class='td-simple'>";
+                            $disabled = ($tipo_usuario == 3) ? "" : "disabled";
+                            echo "<form class='vistoBuenoForm' style='display:inline;'>
+                                    <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row['id_solicitud']) . "'>
+                                    <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                    <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                    <input type='checkbox' class='individualCheckbox' name='visto_bueno' value='1' " . ($row['visado'] ? 'checked' : '') . " $disabled>
+                                </form>";
+                            echo "</td>";
+                        } else {
+                            echo "<td class='td-simple' style='display:none;'>
+                                    <form action='eliminar.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='delete-btn'><i class='fas fa-trash'></i></button>
+                                    </form>
+                                </td>
+                                <td class='td-simple' style='display:none;'>
+                                    <form action='actualizar.php' method='GET' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='facultad_id' value='" . htmlspecialchars($facultad_id) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='hidden' name='tipo_docente' value='" . htmlspecialchars($tipo_docente) . "'>
+                                        <button type='submit' class='update-btn'><i class='fas fa-edit'></i></button>
+                                    </form>
+                                </td>
+                                <td class='td-simple'>
+                                    <form action='update_visto_bueno.php' method='POST' style='display:inline;'>
+                                        <input type='hidden' name='id_solicitud' value='" . htmlspecialchars($row["id_solicitud"]) . "'>
+                                        <input type='hidden' name='departamento_id' value='" . htmlspecialchars($departamento_id) . "'>
+                                        <input type='hidden' name='anio_semestre' value='" . htmlspecialchars($anio_semestre) . "'>
+                                        <input type='checkbox' disabled name='visto_bueno' value='1' " . ($row["visado"] ? "checked" : "") . " onchange='this.form.submit()'>
+                                    </form>
+                                </td>";
+                            echo "<td class='td-simple centered-column'>
+                                <button type='button' class='download-btn btn btn-sm'
+                                    id='btn-solicitud-" . htmlspecialchars($row["id_solicitud"]) . "'
+                                    data-id-solicitud='" . htmlspecialchars($row["id_solicitud"]) . "'
+                                    data-departamento-id='" . htmlspecialchars($departamento_id) . "'
+                                    data-anio-semestre='" . htmlspecialchars($anio_semestre) . "'
+                                    data-numero-acta='" . htmlspecialchars($num_acta) . "'
+                                    data-fecha-acta='" . htmlspecialchars($fecha_acta) . "'
+                                    data-pregrado='" . htmlspecialchars($row["pregrado"] ?? '') . "'
+                                    data-especializacion='" . htmlspecialchars($row["especializacion"] ?? '') . "'
+                                    data-maestria='" . htmlspecialchars($row["maestria"] ?? '') . "'
+                                    data-doctorado='" . htmlspecialchars($row["doctorado"] ?? '') . "'
+                                    data-otro_estudio='" . htmlspecialchars($row["otro_estudio"] ?? '') . "'
+                                    data-experiencia-docente='" . htmlspecialchars($row["experiencia_docente"] ?? '') . "'
+                                    data-experiencia-profesional='" . htmlspecialchars($row["experiencia_profesional"] ?? '') . "'
+                                    data-otra-experiencia='" . htmlspecialchars($row["otra_experiencia"] ?? '') . "'
+                                    data-cedula-profesor='" . htmlspecialchars($row["cedula"] ?? '') . "'  data-bs-toggle='modal'
+                                    data-bs-target='#actaModal'>
+                                    <i class='fa-solid fa-file-arrow-down' style='font-size:16px; color:#1A73E8;'></i>
+                                </button>
+                            </td>";
+                        }
+                        echo "</tr>";
+                        $item++;
+                    }
+                    $totalItems += ($item - 1);
+                    echo "</table>";
+                } else {
+                    echo "<p style='text-align: center;'>No se encontraron resultados.</p>";
+                    if ($tipo_usuario == 3) {
+                        if ($tipo_usuario == 3 && $estadoDepto != 'CERRADO') {
+                            echo '<div class="row mt-3">
+                                    <div class="col-md-12 text-center">
+                                        <a href="indexsolicitud.php?tipo_docente=' . urlencode($tipo_docente) . '&anio_semestre=' . urlencode($anio_semestre) . '" class="btn btn-cargue-masivo">
+                                            <i class="fas fa-upload"></i> Cargue Masivo - Tipo: ' . htmlspecialchars($tipo_docente) . '
+                                        </a>
+                                    </div>
+                                </div>';
+                        }
+                    }
+                }
+                echo "</div>";
+                ?>
+                <div class="d-flex justify-content-between mt-3">
+                    <?php if ($estadoDepto == "ABIERTO" && $tipo_usuario == 3) { ?>
+                        <form id="confirmForm_<?php echo strtolower($tipo_docente); ?>" action="confirmar_tipo_d_depto.php" method="GET" onsubmit="return confirmarEnvio(<?php echo $count; ?>, '<?php echo $tipo_docente; ?>');">
+                            <input type="hidden" name="facultad_id" value="<?php echo htmlspecialchars($facultad_id); ?>">
+                            <input type="hidden" name="departamento_id" value="<?php echo htmlspecialchars($departamento_id); ?>">
+                            <input type="hidden" name="anio_semestre" value="<?php echo htmlspecialchars($anio_semestre); ?>">
+                            <input type="hidden" name="tipo_docente" value="<?php echo htmlspecialchars($tipo_docente); ?>">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-unlock"></i> Confirmar Profesores</button>
+                        </form>
+                    <?php } ?>
+                    <?php if ($estadoDepto == "CERRADO" && $tipo_usuario == 3) { ?>
+                        <form action="abrir_estado.php" method="POST">
+                            <input type="hidden" name="facultad_id" value="<?php echo htmlspecialchars($facultad_id); ?>">
+                            <input type="hidden" name="departamento_id" value="<?php echo htmlspecialchars($departamento_id); ?>">
+                            <input type="hidden" name="anio_semestre" value="<?php echo htmlspecialchars($anio_semestre); ?>">
+                            <input type="hidden" name="tipo_docente" value="<?php echo htmlspecialchars($tipo_docente); ?>">
+                            <input type="hidden" name="tipo_usuario" value="<?php echo htmlspecialchars($tipo_usuario); ?>">
+                            <button type="submit" class="btn btn-warning" title="Lista cerrada — haga clic para abrir y editar.">
+                                <i class="fas fa-lock"></i>
+                            </button>
+                        </form>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php
-} // End of while ($rowtipo = $resultadotipo->fetch_assoc())
-?> <!-- Modal Rediseñado -->
+                
+            }}}
+// =========================================================================================================
+//  FIN DE LA ESTRUCTURA DE PESTAÑAS (TABS)
+// =========================================================================================================
+?>
+
+                    
+     
+     <!-- Modal Rediseñado -->
     <div class='modal fade' id='actaModal' tabindex='-1' aria-labelledby='actaModalLabel' aria-hidden='true'>
         <div class='modal-dialog modal-lg'>
             <div class='modal-content'>
