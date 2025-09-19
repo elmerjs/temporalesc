@@ -483,3 +483,8 @@ Parámetros recibidos - facultad_id: 1, anio_semestre: 2025-2
 Estado del período obtenido: 0
 Consulta ejecutada correctamente. Respuesta enviada: {"status":"success"}
 Script finalizado
+Inicio del script
+Parámetros recibidos - facultad_id: 1, anio_semestre: 2025-2
+Estado del período obtenido: 0
+Consulta ejecutada correctamente. Respuesta enviada: {"status":"success"}
+Script finalizado
