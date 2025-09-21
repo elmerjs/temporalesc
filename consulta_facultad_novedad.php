@@ -486,13 +486,7 @@ $conn->close();
     
     <div class="accordion-body-vra hidden p-4 border-t border-gray-200">
         
- <div class="mb-3">
-    <button id="btnGenerarWord" 
-            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-        <i class="fas fa-file-word mr-2"></i>
-        Generar Oficio
-    </button>
-</div>
+
 <table id="tablaAprobadosVRA" class="table" style="width:100%">
     <thead>
         <tr>
@@ -533,6 +527,14 @@ $conn->close();
         <?php endforeach; ?>
     </tbody>
 </table>
+              
+ <div class="mb-3">
+    <button id="btnGenerarWord" 
+            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+        <i class="fas fa-file-word mr-2"></i>
+        Generar Oficio
+    </button>
+</div>
         </div>
     </div>
 </div>
