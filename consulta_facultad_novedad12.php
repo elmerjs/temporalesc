@@ -107,7 +107,7 @@ function procesarCambiosVinculacion($solicitudes) {
                 elseif ($sol_eliminacion['horas_r'] && $sol_eliminacion['horas_r'] > 0) $estado_anterior .= " " . $sol_eliminacion['horas_r'] . " horas Regionalización";
             }
 
-            $sol_adicion['novedad'] = 'Cambio Vinculación';
+            $sol_adicion['novedad'] = 'Modificar Vinculación';
             $observacion_existente = trim($sol_adicion['s_observacion']);
             $sol_adicion['s_observacion'] = $observacion_existente . ($observacion_existente ? ' ' : '') . '(' . $estado_anterior . ')';
 
@@ -938,10 +938,33 @@ function actualizarPanelDeAcciones() {
         return `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${clasesColor}" ${tooltip}>${texto}</span>`;
     }
 
-   function llenarModal(oficio) {
+function llenarModal(oficio) {
     modalTitle.textContent = 'Solicitudes del Oficio: ' + oficio;
     modalTableBody.innerHTML = '';
     const solicitudesFiltradas = todasLasSolicitudes.filter(sol => sol.oficio_con_fecha === oficio);
+
+    // ===================================================================
+    // ===== INICIA EL BLOQUE MODIFICADO: LÓGICA DE ORDENAMIENTO =====
+    // ===================================================================
+    // 1. Define el orden exacto y personalizado que deseas para las novedades.
+    const ordenNovedades = ['modificacion', 'cambio de vinculacion', 'adicionar', 'eliminar'];
+
+    // 2. Ordena el array 'solicitudesFiltradas' según el orden definido.
+    solicitudesFiltradas.sort((a, b) => {
+        const novedadA = (a.novedad || '').toLowerCase();
+        const novedadB = (b.novedad || '').toLowerCase();
+
+        // Encuentra la posición de cada novedad en tu lista de orden.
+        // Si una novedad no está en la lista, se le da un valor alto (999) para enviarla al final.
+        const indexA = ordenNovedades.indexOf(novedadA) !== -1 ? ordenNovedades.indexOf(novedadA) : 999;
+        const indexB = ordenNovedades.indexOf(novedadB) !== -1 ? ordenNovedades.indexOf(novedadB) : 999;
+
+        // Compara las posiciones para determinar el orden.
+        return indexA - indexB;
+    });
+    // ===================================================================
+    // ===== FIN DEL BLOQUE MODIFICADO =====
+    // ===================================================================
 
     if (solicitudesFiltradas.length > 0) {
         solicitudesFiltradas.forEach(sol => {
@@ -968,45 +991,42 @@ function actualizarPanelDeAcciones() {
             }
             const tipoDocenteDisplay = (sol.tipo_docente === 'Catedra') ? 'Cátedra' : sol.tipo_docente;
             const estadoFacultadHtml = crearEtiquetaEstado(sol.estado_facultad, sol.observacion_facultad, 'facultad');
-let estadoVraHtml; // Creamos la variable que contendrá la etiqueta final
+            let estadoVraHtml;
 
-// Si la solicitud fue RECHAZADA por la Facultad...
-if (sol.estado_facultad === 'RECHAZADO') {
-    // ...creamos una etiqueta gris especial que dice '--' (No Aplica).
-    estadoVraHtml = `<span 
-                        class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-200 text-gray-700" 
-                        title="No aplica para trámite en VRA, fue devuelta por la Facultad.">
-                        --
-                     </span>`;
-} else {
-    // Si no fue rechazada, usamos la función normal para mostrar el estado real de VRA.
-    estadoVraHtml = crearEtiquetaEstado(sol.estado_vra, sol.observacion_vra, 'vra');
-}
+            if (sol.estado_facultad === 'RECHAZADO') {
+                estadoVraHtml = `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-200 text-gray-700" title="No aplica para trámite en VRA, fue devuelta por la Facultad.">--</span>`;
+            } else {
+                estadoVraHtml = crearEtiquetaEstado(sol.estado_vra, sol.observacion_vra, 'vra');
+            }
 
-// ===================================================================
-// ===== FIN DEL BLOQUE DE CÓDIGO REEMPLAZADO =====
-// ==
-            // ===================================================================
-            // ===== INICIA NUEVO BLOQUE: LÓGICA PARA LA COLUMNA "DETALLE FAC" =====
-            // ===================================================================
-            let detalleFacultadHtml = '<td class="px-6 py-2 whitespace-nowrap text-gray-700">--</td>'; // Valor por defecto para PENDIENTE
-
+            let detalleFacultadHtml = '<td class="px-6 py-2 whitespace-nowrap text-gray-700">--</td>';
             if (sol.estado_facultad === 'APROBADO') {
                 const oficioFac = sol.oficio_con_fecha_fac || 'No asignado';
                 detalleFacultadHtml = `<td class="px-6 py-2 whitespace-nowrap text-xs text-gray-600" title="Oficio Facultad: ${oficioFac}">Avalado Oficio: ${oficioFac}</td>`;
             } else if (sol.estado_facultad === 'RECHAZADO') {
                 const observacionFac = sol.observacion_facultad || 'Sin justificación.';
-                // Usamos clases para que el texto se ajuste si es muy largo
                 detalleFacultadHtml = `<td class="px-6 py-2 whitespace-normal max-w-xs break-words text-xs text-red-700 font-semibold" title="${observacionFac}">${observacionFac}</td>`;
             }
+
             // ===================================================================
-            // ===== FIN DEL NUEVO BLOQUE =====
+            // ===== BLOQUE MODIFICADO: LÓGICA PARA MOSTRAR NOVEDADES =====
             // ===================================================================
+            // Si la novedad contiene "modificar" pero NO contiene "vinculación", mostrar "Modificar dedicación"
+            let novedadDisplay = sol.novedad || '';
+            const novedadLower = novedadDisplay.toLowerCase();
             
-            // Se añade la nueva celda 'detalleFacultadHtml' a la fila
+            if (novedadLower.includes('modificar') && !novedadLower.includes('vinculación') && !novedadLower.includes('vinculacion')) {
+                novedadDisplay = 'Modificar dedicación';
+            } else if (novedadDisplay === 'modificacion') {
+                novedadDisplay = 'Cambio de dedicacion';
+            }
+            // ===================================================================
+            // ===== FIN DEL BLOQUE MODIFICADO =====
+            // ===================================================================
+
             const filaHTML = `<tr class="${rowClass}">
                 ${checkboxHtml}
-                <td class="px-6 py-2 whitespace-nowrap">${sol.novedad || ''}</td>
+                <td class="px-6 py-2 whitespace-nowrap">${novedadDisplay}</td>
                 <td class="px-6 py-2 whitespace-normal max-w-xs break-words text-gray-700">${sol.s_observacion || ''}</td>
                 <td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.nombre}</td>
                 <td class="px-6 py-2 whitespace-nowrap text-gray-700">${sol.cedula}</td>
@@ -1014,17 +1034,16 @@ if (sol.estado_facultad === 'RECHAZADO') {
                 <td class="px-6 py-2 whitespace-nowrap text-gray-700">${popayanData}</td>
                 <td class="px-6 py-2 whitespace-nowrap text-gray-700">${regionalizacionData}</td>
                 <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoFacultadHtml}</td>
-                ${detalleFacultadHtml} <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoVraHtml}</td>
+                ${detalleFacultadHtml}
+                <td class="px-6 py-2 whitespace-nowrap text-gray-700">${estadoVraHtml}</td>
             </tr>`;
             modalTableBody.innerHTML += filaHTML;
         });
     } else {
-        // <-- CAMBIO: Aumentamos el colspan para que la fila vacía ocupe todo el ancho
         const colspan = (tipoUsuario == 2) ? 11 : 10;
         modalTableBody.innerHTML = `<tr><td colspan="${colspan}" class="text-center py-4">No se encontraron solicitudes para este oficio.</td></tr>`;
     }
-    
-    // Asignar eventos solo si eres usuario de Facultad
+
     if (tipoUsuario == 2) {
         modalTableBody.querySelectorAll('.solicitud-checkbox').forEach(cb => {
             cb.addEventListener('change', () => manejarClickCheckbox(cb));

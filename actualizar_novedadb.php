@@ -594,7 +594,7 @@ $conn->close();
                 </div>
                    <div class="section-title">
                     <i class="fas fa-clipboard"></i>
-                    <span>Justificació <span class="required">*</span></span>
+                    <span>Justificación <span class="required">*</span></span>
                 </div>
 
                 <div class="form-group">
