@@ -492,9 +492,9 @@ $conn->close();
                 <div class="header-icon"><i class="fas fa-university"></i></div>
             </div>
             
-            <div class="info-box">
+         <!--   <div class="info-box">
                 <p><i class="fas fa-info-circle"></i> Complete los campos necesarios para actualizar la información del profesor.</p>
-            </div>
+            </div>-->
             
             <form action="procesar_actualizacion_novedadb.php" method="POST">
                 <input type="hidden" name="id_solicitud" value="<?php echo htmlspecialchars($row['id_solicitud']); ?>">
@@ -594,11 +594,11 @@ $conn->close();
                 </div>
                    <div class="section-title">
                     <i class="fas fa-clipboard"></i>
-                    <span>Detalles de Novedad <span class="required">*</span></span>
+                    <span>Justificació <span class="required">*</span></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="observacion">Justificación <span class="required">*</span></label>
+                   
                     <textarea class="form-control" name="observacion" id="observacion" rows="3"
                               placeholder="Ej: Por necesidad  mayor numero de matriculas ....."
                               oninput="detectarTipoReemplazo()" required><?php echo htmlspecialchars($row['s_observacion']); ?></textarea>
