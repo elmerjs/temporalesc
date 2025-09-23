@@ -58,11 +58,29 @@ $profe_en_cargo= $row['u_nombre_en_cargo'];
     }
 }
 
-// NUEVO: Verificar si hay registros pendientes para Novedades
+// NUEVO: Verificar si hay registros pendientes para Novedades (LÓGICA UNIFICADA)
 $hasPendingNovelties = false;
-if ($tipo_usuario != 1 && isset($fk_fac_user) && $fk_fac_user > 0) {
-    $con_check = new mysqli('localhost', 'root', '', 'contratacion_temporales_b');
-    if (!$con_check->connect_error) {
+
+// (Opcional pero recomendado): Usar la conexión a BD existente '$conn' si ya está abierta,
+// en lugar de crear una nueva. Si no es posible, este código funciona bien.
+$con_check = new mysqli('localhost', 'root', '', 'contratacion_temporales_b');
+
+if (!$con_check->connect_error) {
+
+    // CASO 1: El usuario es Administrador (Vicerrectoría, tipo 1)
+    if ($tipo_usuario == 1) {
+        $sql_check = "SELECT 1 FROM solicitudes_working_copy 
+                      WHERE estado_vra = 'PENDIENTE' 
+                      AND estado_facultad <> 'RECHAZADO'
+                      LIMIT 1";
+        // Esta consulta es simple, no necesita parámetros preparados.
+        $result_check = $con_check->query($sql_check);
+        if ($result_check) {
+            $hasPendingNovelties = $result_check->num_rows > 0;
+        }
+
+    // CASO 2: El usuario es de Facultad (tipo 2) o Departamento (tipo 3)
+    } elseif (isset($fk_fac_user) && $fk_fac_user > 0) {
         $sql_check = "SELECT 1 FROM solicitudes_working_copy 
                       WHERE facultad_id = ? 
                       AND estado_facultad = 'PENDIENTE' 
@@ -75,8 +93,9 @@ if ($tipo_usuario != 1 && isset($fk_fac_user) && $fk_fac_user > 0) {
             $hasPendingNovelties = $result_check->num_rows > 0;
             $stmt->close();
         }
-        $con_check->close();
     }
+
+    $con_check->close();
 }
 // Conectar a la base de datos
 $con = new mysqli('localhost', 'root', '', 'contratacion_temporales_b');

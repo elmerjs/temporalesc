@@ -34,7 +34,9 @@ foreach ($seleccionados as $sel) {
 if (empty($ids_seleccionados)) die("No se seleccionaron solicitudes.");
 $ids_string = implode(',', $ids_seleccionados);
 
-// --- 3. OBTENER DATOS COMPLETOS (LÓGICA CORREGIDA) ---
+// --- 3. OBTENER DATOS COMPLETOS (VERSIÓN FINAL Y PRECISA) ---
+
+// Paso 3.1: Obtener las filas que el usuario seleccionó explícitamente.
 $sql_inicial = "SELECT s.*, s_orig.puntos 
                 FROM solicitudes_working_copy s
                 LEFT JOIN solicitudes s_orig ON s_orig.id_novedad = s.id_solicitud
@@ -42,33 +44,54 @@ $sql_inicial = "SELECT s.*, s_orig.puntos
 $resultado_inicial = $conn->query($sql_inicial);
 if (!$resultado_inicial) die("Error en la consulta inicial: " . $conn->error);
 
-$filas_completas = [];
-$cedulas_a_verificar = [];
+$filas_seleccionadas = [];
+$oficios_de_cambios_seleccionados = [];
 
 while ($fila = $resultado_inicial->fetch_assoc()) {
-    $filas_completas[$fila['id_solicitud']] = $fila;
-    if (in_array(strtolower($fila['novedad']), ['adicionar', 'eliminar'])) {
-        $cedulas_a_verificar[] = $fila['cedula'];
+    $filas_seleccionadas[$fila['id_solicitud']] = $fila;
+    // Si una fila seleccionada es parte de un cambio, guardamos su oficio para encontrar su pareja exacta.
+    if (in_array(strtolower($fila['novedad']), ['adicionar', 'adicion', 'eliminar']) && !empty($fila['oficio_con_fecha'])) {
+        $oficios_de_cambios_seleccionados[] = $fila['oficio_con_fecha'];
     }
 }
 
-if (!empty($cedulas_a_verificar)) {
-    $cedulas_string_unicas = "'" . implode("','", array_unique($cedulas_a_verificar)) . "'";
+// Inicialmente, las filas a procesar son solo las que el usuario seleccionó.
+$filas_completas = $filas_seleccionadas;
+
+// Paso 3.2: Si se seleccionó parte de un cambio, buscar la otra mitad EXACTA usando el oficio.
+if (!empty($oficios_de_cambios_seleccionados)) {
+    // Usamos solo los oficios únicos para evitar redundancia.
+    $oficios_unicos = array_unique($oficios_de_cambios_seleccionados);
+    
+    // Preparamos la consulta de forma segura para evitar inyección SQL.
+    $placeholders_oficios = implode(',', array_fill(0, count($oficios_unicos), '?'));
+    
+    // Esta consulta busca las contrapartes que pertenecen EXACTAMENTE a los mismos oficios seleccionados.
     $sql_parejas = "SELECT s.*, s_orig.puntos 
                     FROM solicitudes_working_copy s
                     LEFT JOIN solicitudes s_orig ON s_orig.id_novedad = s.id_solicitud
-                    WHERE s.cedula IN ($cedulas_string_unicas) 
-                    AND s.anio_semestre = '{$_SESSION['anio_semestre']}' 
+                    WHERE s.oficio_con_fecha IN ($placeholders_oficios) 
+                    AND s.anio_semestre = ? 
                     AND s.estado_vra = 'APROBADO'";
-                    
-    $resultado_parejas = $conn->query($sql_parejas);
+    
+    $stmt_parejas = $conn->prepare($sql_parejas);
+    // Creamos los parámetros: un string por cada oficio y un string para el anio_semestre.
+    $types = str_repeat('s', count($oficios_unicos)) . 's';
+    $params = array_merge($oficios_unicos, [$_SESSION['anio_semestre']]);
+    $stmt_parejas->bind_param($types, ...$params);
+    
+    $stmt_parejas->execute();
+    $resultado_parejas = $stmt_parejas->get_result();
+    
     if ($resultado_parejas) {
         while ($fila_pareja = $resultado_parejas->fetch_assoc()) {
+            // Añadimos la pareja a nuestra lista final SOLO si no estaba ya seleccionada.
             if (!isset($filas_completas[$fila_pareja['id_solicitud']])) {
                 $filas_completas[$fila_pareja['id_solicitud']] = $fila_pareja;
             }
         }
     }
+    $stmt_parejas->close();
 }
 // --- 4. NUEVO: ACTUALIZAR REGISTROS A 'ARCHIVADO' ---
 $todos_los_ids_para_archivar = array_keys($filas_completas);
@@ -81,67 +104,105 @@ if (!empty($todos_los_ids_para_archivar)) {
     $conn->query($sql_archivar);
 }
 // --- 4.2 PROCESAR Y CONSOLIDAR DATOS (LÓGICA IDÉNTICA A LA PÁGINA PRINCIPAL) ---
+// --- 4.2 PROCESAR Y CONSOLIDAR DATOS (LÓGICA FINAL Y CORRECTA) ---
 $datos_para_word = [];
-$solicitudes_agrupadas = [];
+$transacciones_agrupadas = [];
+$otras_novedades = [];
+
+// PASO 1: Clasificar por 'oficio' y LUEGO por 'cédula'
 foreach ($filas_completas as $fila) {
-    $cedula = $fila['cedula'];
+    // Usamos 'oficio_con_fecha' como ID de transacción
+    $id_transaccion = $fila['oficio_con_fecha'] ?? null;
+    $cedula = $fila['cedula'] ?? null;
     $novedad = strtolower($fila['novedad']);
-    $solicitudes_agrupadas[$cedula][$novedad] = $fila;
+
+    if ($id_transaccion && $cedula && ($novedad === 'adicionar' || $novedad === 'adicion' || $novedad === 'eliminar')) {
+        // Agrupamos por oficio, y dentro, por cédula
+        $transacciones_agrupadas[$id_transaccion][$cedula][$novedad] = $fila;
+    } else {
+        // El resto (Modificar, etc.) va a otra lista
+        $otras_novedades[] = $fila;
+    }
 }
 
-foreach ($solicitudes_agrupadas as $cedula => $novedades) {
-    if (isset($novedades['adicionar']) && isset($novedades['eliminar'])) {
-        $fila_final = $novedades['adicionar'];
-        $fila_inicial = $novedades['eliminar'];
-        $fila_final['novedad_display'] = 'Modificar (Vinculación)';
-        $vinculacion_inicial = '';
-        if ($fila_inicial['tipo_docente'] === 'Ocasional') {
-            $vinculacion_inicial = !empty($fila_inicial['tipo_dedicacion']) ? $fila_inicial['tipo_dedicacion'] : ($fila_inicial['tipo_dedicacion_r'] ?? '');
-        } elseif ($fila_inicial['tipo_docente'] === 'Catedra') {
-            $total_horas = floatval($fila_inicial['horas']) + floatval($fila_inicial['horas_r']);
-            $vinculacion_inicial = ($total_horas > 0) ? $total_horas . ' hrs' : '';
-        }
-        $fila_final['dedicacion_unificada_inicial'] = $vinculacion_inicial;
-        $vinculacion_final = '';
-        if ($fila_final['tipo_docente'] === 'Ocasional') {
-            $vinculacion_final = !empty($fila_final['tipo_dedicacion']) ? $fila_final['tipo_dedicacion'] : ($fila_final['tipo_dedicacion_r'] ?? '');
-        } elseif ($fila_final['tipo_docente'] === 'Catedra') {
-            $total_horas = floatval($fila_final['horas']) + floatval($fila_final['horas_r']);
-            $vinculacion_final = ($total_horas > 0) ? $total_horas . ' hrs' : '';
-        }
-        $fila_final['dedicacion_unificada_final'] = $vinculacion_final;
-        $datos_para_word[] = $fila_final;
-    } else {
-        foreach ($novedades as $novedad => $fila) {
-            switch (strtolower($fila['novedad'])) {
-                case 'modificar': $fila['novedad_display'] = 'Modificar (Dedicación)'; break;
-                case 'eliminar':  $fila['novedad_display'] = 'Liberar'; break;
-                case 'adicionar': $fila['novedad_display'] = 'Vincular'; break;
-                default: $fila['novedad_display'] = $fila['novedad'];
+// PASO 2: Procesar las transacciones doblemente agrupadas
+foreach ($transacciones_agrupadas as $id_transaccion => $cedulas_en_oficio) {
+    foreach ($cedulas_en_oficio as $cedula => $partes) {
+        
+        // Verificamos si para ESTA CÉDULA DENTRO DE ESTE OFICIO, existe el par completo
+        $sol_adicion = $partes['adicion'] ?? $partes['adicionar'] ?? null;
+
+        if ($sol_adicion && isset($partes['eliminar'])) {
+            // ¡CASO 1: Es un verdadero "Cambio de Vinculación"!
+            $fila_final = $sol_adicion;
+            $fila_inicial = $partes['eliminar'];
+            
+            $fila_final['novedad_display'] = 'Modificar (Vinculación)';
+
+            // --- Lógica para calcular vinculaciones (sin cambios) ---
+            $vinculacion_inicial = '';
+            if ($fila_inicial['tipo_docente'] === 'Ocasional') {
+                $vinculacion_inicial = !empty($fila_inicial['tipo_dedicacion']) ? $fila_inicial['tipo_dedicacion'] : ($fila_inicial['tipo_dedicacion_r'] ?? '');
+            } elseif ($fila_inicial['tipo_docente'] === 'Catedra') {
+                $total_horas = floatval($fila_inicial['horas']) + floatval($fila_inicial['horas_r']);
+                $vinculacion_inicial = ($total_horas > 0) ? $total_horas . ' hrs' : '';
             }
+            $fila_final['dedicacion_unificada_inicial'] = $vinculacion_inicial;
+
             $vinculacion_final = '';
-            if ($fila['tipo_docente'] === 'Ocasional') {
-                $vinculacion_final = !empty($fila['tipo_dedicacion']) ? $fila['tipo_dedicacion'] : ($fila['tipo_dedicacion_r'] ?? '');
-            } elseif ($fila['tipo_docente'] === 'Catedra') {
-                $total_horas = floatval($fila['horas']) + floatval($fila['horas_r']);
+            if ($fila_final['tipo_docente'] === 'Ocasional') {
+                $vinculacion_final = !empty($fila_final['tipo_dedicacion']) ? $fila_final['tipo_dedicacion'] : ($fila_final['tipo_dedicacion_r'] ?? '');
+            } elseif ($fila_final['tipo_docente'] === 'Catedra') {
+                $total_horas = floatval($fila_final['horas']) + floatval($fila_final['horas_r']);
                 $vinculacion_final = ($total_horas > 0) ? $total_horas . ' hrs' : '';
             }
-            $fila['dedicacion_unificada_final'] = $vinculacion_final;
-            $vinculacion_inicial = '';
-            if (strtolower($fila['novedad']) === 'modificar') {
-                if ($fila['tipo_docente'] === 'Ocasional') {
-                    $vinculacion_inicial = !empty($fila['tipo_dedicacion_inicial']) ? $fila['tipo_dedicacion_inicial'] : ($fila['tipo_dedicacion_r_inicial'] ?? '');
-                } elseif ($fila['tipo_docente'] === 'Catedra') {
-                    $total_horas_inicial = floatval($fila['horas_inicial']) + floatval($fila['horas_r_inicial']);
-                    $vinculacion_inicial = ($total_horas_inicial > 0) ? $total_horas_inicial . ' hrs' : '';
-                }
-            }
-            $fila['dedicacion_unificada_inicial'] = $vinculacion_inicial;
-            $datos_para_word[] = $fila;
+            $fila_final['dedicacion_unificada_final'] = $vinculacion_final;
+
+            $datos_para_word[] = $fila_final;
+
+        } else {
+            // --- CASO 2: No hay par. Son solicitudes individuales. ---
+            // Añadimos las partes que existan a la lista de "otras" para procesarlas después.
+            if ($sol_adicion) $otras_novedades[] = $sol_adicion;
+            if (isset($partes['eliminar'])) $otras_novedades[] = $partes['eliminar'];
         }
     }
 }
 
+// PASO 3: Procesar todas las solicitudes que no formaron un par (Modificar, y las individuales)
+foreach ($otras_novedades as $fila) {
+    switch (strtolower($fila['novedad'])) {
+        case 'modificar': $fila['novedad_display'] = 'Modificar (Dedicación)'; break;
+        case 'eliminar':  $fila['novedad_display'] = 'Liberar'; break;
+        case 'adicionar':
+        case 'adicion':
+            $fila['novedad_display'] = 'Vincular'; break;
+        default: $fila['novedad_display'] = $fila['novedad'];
+    }
+    
+    // --- Lógica para calcular vinculaciones (sin cambios) ---
+    $vinculacion_final = '';
+    if ($fila['tipo_docente'] === 'Ocasional') {
+        $vinculacion_final = !empty($fila['tipo_dedicacion']) ? $fila['tipo_dedicacion'] : ($fila['tipo_dedicacion_r'] ?? '');
+    } elseif ($fila['tipo_docente'] === 'Catedra') {
+        $total_horas = floatval($fila['horas']) + floatval($fila['horas_r']);
+        $vinculacion_final = ($total_horas > 0) ? $total_horas . ' hrs' : '';
+    }
+    $fila['dedicacion_unificada_final'] = $vinculacion_final;
+
+    $vinculacion_inicial = '';
+    if (strtolower($fila['novedad']) === 'modificar') {
+        if ($fila['tipo_docente'] === 'Ocasional') {
+            $vinculacion_inicial = !empty($fila['tipo_dedicacion_inicial']) ? $fila['tipo_dedicacion_inicial'] : ($fila['tipo_dedicacion_r_inicial'] ?? '');
+        } elseif ($fila['tipo_docente'] === 'Catedra') {
+            $total_horas_inicial = floatval($fila['horas_inicial']) + floatval($fila['horas_r_inicial']);
+            $vinculacion_inicial = ($total_horas_inicial > 0) ? $total_horas_inicial . ' hrs' : '';
+        }
+    }
+    $fila['dedicacion_unificada_inicial'] = $vinculacion_inicial;
+    
+    $datos_para_word[] = $fila;
+}
 // --- 5. DATOS FINALES: AÑADIR INFO, SOBRESCRIBIR Y ORDENAR ---
 $datos_completos = [];
 foreach ($datos_para_word as $fila_procesada) {
@@ -201,39 +262,56 @@ $headerParagraphStyle = ['alignment' => Jc::CENTER];
 $cellTextStyle = ['size' => 9, 'font' => 'sans-serif'];
 $cellParagraphStyle = ['alignment' => Jc::LEFT];
 
-function crearTablaParaNovedad($section, $titulo, $datos, $headers, $styles) {
+function crearTablaParaNovedad($section, $titulo, $datos, $headers, $styles, $cellWidths) {
     if (empty($datos)) return;
     $section->addText($titulo, ['bold' => true, 'size' => 12, 'color' => '333333'], ['spaceBefore' => 360, 'spaceAfter' => 120]);
     $table = $section->addTable('VraTable');
     $table->addRow();
-    foreach ($headers as $header) {
-        $table->addCell(2000, $styles['headerCellStyle'])->addText($header, $styles['headerTextStyle'], $styles['headerParagraphStyle']);
+    
+    // Añadir celdas con anchos personalizados
+    foreach ($headers as $index => $header) {
+        $table->addCell($cellWidths[$index], $styles['headerCellStyle'])->addText($header, $styles['headerTextStyle'], $styles['headerParagraphStyle']);
     }
+    
     foreach ($datos as $solicitud) {
         $table->addRow();
         $oficio_completo = $solicitud['oficio_fac'] . ' (' . $solicitud['fecha_oficio_fac'] . ')';
-       // $depto_completo = $solicitud['depto_nom_propio'] . ' / ' . $solicitud['Nombre_fac_minb'];
         $depto_completo = $solicitud['depto_nom_propio'];
-        $table->addCell()->addText(htmlspecialchars($oficio_completo), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
-        $table->addCell()->addText(htmlspecialchars($depto_completo), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
-        $table->addCell()->addText(htmlspecialchars($solicitud['cedula']), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
-        $table->addCell()->addText(htmlspecialchars($solicitud['nombre']), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
-        $table->addCell()->addText(htmlspecialchars($solicitud['dedicacion_unificada_inicial']), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
-        $table->addCell()->addText(htmlspecialchars($solicitud['dedicacion_unificada_final']), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
-        $table->addCell()->addText(htmlspecialchars($solicitud['puntos'] ?? ''), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
-        $table->addCell()->addText(htmlspecialchars($solicitud['tipo_reemplazo'] ?? ''), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
+        
+        // Añadir celdas con anchos personalizados
+        $table->addCell($cellWidths[0])->addText(htmlspecialchars($oficio_completo), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
+        $table->addCell($cellWidths[1])->addText(htmlspecialchars($depto_completo), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
+        $table->addCell($cellWidths[2])->addText(htmlspecialchars($solicitud['cedula']), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
+        $table->addCell($cellWidths[3])->addText(htmlspecialchars($solicitud['nombre']), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
+        $table->addCell($cellWidths[4])->addText(htmlspecialchars($solicitud['dedicacion_unificada_inicial']), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
+        $table->addCell($cellWidths[5])->addText(htmlspecialchars($solicitud['dedicacion_unificada_final']), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
+        $table->addCell($cellWidths[6])->addText(htmlspecialchars($solicitud['puntos'] ?? ''), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
+        $table->addCell($cellWidths[7])->addText(htmlspecialchars($solicitud['tipo_reemplazo'] ?? ''), $styles['cellTextStyle'], $styles['cellParagraphStyle']);
     }
 }
 
-$headers = ['Oficio', 'Departamento', 'Cédula', 'Nombre', 'Vinc. Inicial', 'Vinc. Final', 'Puntos', 'Observación'];
+$headers = ['Oficio', 'Departamento', 'Cédula', 'Nombre', 'Vin. Inic', 'Vin. Fin', 'Puntos', 'Observación'];
+
+// Definir anchos personalizados para cada columna (en twips, 1 cm ≈ 567 twips)
+$cellWidths = [
+    2500, // Oficio (más ancho)
+    2500, // Departamento
+    1500, // Cédula
+    4000, // Nombre (más ancho)
+    1500, // Vin. Inic (más angosto)
+    1500, // Vin. Fin (más angosto)
+    1500, // Puntos (más angosto)
+    3000  // Observación (más ancho)
+];
+
 $styles = [
     'headerCellStyle' => $headerCellStyle, 'headerTextStyle' => $headerTextStyle, 'headerParagraphStyle' => $headerParagraphStyle,
     'cellTextStyle' => $cellTextStyle, 'cellParagraphStyle' => $cellParagraphStyle
 ];
 
-crearTablaParaNovedad($section, 'Modificar', $modificaciones, $headers, $styles);
-crearTablaParaNovedad($section, 'Vincular', $vinculaciones, $headers, $styles);
-crearTablaParaNovedad($section, 'Liberar', $liberaciones, $headers, $styles);
+crearTablaParaNovedad($section, 'Modificar', $modificaciones, $headers, $styles, $cellWidths);
+crearTablaParaNovedad($section, 'Vincular', $vinculaciones, $headers, $styles, $cellWidths);
+crearTablaParaNovedad($section, 'Liberar', $liberaciones, $headers, $styles, $cellWidths);
 
 // --- 8. ENVIAR EL DOCUMENTO AL NAVEGADOR ---
 $filename = "tramite_vra_srh_" . date('Ymd_His') . ".docx";

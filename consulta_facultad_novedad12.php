@@ -450,12 +450,12 @@ $conn->close();
                 if ($cierreperiodonov <> 1) { ?>
                     <a href="<?= htmlspecialchars($url_novedad); ?>" class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2 border border-transparent text-base font-medium rounded-md text-white bg-[#003366] hover:bg-[#002244] shadow-sm transition-colors">
                         <i class="fas fa-plus mr-2"></i>
-                        Gestionar Novedades
+                        Crear Novedades
                     </a>
                 <?php } else { // Si el período de novedades está CERRADO ?>
                     <button disabled class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-400 cursor-not-allowed" title="El período para gestionar novedades se encuentra cerrado.">
                         <i class="fas fa-lock mr-2"></i>
-                        Gestionar Novedades
+                        Crear Novedades
                     </button>
                 <?php }
             }
@@ -1016,7 +1016,7 @@ function llenarModal(oficio) {
             const novedadLower = novedadDisplay.toLowerCase();
             
             if (novedadLower.includes('modificar') && !novedadLower.includes('vinculación') && !novedadLower.includes('vinculacion')) {
-                novedadDisplay = 'Modificar dedicación';
+                novedadDisplay = 'Modificar Dedicación';
             } else if (novedadDisplay === 'modificacion') {
                 novedadDisplay = 'Cambio de dedicacion';
             }

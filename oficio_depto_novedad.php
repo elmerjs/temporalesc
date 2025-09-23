@@ -361,13 +361,19 @@ if (!empty($cambio_vinculacion_data)) {
             }
         }
         
-        $text_salida = "Profesor: {$nombre_profesor} - Cambia de: " . ($tipo_docente_eliminar ?: 'N/A');
-        // Solo añade el "- " y la información de salida si hay algo que mostrar
+       // --- INICIO DE LA MODIFICACIÓN (PASO 1) ---
+        // Texto que irá ARRIBA de la tabla (solo el nombre)
+        $texto_profesor_arriba = "Profesor: {$nombre_profesor}";
+
+        // Texto que irá DENTRO de la tabla (la descripción del cambio)
+        $texto_cambio_dentro = "Cambia de: " . ($tipo_docente_eliminar ?: 'N/A');
         if (!empty($salida_info)) {
-            $text_salida .= " - " . implode(" y ", $salida_info);
+            $texto_cambio_dentro .= " - " . implode(" y ", $salida_info);
         }
+        $texto_cambio_dentro = "($texto_cambio_dentro)"; // Lo encerramos en paréntesis
+        // --- FIN DE LA MODIFICACIÓN (PASO 1) ---
         
-        $section->addText($text_salida, $observationTextStyle, $paragraphStyleLeft);
+$section->addText($texto_profesor_arriba, $observationTextStyle, $paragraphStyleLeft);
         /*if (!empty($observacion_adicionar)) {
             $section->addText('Observación: ' . $observacion_adicionar, $observationTextStyle, $paragraphStyleLeft);
         }*/
@@ -455,9 +461,27 @@ if ($cambio_row['tipo_docente_adicionar'] == "Ocasional") {
        /* $table->addCell(1000, ['borderSize' => 1, 'marginTop' => 0, 'marginBottom' => 0])
             ->addText(utf8_decode($cambio_row['tipo_docente_adicionar'] ?: ''), $cellTextStyle, $paragraphStyle);*/
         // --- CAMBIO 2: Celda de datos en la tabla de "Cambio de Vinculación" ---
-$table->addCell(2200, ['borderSize' => 1, 'marginTop' => 0, 'marginBottom' => 0])
-      ->addText(utf8_decode($cambio_row['observacion_adicionar'] ?: ''), $cellTextStyle, $paragraphStyle);
-        $section->addTextBreak(1); // Espacio entre cada profesor de cambio de vinculación
+// --- INICIO DE LA MODIFICACIÓN (PASO 3) ---
+// Combinamos la observación existente con la nueva descripción del cambio
+$observacion_existente = utf8_decode($cambio_row['observacion_adicionar'] ?: '');
+$observacion_final = $observacion_existente;
+if (!empty($observacion_existente)) {
+    $observacion_final .= ' '; // Añadir espacio si hay texto
+}
+$observacion_final .= $texto_cambio_dentro;
+
+// Añadimos la celda de Observación con el texto combinado y con estilos
+$cell = $table->addCell(2200, ['borderSize' => 1, 'marginTop' => 0, 'marginBottom' => 0]);
+$textrun = $cell->addTextRun($paragraphStyle);
+
+// Si hay una observación original, la añadimos en texto normal
+if (!empty($observacion_existente)) {
+    $textrun->addText(htmlspecialchars($observacion_existente) . ' ', $cellTextStyle);
+}
+// Añadimos la descripción del cambio en itálica para diferenciarla
+$textrun->addText(htmlspecialchars($texto_cambio_dentro), ['italic' => true, 'size' => 9]);
+// --- FIN DE LA MODIFICACIÓN (PASO 3) ---
+        $section->addTextBreak(0); // Espacio entre cada profesor de cambio de vinculación
 
         // Actualizar el estado de ambas solicitudes a 'ENVIADO'
         $id_solicitud_adicionar = $cambio_row['id_solicitud_adicionar'];
