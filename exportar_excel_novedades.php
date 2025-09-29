@@ -161,15 +161,16 @@ $sheet->setTitle('Novedades ' . $anio_semestre);
 // Encabezados y estilo (sin cambios)
 $headers = [
     'Facultad', 'Departamento', 'Oficio Depto', 'Oficio Fac', 'Novedad', 'Cédula', 'Nombre Completo',
-    'Tipo Docente', 'Dedicación/Horas Popayán', 'Dedicación/Horas Reg.', 'Estado Facultad', 'Estado VRA', 'Observación Facultad', 'Observación VRA'
+    'Tipo Docente', 'Dedicación/Horas Popayán', 'Dedicación/Horas Reg.', 'Estado Facultad', 'Estado VRA', 'Observación Facultad', 'Observación VRA',
+    'Enviado RRHH' // <-- NUEVO ENCABEZADO
 ];
 $sheet->fromArray($headers, NULL, 'A1');
 $headerStyle = [
     'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '003366']]
 ];
-$sheet->getStyle('A1:N1')->applyFromArray($headerStyle);
-
+// Cambiamos el rango para incluir la nueva columna O
+$sheet->getStyle('A1:O1')->applyFromArray($headerStyle); 
 // 7. Llenar el archivo con los datos
 $row_num = 2;
 foreach ($datos_procesados as $fila) {
@@ -184,11 +185,14 @@ foreach ($datos_procesados as $fila) {
         $dedicacion_reg = $fila['horas_r'] > 0 ? $fila['horas_r'] . 'h' : '';
     }
 
-    $datos_fila = [
-        $fila['nombre_facultad'], $fila['nombre_departamento'], $fila['oficio_con_fecha'], $fila['oficio_con_fecha_fac'],
-        $fila['novedad'], $fila['cedula'], $fila['nombre'], $fila['tipo_docente'], $dedicacion_pop, $dedicacion_reg,
-        $fila['estado_facultad'], $fila['estado_vra'], $fila['observacion_facultad'], $fila['observacion_vra']
-    ];
+    $enviado_rrhh = ($fila['archivado'] ?? 0) == 1 ? 'OK' : 'NO';
+
+$datos_fila = [
+    $fila['nombre_facultad'], $fila['nombre_departamento'], $fila['oficio_con_fecha'], $fila['oficio_con_fecha_fac'],
+    $fila['novedad'], $fila['cedula'], $fila['nombre'], $fila['tipo_docente'], $dedicacion_pop, $dedicacion_reg,
+    $fila['estado_facultad'], $fila['estado_vra'], $fila['observacion_facultad'], $fila['observacion_vra'],
+    $enviado_rrhh // <-- NUEVO DATO
+];
     $sheet->fromArray($datos_fila, NULL, 'A' . $row_num);
 
     // ==========================================================
@@ -204,7 +208,7 @@ foreach ($datos_procesados as $fila) {
             ]
         ];
         // Aplicamos el estilo a toda la fila
-        $sheet->getStyle('A' . $row_num . ':N' . $row_num)->applyFromArray($rejectedStyle);
+        $sheet->getStyle('A' . $row_num . ':O' . $row_num)->applyFromArray($rejectedStyle);
     } 
     // Si no hay rechazos, comprobamos si fue APROBADO por VRA
     elseif (strtoupper($fila['estado_vra']) === 'APROBADO') {
@@ -216,7 +220,7 @@ foreach ($datos_procesados as $fila) {
             ]
         ];
         // Aplicamos el estilo a toda la fila
-        $sheet->getStyle('A' . $row_num . ':N' . $row_num)->applyFromArray($approvedStyle);
+        $sheet->getStyle('A' . $row_num . ':O' . $row_num)->applyFromArray($approvedStyle);
     }
     // ==========================================================
     
@@ -224,7 +228,7 @@ foreach ($datos_procesados as $fila) {
 }
 
 // Auto-ajustar el ancho de las columnas
-foreach(range('A', 'N') as $columnID) {
+foreach(range('A', 'O') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);
 }
 // =================================================================

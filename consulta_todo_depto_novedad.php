@@ -1620,11 +1620,12 @@ $conn->close();
         color: #c82333; /* Color más oscuro al pasar el mouse */
     }
         
-        /* --- ESTILOS ESPECÍFICOS PARA EL NOMBRE SEGÚN LA NOVEDAD --- */
-        .nombre-novedad-eliminar {
-            color: #dc3545 !important; /* Rojo de Bootstrap Danger */
-            font-weight: bold; /* Hacer el texto más notorio */
-        }
+       .nombre-novedad-eliminar {
+    color: #dc3545 !important;
+    font-weight: bold;
+    text-decoration: line-through;
+    opacity: 0.7; /* <-- Le baja un poco la intensidad al texto y al tachado */
+}
         .nombre-novedad-adicionar {
             color: #0d6efd !important; /* Azul de Bootstrap Primary */
             font-weight: bold;
@@ -1667,6 +1668,11 @@ $conn->close();
     margin: 0;                 /* ¡Esto quita el espacio extra que infla la cápsula! */
     font-size: 1rem;           /* Opcional: Puedes ajustar el tamaño del texto si es necesario */
 }
+        
+         .columna-nombre {
+        width: 30%; /* Dale un 30% del ancho total de la tabla. ¡Puedes ajustar este valor! */
+        min-width: 250px; /* Opcional: un ancho mínimo para que no se encoja demasiado */
+    }
 </style>
 </head>
 <body>
@@ -2063,17 +2069,17 @@ echo ")</h4>";
                 <tr>
                     <th rowspan='2'>Ítem</th>
                     <th rowspan='2'>Cédula</th>
-                    <th rowspan='2'>Nombre</th>";
+<th rowspan='2' class='columna-nombre'>Nombre</th>";
 
         if ($tipo_docente == "Ocasional" || $tipo_docente == "Catedra") {
             echo "<th colspan='2'>Dedicación</th>";
         }
-        echo "<th colspan='2'>Hojas de vida</th>";
+        //echo "<th colspan='2'>Hojas de vida</th>";
 
         if ($estadoDepto != "CERRADO") {
             echo "<th colspan='3'>Acciones</th>";
         } else {
-            echo "<th colspan='3' ></th>";
+            echo "<th colspan='3' >Acciones</th>";
         }
 
         echo "</tr>";
@@ -2087,11 +2093,11 @@ echo ")</h4>";
                     <th title='Horas en Sede Popayán'>Hrs.Pop</th>
                     <th title='Horas en Sede Regionalización'>Hrs.Reg</th>";
         }
-        echo "
+     /*   echo "
             <th title='Anexa Hoja de Vida para nuevos aspirantes'>Anexa</th>
             <th title='Actualiza Hoja de Vida para aspirantes antiguos'>Actualz</th>";
-
-            echo "<th>Eliminar</th>
+*/
+            echo "<th>Liberar</th>
                   <th>Editar</th><th>for45</th>";
           
         
@@ -2135,9 +2141,9 @@ if ($datosProfesor !== false) {
 // Obtener el nombre completo
 $full_nombre = htmlspecialchars($row["nombre"]);
 // Obtener los primeros 10 caracteres del nombre para mostrar en la celda
-$display_nombre = mb_substr($full_nombre, 0, 10); // mb_substr para caracteres multi-byte
+$display_nombre = mb_substr($full_nombre, 0, 35); // mb_substr para caracteres multi-byte
 // Si el nombre es más largo que 10 caracteres, añadir puntos suspensivos
-if (mb_strlen($full_nombre) > 10) {
+if (mb_strlen($full_nombre) > 35) {
     $display_nombre .= '...';
 }
 
@@ -2170,7 +2176,7 @@ if (($row["estado_vra"] ?? '') === 'APROBADO') {
 echo "<tr>
         <td class='td-simple'>" . $item . "</td>
         <td class='td-simple' style='text-align: left;'>" . htmlspecialchars($row["cedula"]) . "</td>
-        <td class='td-simple " . $nombre_class . "' style='text-align: left;'
+      <td class='td-simple columna-nombre " . $nombre_class . "' style='text-align: left;'
             data-toggle='tooltip'
             data-html='true'
             title='" . $tooltip . "'>
@@ -2191,7 +2197,7 @@ echo "<tr>
     }
 
     // Verificar si hay un enlace válido en 'anexos'
-    $anexos = trim($row["anexos"]);
+  /*  $anexos = trim($row["anexos"]);
     $hasValidLink = !empty($anexos) && preg_match('/^(https?:\/\/|www\.)/i', $anexos);
     
     // Mostrar anexa_hv_docente_nuevo como enlace si hay un enlace válido
@@ -2207,7 +2213,7 @@ echo "<tr>
     } else {
         echo "<td class='td-simple'>" . htmlspecialchars($row["actualiza_hv_antiguo"]) . "</td>";
     }
-    
+    */
 
 $disabled_attr = '';
 $title_message = '';
@@ -2880,7 +2886,7 @@ if (!empty($data_modificar)) {
             </table>
         </div>
     <?php else: ?>
-        <div class="alert alert-light text-center" role="alert">
+        <div class="alert alert-info text-center" role="alert">
             No se han detectado cambios de vinculación ni modificaciones.
         </div>
     <?php endif; ?>
@@ -3069,7 +3075,7 @@ if (!empty($data_modificar)) {
 
 <div class="card mb-5 shadow-lg">
     <div class="card-header bg-danger text-white">
-        <h4 class="mb-0"><i class="fas fa-minus-circle me-3"></i>Eliminar</h4>
+        <h4 class="mb-0"><i class="fas fa-minus-circle me-3"></i>Liberar</h4>
     </div>
     <div class="card-body p-2">
         <?php if (!empty($data_eliminar)): ?>
@@ -3216,7 +3222,7 @@ if (!empty($data_modificar)) {
             </div>
         <?php else: ?>
             <div class="alert alert-info text-center" role="alert">
-                <i class="fas fa-info-circle me-2"></i>No hay novedades de tipo "Eliminar" para este período y departamento.
+                <i class="fas fa-info-circle me-2"></i>No hay novedades de tipo "Liberar" para este período y departamento.
             </div>
         <?php endif; ?>
     </div>

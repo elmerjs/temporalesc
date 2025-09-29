@@ -601,7 +601,7 @@ $conn->close();
                    
                     <textarea class="form-control" name="observacion" id="observacion" rows="3"
                               placeholder="Ej: Por necesidad  mayor numero de matriculas ....."
-                              oninput="detectarTipoReemplazo()" required><?php echo htmlspecialchars($row['s_observacion']); ?></textarea>
+                              oninput="detectarTipoReemplazo()" required><?php //echo htmlspecialchars($row['s_observacion']); ?></textarea>
                 </div>
 
              <div class="form-group" hidden> <label for="tipo_reemplazo">Tipo de Reemplazo/Justificación <span class="required">*</span></label>

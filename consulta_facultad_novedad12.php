@@ -75,49 +75,64 @@ if ($tipo_usuario === null) {
 
 // --- FUNCIÓN DE PROCESAMIENTO DE DATOS ---
 function procesarCambiosVinculacion($solicitudes) {
-    $adiciones = [];
-    $eliminaciones = [];
+    $transacciones = [];
     $otras_novedades = [];
     $resultado_final = [];
 
-    // 1. Clasificar solicitudes
+    // PASO 1: Clasificar solicitudes por 'oficio' Y LUEGO por 'cédula'.
     foreach ($solicitudes as $sol) {
-        $cedula = $sol['cedula'];
-        if (strtolower($sol['novedad']) === 'adicion' || strtolower($sol['novedad']) === 'adicionar') {
-            $adiciones[$cedula] = $sol;
-        } elseif (strtolower($sol['novedad']) === 'eliminar') {
-            $eliminaciones[$cedula] = $sol;
+        $id_transaccion = $sol['oficio_con_fecha'] ?? null;
+        $cedula = $sol['cedula'] ?? null;
+        $novedad = strtolower($sol['novedad']);
+
+        if ($id_transaccion && $cedula && ($novedad === 'adicionar' || $novedad === 'adicion' || $novedad === 'eliminar')) {
+            // Agrupamos por oficio, y dentro, por cédula.
+            $transacciones[$id_transaccion][$cedula][$novedad] = $sol;
         } else {
+            // El resto (Modificar, etc.) va a otra lista.
             $otras_novedades[] = $sol;
         }
     }
 
-    // 2. Procesar coincidencias
-    foreach ($adiciones as $cedula => $sol_adicion) {
-        if (isset($eliminaciones[$cedula])) {
-            $sol_eliminacion = $eliminaciones[$cedula];
+    // PASO 2: Procesar las transacciones doblemente agrupadas
+    foreach ($transacciones as $id_transaccion => $cedulas_en_oficio) {
+        foreach ($cedulas_en_oficio as $cedula => $partes) {
+            
+            $sol_adicion = $partes['adicion'] ?? $partes['adicionar'] ?? null;
 
-            $tipo_docente_anterior = ($sol_eliminacion['tipo_docente'] === 'Catedra') ? 'Cátedra' : $sol_eliminacion['tipo_docente'];
-            $estado_anterior = "Sale de " . $tipo_docente_anterior;
-            if ($sol_eliminacion['tipo_docente'] === 'Ocasional') {
-                if ($sol_eliminacion['tipo_dedicacion']) $estado_anterior .= " " . $sol_eliminacion['tipo_dedicacion'] . " Popayán";
-                elseif ($sol_eliminacion['tipo_dedicacion_r']) $estado_anterior .= " " . $sol_eliminacion['tipo_dedicacion_r'] . " Regionalización";
-            } elseif ($sol_eliminacion['tipo_docente'] === 'Catedra') {
-                if ($sol_eliminacion['horas'] && $sol_eliminacion['horas'] > 0) $estado_anterior .= " " . $sol_eliminacion['horas'] . " horas Popayán";
-                elseif ($sol_eliminacion['horas_r'] && $sol_eliminacion['horas_r'] > 0) $estado_anterior .= " " . $sol_eliminacion['horas_r'] . " horas Regionalización";
+            // Verificamos si para ESTA CÉDULA DENTRO DE ESTE OFICIO, existe el par completo
+            if ($sol_adicion && isset($partes['eliminar'])) {
+                // ¡Es un verdadero "Cambio de Vinculación"!
+                $sol_eliminacion = $partes['eliminar'];
+
+                // --- Lógica para construir la descripción (sin cambios) ---
+                $tipo_docente_anterior = ($sol_eliminacion['tipo_docente'] === 'Catedra') ? 'Cátedra' : $sol_eliminacion['tipo_docente'];
+                $estado_anterior = "Sale de " . $tipo_docente_anterior;
+                if ($sol_eliminacion['tipo_docente'] === 'Ocasional') {
+                    if ($sol_eliminacion['tipo_dedicacion']) $estado_anterior .= " " . $sol_eliminacion['tipo_dedicacion'] . " Popayán";
+                    elseif ($sol_eliminacion['tipo_dedicacion_r']) $estado_anterior .= " " . $sol_eliminacion['tipo_dedicacion_r'] . " Regionalización";
+                } elseif ($sol_eliminacion['tipo_docente'] === 'Catedra') {
+                    if ($sol_eliminacion['horas'] && $sol_eliminacion['horas'] > 0) $estado_anterior .= " " . $sol_eliminacion['horas'] . " horas Popayán";
+                    elseif ($sol_eliminacion['horas_r'] && $sol_eliminacion['horas_r'] > 0) $estado_anterior .= " " . $sol_eliminacion['horas_r'] . " horas Regionalización";
+                }
+                
+                // Modificamos la solicitud de "adición" para que represente el cambio completo
+                $sol_adicion['novedad'] = 'Modificar Vinculación'; // O 'Cambio Vinculación' según prefieras
+                $observacion_existente = trim($sol_adicion['s_observacion']);
+                $sol_adicion['s_observacion'] = $observacion_existente . ($observacion_existente ? ' ' : '') . '(' . $estado_anterior . ')';
+
+                $resultado_final[] = $sol_adicion;
+
+            } else {
+                // Si no hay un par, se añaden las partes individuales a la lista de "otras"
+                if ($sol_adicion) $otras_novedades[] = $sol_adicion;
+                if (isset($partes['eliminar'])) $otras_novedades[] = $partes['eliminar'];
             }
-
-            $sol_adicion['novedad'] = 'Modificar Vinculación';
-            $observacion_existente = trim($sol_adicion['s_observacion']);
-            $sol_adicion['s_observacion'] = $observacion_existente . ($observacion_existente ? ' ' : '') . '(' . $estado_anterior . ')';
-
-            $resultado_final[] = $sol_adicion;
-            unset($eliminaciones[$cedula]);
-        } else {
-            $resultado_final[] = $sol_adicion;
         }
     }
-    return array_merge($resultado_final, array_values($eliminaciones), $otras_novedades);
+
+    // Unimos los cambios procesados con el resto de novedades
+    return array_merge($resultado_final, $otras_novedades);
 }
 
 

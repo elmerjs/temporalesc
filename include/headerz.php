@@ -759,11 +759,23 @@ nav ul li ul.submenu li.active a::after { /* Opcional: línea para el sub-ítem 
         .dropdown-menu.show {
             display: block;
         }
+      /* Estilo para el contenedor principal del cabezado */
+    header.main-header {
+        background-color: #F0F4F9; /* Este es un gris muy suave y profesional */
+        border-bottom: 1px solid #e9ecef; /* Opcional: añade una línea sutil para separar del contenido */
+    }
+
+    /* --- Solución al problema de "partes blancas" --- */
+    /* Le decimos a la barra de navegación que sea transparente */
+    /* para que muestre el color gris del header que está detrás */
+    header.main-header nav {
+        background-color: transparent !important;
+    }
 </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="cargando">
-<header>
+<header class="main-header">
     <div class="header-top-row">
  <div class="logo-and-title">
     <div class="logo-container text-center">

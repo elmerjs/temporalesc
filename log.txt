@@ -731,3 +731,5 @@ Inicio del proceso para id_depto_periodo: 2006Datos recibidos: id_depto_periodo=
 fk_depto_dp obtenido: 1Email obtenido: artesplasticas@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 2006
 Inicio del proceso para id_depto_periodo: 2006Datos recibidos: id_depto_periodo=2006, estado=rechazar, observacion=ghjghj, anio_semestre=2025-2
 fk_depto_dp obtenido: 1Email obtenido: artesplasticas@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 2006
+Inicio del proceso para id_depto_periodo: 1918Datos recibidos: id_depto_periodo=1918, estado=rechazar, observacion=sfsdf, anio_semestre=2025-2
+fk_depto_dp obtenido: 27Email obtenido: deptohistoria@unicauca.edu.coProceso finalizado correctamente para id_depto_periodo: 1918

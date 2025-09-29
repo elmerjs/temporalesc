@@ -518,7 +518,7 @@ $conn->close();
 // --- LÓGICA PARA BOTÓN DINÁMICO (VERSIÓN CORREGIDA) ---
 $tieneDatos = !empty($datos_para_tabla);
 
-if ($tieneDatos) {
+if (!$tieneDatos) {
     // Estado normal: Hay datos, clases azules, botón 100% funcional.
     $headerClasses = 'bg-blue-50 hover:bg-blue-100 text-blue-800';
     $iconClasses   = 'fa-check-circle text-blue-800';
@@ -587,12 +587,17 @@ if ($tieneDatos) {
                 <?php endforeach; ?>
             </tbody>
         </table>
-        
-        <div class="mt-4"> <button id="btnGenerarWord" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                <i class="fas fa-file-word mr-2"></i>
-                Generar Oficio
-            </button>
-        </div>
+   <div class="mt-4 flex items-center space-x-3">
+    <button id="btnGenerarPrevio" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
+        <i class="fas fa-eye mr-2"></i>
+        Generar Previo
+    </button>
+    
+    <button id="btnGenerarWord" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+        <i class="fas fa-file-word mr-2"></i>
+        Generar Oficio Definitivo
+    </button>
+</div>
 
    <?php else: ?>
         <div class="text-center text-gray-500 py-6">
@@ -1313,10 +1318,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 $(document).ready(function() {
-    // 1. Inicializamos la DataTable con opciones para hacerla elegante
+    // 1. Inicializamos la DataTable (sin cambios)
     var table = $('#tablaAprobadosVRA').DataTable({
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json" // Traducción al español
+            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
         },
         "paging": true,
         "lengthChange": true,
@@ -1327,13 +1332,13 @@ $(document).ready(function() {
         "responsive": true
     });
 
-    // 2. Lógica para el checkbox "Seleccionar Todo"
+    // 2. Lógica para el checkbox "Seleccionar Todo" (sin cambios)
     $('#selectAll').on('click', function() {
         var rows = table.rows({ 'search': 'applied' }).nodes();
         $('input.row-checkbox', rows).prop('checked', this.checked);
     });
 
-    // 3. Lógica para que "Seleccionar Todo" se desmarque si quitamos una selección
+    // 3. Lógica para que "Seleccionar Todo" se desmarque (sin cambios)
     $('#tablaAprobadosVRA tbody').on('change', 'input.row-checkbox', function() {
         if (!this.checked) {
             var el = $('#selectAll').get(0);
@@ -1343,51 +1348,85 @@ $(document).ready(function() {
         }
     });
 
-        // 4. Funcionalidad del botón "Generar Oficio"
-        $('#btnGenerarWord').on('click', function() {
-            var seleccionados = [];
-            // Recolecta los datos de las filas seleccionadas (incluyendo los valores editados)
-            table.rows({ 'search': 'applied' }).every(function() {
-                var rowNode = this.node();
-                if ($(rowNode).find('input.row-checkbox').is(':checked')) {
-                    var fila = {
-                        id: $(rowNode).data('id'),
-                        puntos: $(rowNode).find('td[data-field="puntos"]').text(),
-                        tipo_reemplazo: $(rowNode).find('td[data-field="tipo_reemplazo"]').text()
-                    };
-                    seleccionados.push(fila);
-                }
-            });
-
-            if (seleccionados.length === 0) {
-                alert('Por favor, seleccione al menos una solicitud para generar el oficio.');
-                return;
+    // 4. Funcionalidad del botón "Generar Oficio Definitivo"
+    $('#btnGenerarWord').on('click', function() {
+        var seleccionados = [];
+        table.rows({ 'search': 'applied' }).every(function() {
+            var rowNode = this.node();
+            if ($(rowNode).find('input.row-checkbox').is(':checked')) {
+                var fila = {
+                    id: $(rowNode).data('id'),
+                    puntos: $(rowNode).find('td[data-field="puntos"]').text(),
+                    tipo_reemplazo: $(rowNode).find('td[data-field="tipo_reemplazo"]').text()
+                };
+                seleccionados.push(fila);
             }
-
-            // --- LÓGICA MEJORADA PARA LLAMAR AL SCRIPT PHP ---
-
-            // 1. Convertimos el array de objetos a una cadena JSON
-            const dataToSend = JSON.stringify(seleccionados);
-
-            // 2. Creamos un formulario invisible en la memoria
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'generar_word_vra_srh.php'; // El nombre de nuestro nuevo archivo PHP
-            form.target = '_blank'; // Opcional: abre el resultado en una nueva pestaña
-
-            // 3. Creamos un campo oculto para enviar los datos
-            const hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = 'seleccionados';
-            hiddenField.value = dataToSend;
-            form.appendChild(hiddenField);
-
-            // 4. Añadimos el formulario a la página y lo enviamos
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form); // Lo removemos después de enviarlo
         });
+
+        if (seleccionados.length === 0) {
+            alert('Por favor, seleccione al menos una solicitud para generar el oficio.');
+            return;
+        }
+
+        const dataToSend = JSON.stringify(seleccionados);
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'generar_word_vra_srh.php';
+        form.target = '_blank';
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'seleccionados';
+        hiddenField.value = dataToSend;
+        form.appendChild(hiddenField);
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    });
+    
+    // 5. Funcionalidad del NUEVO botón "Generar Previo"
+    $('#btnGenerarPrevio').on('click', function() {
+        var seleccionados = [];
+        table.rows({ 'search': 'applied' }).every(function() {
+            var rowNode = this.node();
+            if ($(rowNode).find('input.row-checkbox').is(':checked')) {
+                var fila = {
+                    id: $(rowNode).data('id'),
+                    puntos: $(rowNode).find('td[data-field="puntos"]').text(),
+                    tipo_reemplazo: $(rowNode).find('td[data-field="tipo_reemplazo"]').text()
+                };
+                seleccionados.push(fila);
+            }
         });
+
+        if (seleccionados.length === 0) {
+            alert('Por favor, seleccione al menos una solicitud para generar el previo.');
+            return;
+        }
+
+        const dataToSend = JSON.stringify(seleccionados);
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'generar_previo_vra_srh.php'; 
+        form.target = '_blank';
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'seleccionados';
+        hiddenField.value = dataToSend;
+        form.appendChild(hiddenField);
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    });
+
+// --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
+// Este es el cierre correcto para $(document).ready()
+// Debe ir al final, después de haber definido la función para AMBOS botones.
+}); 
+
      // --- NUEVO SCRIPT PARA EL ACORDEÓN DE SOLICITUDES APROBADAS ---
     document.querySelector('.accordion-header-vra').addEventListener('click', function() {
         const accordionBody = this.nextElementSibling; // El div que contiene la tabla
